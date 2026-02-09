@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { Button } from "../ui/button";
-import { siteData } from "../../data/mock";
 
-export const HeroSection = () => {
+export const HeroSection = ({ siteData }) => {
   const [isVisible, setIsVisible] = useState(false);
+  const hero = siteData?.hero || {};
+  const brand = siteData?.brand || {};
 
   useEffect(() => {
     const timer = setTimeout(() => setIsVisible(true), 100);
@@ -26,7 +27,7 @@ export const HeroSection = () => {
       {/* Background image */}
       <div className="absolute inset-0">
         <img
-          src={siteData.hero.image}
+          src={hero.image}
           alt="Arreglos florales TYRELL"
           className="w-full h-full object-cover"
         />
@@ -64,10 +65,10 @@ export const HeroSection = () => {
             }`}
           >
             <span className="block font-display text-5xl sm:text-6xl lg:text-7xl xl:text-8xl text-white font-light leading-[0.95] tracking-tight">
-              {siteData.hero.title}
+              {hero.title}
             </span>
             <span className="block font-display text-5xl sm:text-6xl lg:text-7xl xl:text-8xl text-tyrell-gold font-light leading-[0.95] tracking-tight mt-2">
-              {siteData.hero.titleHighlight}
+              {hero.titleHighlight}
             </span>
           </h1>
 
@@ -79,7 +80,7 @@ export const HeroSection = () => {
                 : "opacity-0 translate-y-6"
             }`}
           >
-            {siteData.hero.subtitle}
+            {hero.subtitle}
           </p>
 
           {/* CTAs */}
@@ -91,12 +92,12 @@ export const HeroSection = () => {
             }`}
           >
             <a
-              href={siteData.brand.catalogUrl}
+              href={brand.catalogUrl || "#"}
               target="_blank"
               rel="noopener noreferrer"
             >
               <Button className="bg-tyrell-gold hover:bg-tyrell-gold-dark text-white px-8 py-6 text-sm tracking-[0.2em] uppercase rounded-none transition-all duration-300 hover:shadow-[0_8px_30px_rgba(201,169,110,0.35)] group">
-                {siteData.hero.ctaText}
+                {hero.ctaText || "Ver Catálogo"}
                 <ArrowRight className="ml-2 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Button>
             </a>
@@ -125,7 +126,7 @@ export const HeroSection = () => {
       {/* Side decorative text */}
       <div className="absolute right-8 top-1/2 -translate-y-1/2 hidden xl:block">
         <span className="text-white/10 font-display text-sm tracking-[0.5em] uppercase writing-vertical">
-          TYRELL · Florería
+          {brand.name || "TYRELL"} · Florería
         </span>
       </div>
     </section>
