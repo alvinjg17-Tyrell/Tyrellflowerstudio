@@ -162,7 +162,7 @@ export const ContactSection = () => {
                     setFormData({ ...formData, name: e.target.value })
                   }
                   placeholder="Ingresa tu nombre"
-                  className="bg-white/5 border-tyrell-gold/20 text-white placeholder:text-white/25 rounded-none h-12 focus:border-tyrell-gold/50 focus:ring-tyrell-gold/20 transition-all duration-300"
+                  className="bg-white/10 border-tyrell-gold/30 text-white placeholder:text-white/35 rounded-none h-12 focus:border-tyrell-gold/60 focus:ring-tyrell-gold/20 transition-all duration-300"
                 />
               </div>
               <div>
