@@ -4,9 +4,9 @@ export const siteData = {
     tagline: "Donde cada pétalo cuenta una historia de amor",
     description: "En TYRELL, transformamos flores frescas en obras de arte que transmiten emociones. Con dedicación artesanal y los arreglos más exclusivos de Moyobamba, creamos experiencias inolvidables para cada momento especial de tu vida.",
     catalogUrl: "https://heyzine.com/flip-book/9c9575825d.html#page/14",
-    whatsappLink: "#",
+    whatsappLink: "https://wa.me/51910770284",
     location: "Moyobamba, San Martín, Perú",
-    whatsappNumber: "",
+    whatsappNumber: "+51 910 770 284",
   },
   hero: {
     title: "Elegancia en",
