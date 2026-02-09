@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { Menu, X, MapPin, Phone } from "lucide-react";
+import { Menu, X, MapPin } from "lucide-react";
 import { Button } from "../ui/button";
-import { siteData } from "../../data/mock";
 
-export const Header = () => {
+export const Header = ({ siteData }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  const brand = siteData?.brand || {};
 
   useEffect(() => {
     const handleScroll = () => {
@@ -50,7 +51,7 @@ export const Header = () => {
             <div className="flex items-center gap-4">
               <span className="flex items-center gap-1">
                 <MapPin className="w-3 h-3 text-tyrell-gold" />
-                {siteData.brand.location}
+                {brand.location}
               </span>
             </div>
             <span className="hidden sm:block font-light tracking-wider">
@@ -74,7 +75,7 @@ export const Header = () => {
                 isScrolled ? "text-tyrell-dark" : "text-white"
               }`}
             >
-              TYRELL
+              {brand.name || "TYRELL"}
             </span>
             <span
               className={`text-[10px] tracking-[0.25em] uppercase font-light transition-colors duration-500 ${
@@ -103,7 +104,7 @@ export const Header = () => {
               </a>
             ))}
             <a
-              href={siteData.brand.catalogUrl}
+              href={brand.catalogUrl || "#"}
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -147,7 +148,7 @@ export const Header = () => {
             </a>
           ))}
           <a
-            href={siteData.brand.catalogUrl}
+            href={brand.catalogUrl || "#"}
             target="_blank"
             rel="noopener noreferrer"
             className="block"
