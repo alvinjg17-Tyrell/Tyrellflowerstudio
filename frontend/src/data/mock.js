@@ -44,7 +44,7 @@ export const siteData = {
       id: 1,
       title: "Arreglos Florales",
       description: "Composiciones artísticas con las flores más selectas, perfectas para decorar cualquier espacio con elegancia y distinción.",
-      image: "https://images.unsplash.com/photo-1637841099226-773099427760?crop=entropy&cs=srgb&fm=jpg&q=85&w=600",
+      image: "https://images.unsplash.com/photo-1487530811176-3780de880c2d?crop=entropy&cs=srgb&fm=jpg&q=85&w=600",
       tag: "Popular",
     },
     {
