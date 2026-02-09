@@ -1,0 +1,163 @@
+import { useState, useEffect } from "react";
+import { Menu, X, MapPin, Phone } from "lucide-react";
+import { Button } from "../ui/button";
+import { siteData } from "../../data/mock";
+
+export const Header = () => {
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const navLinks = [
+    { label: "Inicio", href: "#inicio" },
+    { label: "Nosotros", href: "#nosotros" },
+    { label: "Servicios", href: "#servicios" },
+    { label: "Contacto", href: "#contacto" },
+  ];
+
+  const scrollToSection = (e, href) => {
+    e.preventDefault();
+    const element = document.querySelector(href);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+    setIsMobileMenuOpen(false);
+  };
+
+  return (
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        isScrolled
+          ? "bg-white/95 backdrop-blur-xl shadow-[0_2px_30px_rgba(201,169,110,0.1)]"
+          : "bg-transparent"
+      }`}
+    >
+      {/* Top bar */}
+      <div
+        className={`transition-all duration-500 overflow-hidden ${
+          isScrolled ? "max-h-0 opacity-0" : "max-h-10 opacity-100"
+        }`}
+      >
+        <div className="bg-tyrell-dark/90 backdrop-blur-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between py-1.5 text-xs text-tyrell-cream/80">
+            <div className="flex items-center gap-4">
+              <span className="flex items-center gap-1">
+                <MapPin className="w-3 h-3 text-tyrell-gold" />
+                {siteData.brand.location}
+              </span>
+            </div>
+            <span className="hidden sm:block font-light tracking-wider">
+              Entrega a domicilio disponible
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Main nav */}
+      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16 lg:h-20">
+          {/* Logo */}
+          <a
+            href="#inicio"
+            onClick={(e) => scrollToSection(e, "#inicio")}
+            className="flex flex-col items-start"
+          >
+            <span
+              className={`font-display text-2xl lg:text-3xl tracking-[0.3em] font-bold transition-colors duration-500 ${
+                isScrolled ? "text-tyrell-dark" : "text-white"
+              }`}
+            >
+              TYRELL
+            </span>
+            <span
+              className={`text-[10px] tracking-[0.25em] uppercase font-light transition-colors duration-500 ${
+                isScrolled ? "text-tyrell-gold" : "text-tyrell-gold-light"
+              }`}
+            >
+              Florería Artesanal
+            </span>
+          </a>
+
+          {/* Desktop nav */}
+          <div className="hidden lg:flex items-center gap-8">
+            {navLinks.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                onClick={(e) => scrollToSection(e, link.href)}
+                className={`text-sm tracking-wider uppercase font-light transition-all duration-300 hover:opacity-100 relative group ${
+                  isScrolled
+                    ? "text-tyrell-dark/70 hover:text-tyrell-dark"
+                    : "text-white/80 hover:text-white"
+                }`}
+              >
+                {link.label}
+                <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-tyrell-gold transition-all duration-300 group-hover:w-full" />
+              </a>
+            ))}
+            <a
+              href={siteData.brand.catalogUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Button className="bg-tyrell-gold hover:bg-tyrell-gold-dark text-white text-sm tracking-wider uppercase px-6 py-2 rounded-none border-0 transition-all duration-300 hover:shadow-[0_4px_20px_rgba(201,169,110,0.4)]">
+                Ver Catálogo
+              </Button>
+            </a>
+          </div>
+
+          {/* Mobile menu button */}
+          <button
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            className={`lg:hidden p-2 transition-colors duration-300 ${
+              isScrolled ? "text-tyrell-dark" : "text-white"
+            }`}
+          >
+            {isMobileMenuOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
+          </button>
+        </div>
+      </nav>
+
+      {/* Mobile menu */}
+      <div
+        className={`lg:hidden transition-all duration-500 overflow-hidden ${
+          isMobileMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"
+        }`}
+      >
+        <div className="bg-white/98 backdrop-blur-xl border-t border-tyrell-gold/10 px-4 py-6 space-y-4">
+          {navLinks.map((link) => (
+            <a
+              key={link.label}
+              href={link.href}
+              onClick={(e) => scrollToSection(e, link.href)}
+              className="block text-sm tracking-wider uppercase text-tyrell-dark/70 hover:text-tyrell-dark transition-colors duration-300 py-2"
+            >
+              {link.label}
+            </a>
+          ))}
+          <a
+            href={siteData.brand.catalogUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="block"
+          >
+            <Button className="w-full bg-tyrell-gold hover:bg-tyrell-gold-dark text-white text-sm tracking-wider uppercase rounded-none">
+              Ver Catálogo
+            </Button>
+          </a>
+        </div>
+      </div>
+    </header>
+  );
+};
