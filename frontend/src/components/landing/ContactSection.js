@@ -176,7 +176,7 @@ export const ContactSection = () => {
                   }
                   placeholder="Cuéntanos qué necesitas..."
                   rows={5}
-                  className="bg-white/5 border-tyrell-gold/20 text-white placeholder:text-white/25 rounded-none focus:border-tyrell-gold/50 focus:ring-tyrell-gold/20 transition-all duration-300 resize-none"
+                  className="bg-white/10 border-tyrell-gold/30 text-white placeholder:text-white/35 rounded-none focus:border-tyrell-gold/60 focus:ring-tyrell-gold/20 transition-all duration-300 resize-none"
                 />
               </div>
               <Button
