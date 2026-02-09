@@ -7,12 +7,30 @@ module.exports = {
   ],
   theme: {
   	extend: {
+  		fontFamily: {
+  			'display': ['"Playfair Display"', 'Georgia', 'serif'],
+  			'body': ['Lato', 'sans-serif'],
+  		},
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		colors: {
+  			'tyrell-gold': {
+  				DEFAULT: '#C9A96E',
+  				dark: '#A67C52',
+  				light: '#E8D5B5',
+  			},
+  			'tyrell-dark': {
+  				DEFAULT: '#1a1a1a',
+  			},
+  			'tyrell-cream': {
+  				DEFAULT: '#FFF9F0',
+  			},
+  			'tyrell-warm': {
+  				DEFAULT: '#8A7968',
+  			},
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
