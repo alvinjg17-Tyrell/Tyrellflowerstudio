@@ -3,6 +3,7 @@ import { api } from "../../lib/api";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
+import { ImageUploader } from "./ImageUploader";
 import { Plus, Trash2, Save, Loader2, GripVertical, Image as ImageIcon } from "lucide-react";
 import { toast } from "sonner";
 
@@ -12,12 +13,16 @@ export const AdminServices = ({ services, setServices }) => {
   const [saving, setSaving] = useState(false);
   const [adding, setAdding] = useState(false);
   const [newForm, setNewForm] = useState({
-    title: "", description: "", image: "", tag: "", price: "", order: 0,
+    title: "", description: "", image: "", images: [], tag: "", price: "", order: 0,
   });
 
   const startEdit = (service) => {
     setEditingId(service.id);
-    setForm({ title: service.title, description: service.description, image: service.image, tag: service.tag, price: service.price || "", order: service.order });
+    setForm({
+      title: service.title, description: service.description,
+      image: service.image, images: service.images || [],
+      tag: service.tag, price: service.price || "", order: service.order,
+    });
   };
 
   const cancelEdit = () => { setEditingId(null); setForm({}); };
@@ -53,7 +58,7 @@ export const AdminServices = ({ services, setServices }) => {
       setSaving(true);
       const created = await api.createService({ ...newForm, order: services.length });
       setServices(prev => [...prev, created]);
-      setNewForm({ title: "", description: "", image: "", tag: "", price: "", order: 0 });
+      setNewForm({ title: "", description: "", image: "", images: [], tag: "", price: "", order: 0 });
       setAdding(false);
       toast.success("Servicio añadido");
     } catch (err) {
@@ -62,6 +67,54 @@ export const AdminServices = ({ services, setServices }) => {
       setSaving(false);
     }
   };
+
+  const ServiceForm = ({ formData, setFormData, onSave, onCancel, isSaving, isNew }) => (
+    <div className={`${isNew ? "bg-white border-2 border-[#C9A96E]/30" : ""} p-6 space-y-4`}>
+      {isNew && <h3 className="text-sm font-medium tracking-wider uppercase text-[#C9A96E]">Nuevo Servicio</h3>}
+      <div className="grid md:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">Título *</label>
+          <Input value={formData.title} onChange={e => setFormData(p => ({...p, title: e.target.value}))} className="rounded-none border-[#C9A96E]/20 h-11" />
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">Etiqueta</label>
+            <Input value={formData.tag} onChange={e => setFormData(p => ({...p, tag: e.target.value}))} className="rounded-none border-[#C9A96E]/20 h-11" placeholder="Popular, etc." />
+          </div>
+          <div>
+            <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">Precio</label>
+            <Input value={formData.price} onChange={e => setFormData(p => ({...p, price: e.target.value}))} className="rounded-none border-[#C9A96E]/20 h-11" placeholder="S/ 50.00" />
+          </div>
+        </div>
+      </div>
+      <div>
+        <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">Descripción</label>
+        <Textarea value={formData.description} onChange={e => setFormData(p => ({...p, description: e.target.value}))} rows={2} className="rounded-none border-[#C9A96E]/20 resize-none" />
+      </div>
+
+      {/* Main image */}
+      <ImageUploader
+        label="Imagen principal (portada)"
+        value={formData.image}
+        onChange={(url) => setFormData(p => ({...p, image: url}))}
+      />
+
+      {/* Gallery images */}
+      <ImageUploader
+        label="Galería de imágenes (deslizables)"
+        multiple={true}
+        images={formData.images || []}
+        onImagesChange={(imgs) => setFormData(p => ({...p, images: imgs}))}
+      />
+
+      <div className="flex gap-3 pt-2">
+        <Button onClick={onSave} disabled={isSaving} className="bg-[#C9A96E] hover:bg-[#A67C52] text-white rounded-none px-6 text-sm">
+          {isSaving ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Save className="w-4 h-4 mr-2" />} Guardar
+        </Button>
+        <Button onClick={onCancel} variant="outline" className="rounded-none border-[#C9A96E]/20 text-sm">Cancelar</Button>
+      </div>
+    </div>
+  );
 
   return (
     <div className="space-y-6">
@@ -72,81 +125,29 @@ export const AdminServices = ({ services, setServices }) => {
         </Button>
       </div>
 
-      {/* Add new form */}
       {adding && (
-        <div className="bg-white border-2 border-[#C9A96E]/30 p-6 space-y-4">
-          <h3 className="text-sm font-medium tracking-wider uppercase text-[#C9A96E]">Nuevo Servicio</h3>
-          <div className="grid md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">Título *</label>
-              <Input value={newForm.title} onChange={e => setNewForm(p => ({...p, title: e.target.value}))} className="rounded-none border-[#C9A96E]/20 h-11" />
-            </div>
-            <div>
-              <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">Etiqueta</label>
-              <Input value={newForm.tag} onChange={e => setNewForm(p => ({...p, tag: e.target.value}))} className="rounded-none border-[#C9A96E]/20 h-11" placeholder="Popular, Nuevo, etc." />
-            </div>
-          </div>
-          <div>
-            <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">Descripción</label>
-            <Textarea value={newForm.description} onChange={e => setNewForm(p => ({...p, description: e.target.value}))} rows={2} className="rounded-none border-[#C9A96E]/20 resize-none" />
-          </div>
-          <div className="grid md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">URL de imagen</label>
-              <Input value={newForm.image} onChange={e => setNewForm(p => ({...p, image: e.target.value}))} className="rounded-none border-[#C9A96E]/20 h-11" placeholder="https://..." />
-            </div>
-            <div>
-              <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">Precio</label>
-              <Input value={newForm.price} onChange={e => setNewForm(p => ({...p, price: e.target.value}))} className="rounded-none border-[#C9A96E]/20 h-11" placeholder="S/ 50.00" />
-            </div>
-          </div>
-          <div className="flex gap-3 pt-2">
-            <Button onClick={handleAdd} disabled={saving} className="bg-[#C9A96E] hover:bg-[#A67C52] text-white rounded-none px-6 text-sm">
-              {saving ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Save className="w-4 h-4 mr-2" />} Guardar
-            </Button>
-            <Button onClick={() => setAdding(false)} variant="outline" className="rounded-none border-[#C9A96E]/20 text-sm">Cancelar</Button>
-          </div>
-        </div>
+        <ServiceForm
+          formData={newForm}
+          setFormData={setNewForm}
+          onSave={handleAdd}
+          onCancel={() => setAdding(false)}
+          isSaving={saving}
+          isNew={true}
+        />
       )}
 
-      {/* Services list */}
       <div className="space-y-4">
         {services.map((service) => (
           <div key={service.id} className="bg-white border border-[#C9A96E]/10 overflow-hidden">
             {editingId === service.id ? (
-              <div className="p-6 space-y-4">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">Título</label>
-                    <Input value={form.title} onChange={e => setForm(p => ({...p, title: e.target.value}))} className="rounded-none border-[#C9A96E]/20 h-11" />
-                  </div>
-                  <div>
-                    <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">Etiqueta</label>
-                    <Input value={form.tag} onChange={e => setForm(p => ({...p, tag: e.target.value}))} className="rounded-none border-[#C9A96E]/20 h-11" />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">Descripción</label>
-                  <Textarea value={form.description} onChange={e => setForm(p => ({...p, description: e.target.value}))} rows={2} className="rounded-none border-[#C9A96E]/20 resize-none" />
-                </div>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">URL de imagen</label>
-                    <Input value={form.image} onChange={e => setForm(p => ({...p, image: e.target.value}))} className="rounded-none border-[#C9A96E]/20 h-11" />
-                  </div>
-                  <div>
-                    <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">Precio</label>
-                    <Input value={form.price} onChange={e => setForm(p => ({...p, price: e.target.value}))} className="rounded-none border-[#C9A96E]/20 h-11" placeholder="S/ 50.00" />
-                  </div>
-                </div>
-                {form.image && <img src={form.image} alt="Preview" className="w-full h-40 object-cover" />}
-                <div className="flex gap-3 pt-2">
-                  <Button onClick={saveEdit} disabled={saving} className="bg-[#C9A96E] hover:bg-[#A67C52] text-white rounded-none px-6 text-sm">
-                    {saving ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Save className="w-4 h-4 mr-2" />} Guardar
-                  </Button>
-                  <Button onClick={cancelEdit} variant="outline" className="rounded-none border-[#C9A96E]/20 text-sm">Cancelar</Button>
-                </div>
-              </div>
+              <ServiceForm
+                formData={form}
+                setFormData={setForm}
+                onSave={saveEdit}
+                onCancel={cancelEdit}
+                isSaving={saving}
+                isNew={false}
+              />
             ) : (
               <div className="flex items-center gap-4 p-4">
                 <GripVertical className="w-4 h-4 text-[#1a1a1a]/20 flex-shrink-0" />
@@ -158,10 +159,13 @@ export const AdminServices = ({ services, setServices }) => {
                   </div>
                 )}
                 <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <h3 className="font-['Playfair_Display'] text-lg text-[#1a1a1a]">{service.title}</h3>
                     {service.tag && <span className="text-[10px] tracking-wider uppercase bg-[#C9A96E]/10 text-[#C9A96E] px-2 py-0.5">{service.tag}</span>}
                     {service.price && <span className="text-sm font-medium text-[#C9A96E]">{service.price}</span>}
+                    {(service.images || []).length > 0 && (
+                      <span className="text-[10px] tracking-wider uppercase bg-[#1a1a1a]/5 text-[#1a1a1a]/40 px-2 py-0.5">{service.images.length} imgs</span>
+                    )}
                   </div>
                   <p className="text-sm text-[#1a1a1a]/40 mt-1 truncate">{service.description}</p>
                 </div>
