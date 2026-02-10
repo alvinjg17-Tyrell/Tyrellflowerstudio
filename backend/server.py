@@ -42,7 +42,10 @@ class HeroContent(BaseModel):
     titleHighlight: str = ""
     subtitle: str = ""
     ctaText: str = "Ver Catálogo"
+    ctaSecondaryText: str = "Nuestros Servicios"
     image: str = ""
+    video: str = ""
+    useVideo: bool = False
 
 class AboutContent(BaseModel):
     title: str = ""
