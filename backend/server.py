@@ -224,6 +224,24 @@ async def seed_data():
 async def root():
     return {"message": "TYRELL API running"}
 
+# ─── File Upload ──────────────────────────────────────────
+
+@api_router.post("/upload")
+async def upload_file(file: UploadFile = File(...)):
+    ext = Path(file.filename).suffix.lower()
+    if ext not in [".jpg", ".jpeg", ".png", ".webp", ".gif", ".mp4", ".mov"]:
+        raise HTTPException(status_code=400, detail="Formato no soportado")
+    
+    filename = f"{uuid.uuid4().hex}{ext}"
+    filepath = UPLOADS_DIR / filename
+    
+    with open(filepath, "wb") as buffer:
+        content = await file.read()
+        buffer.write(content)
+    
+    # Return the URL path that can be used to access the file
+    return {"url": f"/api/uploads/{filename}", "filename": filename}
+
 @api_router.get("/content")
 async def get_all_content():
     site = await db.site_content.find_one()
