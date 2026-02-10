@@ -29,6 +29,10 @@ export const AdminHero = ({ content, onSave, saving }) => {
       <div className="grid lg:grid-cols-2 gap-6">
         <div className="bg-white border border-[#C9A96E]/10 p-6 space-y-5">
           <div>
+            <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">Etiqueta superior (ej: Flower Studio)</label>
+            <Input value={form.label || ""} onChange={e => update("label", e.target.value)} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 h-11" />
+          </div>
+          <div>
             <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">Título (línea 1)</label>
             <Input value={form.title || ""} onChange={e => update("title", e.target.value)} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 h-11" />
           </div>
