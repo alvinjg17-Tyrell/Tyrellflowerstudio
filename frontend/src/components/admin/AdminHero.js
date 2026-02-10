@@ -15,6 +15,29 @@ export const AdminHero = ({ content, onSave, saving }) => {
 
   useEffect(() => { setForm(content.hero); }, [content]);
 
+  const videoRef = useRef(null);
+  const [uploadingVideo, setUploadingVideo] = useState(false);
+
+  const handleVideoUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadingVideo(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      const res = await axios.post(`${BACKEND_URL}/api/upload`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      update("video", `${BACKEND_URL}${res.data.url}`);
+      toast.success("Video subido correctamente");
+    } catch (err) {
+      toast.error("Error subiendo video");
+    } finally {
+      setUploadingVideo(false);
+      if (videoRef.current) videoRef.current.value = "";
+    }
+  };
+
   const handleSave = () => {
     onSave({ ...content, hero: form });
   };
