@@ -1,10 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { Switch } from "../ui/switch";
 import { ImageUploader } from "./ImageUploader";
-import { Save, Loader2, Video } from "lucide-react";
+import { Save, Loader2, Video, Upload } from "lucide-react";
+import axios from "axios";
+import { toast } from "sonner";
+
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 export const AdminHero = ({ content, onSave, saving }) => {
   const [form, setForm] = useState(content.hero);
