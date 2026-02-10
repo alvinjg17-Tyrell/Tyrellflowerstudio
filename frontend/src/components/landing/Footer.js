@@ -17,12 +17,11 @@ export const Footer = ({ siteData }) => {
           {/* Brand */}
           <div>
             <div className="mb-6">
-              <span className="font-display text-2xl tracking-[0.3em] text-white font-bold">
-                {brand.name || "TYRELL"}
-              </span>
-              <p className="mt-1 text-tyrell-gold text-[10px] tracking-[0.25em] uppercase font-light">
-                Florería Artesanal
-              </p>
+              <img
+                src="https://customer-assets.emergentagent.com/job_tyrell-floreria/artifacts/8svedb6n_TYRELL_2025_corporativo_blanco.png"
+                alt={brand.name || "TYRELL"}
+                className="h-14 w-auto object-contain"
+              />
             </div>
             <p className="text-white/40 text-sm font-light leading-relaxed">{brand.tagline}</p>
           </div>
