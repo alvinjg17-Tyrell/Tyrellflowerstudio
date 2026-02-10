@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
-import { Save, Loader2, Plus, Trash2, Image as ImageIcon } from "lucide-react";
+import { Save, Loader2, Plus, Trash2 } from "lucide-react";
 
 export const AdminAbout = ({ content, onSave, saving }) => {
   const [form, setForm] = useState(content.about);
@@ -16,7 +16,7 @@ export const AdminAbout = ({ content, onSave, saving }) => {
   const update = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
 
   const updateFeature = (index, field, value) => {
-    const updated = [...form.features];
+    const updated = [...(form.features || [])];
     updated[index] = { ...updated[index], [field]: value };
     setForm(prev => ({ ...prev, features: updated }));
   };
@@ -24,14 +24,14 @@ export const AdminAbout = ({ content, onSave, saving }) => {
   const addFeature = () => {
     setForm(prev => ({
       ...prev,
-      features: [...prev.features, { title: "", description: "", icon: "Flower2" }],
+      features: [...(prev.features || []), { title: "", description: "", icon: "Flower2" }],
     }));
   };
 
   const removeFeature = (index) => {
     setForm(prev => ({
       ...prev,
-      features: prev.features.filter((_, i) => i !== index),
+      features: (prev.features || []).filter((_, i) => i !== index),
     }));
   };
 
@@ -50,20 +50,34 @@ export const AdminAbout = ({ content, onSave, saving }) => {
       <div className="grid lg:grid-cols-2 gap-6">
         <div className="bg-white border border-[#C9A96E]/10 p-6 space-y-5">
           <div>
+            <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">Etiqueta superior</label>
+            <Input value={form.label || ""} onChange={e => update("label", e.target.value)} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 h-11" />
+          </div>
+          <div>
             <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">Título</label>
-            <Input value={form.title} onChange={e => update("title", e.target.value)} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 h-11" />
+            <Input value={form.title || ""} onChange={e => update("title", e.target.value)} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 h-11" />
           </div>
           <div>
             <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">Subtítulo</label>
-            <Input value={form.subtitle} onChange={e => update("subtitle", e.target.value)} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 h-11" />
+            <Input value={form.subtitle || ""} onChange={e => update("subtitle", e.target.value)} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 h-11" />
           </div>
           <div>
             <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">Descripción</label>
-            <Textarea value={form.description} onChange={e => update("description", e.target.value)} rows={4} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 resize-none" />
+            <Textarea value={form.description || ""} onChange={e => update("description", e.target.value)} rows={4} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 resize-none" />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">Número del badge</label>
+              <Input value={form.badgeNumber || ""} onChange={e => update("badgeNumber", e.target.value)} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 h-11" placeholder="+2000" />
+            </div>
+            <div>
+              <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">Texto del badge</label>
+              <Input value={form.badgeLabel || ""} onChange={e => update("badgeLabel", e.target.value)} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 h-11" placeholder="Arreglos Entregados" />
+            </div>
           </div>
           <div>
             <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">URL de imagen</label>
-            <Input value={form.image} onChange={e => update("image", e.target.value)} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 h-11" placeholder="https://..." />
+            <Input value={form.image || ""} onChange={e => update("image", e.target.value)} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 h-11" placeholder="https://..." />
           </div>
           {form.image && <img src={form.image} alt="About preview" className="w-full h-40 object-cover" />}
         </div>
@@ -75,7 +89,7 @@ export const AdminAbout = ({ content, onSave, saving }) => {
               <Plus className="w-3.5 h-3.5" /> Añadir
             </button>
           </div>
-          {form.features.map((feat, i) => (
+          {(form.features || []).map((feat, i) => (
             <div key={i} className="border border-[#C9A96E]/10 p-4 space-y-3 relative">
               <button onClick={() => removeFeature(i)} className="absolute top-3 right-3 text-red-400 hover:text-red-600 transition-colors">
                 <Trash2 className="w-4 h-4" />
