@@ -68,22 +68,15 @@ export const Header = ({ siteData }) => {
           <a
             href="#inicio"
             onClick={(e) => scrollToSection(e, "#inicio")}
-            className="flex flex-col items-start">
-
-            <span
-              className={`font-display text-2xl lg:text-3xl tracking-[0.3em] font-bold transition-colors duration-500 ${
-              isScrolled ? "text-tyrell-dark" : "text-white"}`
-              }>
-
-              {brand.name || "TYRELL"}
-            </span>
-            <span
-              className={`text-[10px] tracking-[0.25em] uppercase font-light transition-colors duration-500 ${
-              isScrolled ? "text-tyrell-gold" : "text-tyrell-gold-light"}`
-              }>     Florería
-
-
-            </span>
+            className="flex items-center"
+          >
+            <img
+              src="https://customer-assets.emergentagent.com/job_tyrell-floreria/artifacts/8svedb6n_TYRELL_2025_corporativo_blanco.png"
+              alt={brand.name || "TYRELL"}
+              className={`h-12 lg:h-14 w-auto object-contain transition-all duration-500 ${
+                isScrolled ? "brightness-0" : "brightness-100"
+              }`}
+            />
           </a>
 
           {/* Desktop nav */}
