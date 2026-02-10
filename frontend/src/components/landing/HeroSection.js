@@ -72,7 +72,7 @@ export const HeroSection = ({ siteData }) => {
           >
             <div className="h-[1px] w-12 bg-tyrell-gold" />
             <span className="text-tyrell-gold text-xs tracking-[0.3em] uppercase font-light">
-              Flower Studio
+              {hero.label || "Flower Studio"}
             </span>
           </div>
 
