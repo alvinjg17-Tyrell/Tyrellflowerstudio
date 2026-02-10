@@ -110,8 +110,31 @@ export const AdminHero = ({ content, onSave, saving }) => {
           />
 
           <div>
-            <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">URL de video</label>
-            <Input value={form.video || ""} onChange={e => update("video", e.target.value)} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 h-11" placeholder="https://...video.mp4" />
+            <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">Video de fondo</label>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={form.video || ""}
+                onChange={(e) => update("video", e.target.value)}
+                placeholder="URL del video o sube desde tu dispositivo"
+                className="flex-1 h-11 border border-[#C9A96E]/20 bg-white text-sm px-3 focus:border-[#C9A96E]/50 focus:outline-none"
+              />
+              <button
+                onClick={() => videoRef.current?.click()}
+                disabled={uploadingVideo}
+                className="h-11 px-4 bg-[#C9A96E] hover:bg-[#A67C52] text-white text-xs tracking-wider uppercase transition-colors duration-300 flex items-center gap-2 flex-shrink-0"
+              >
+                {uploadingVideo ? <Loader2 className="w-4 h-4 animate-spin" /> : <Upload className="w-4 h-4" />}
+                Subir video
+              </button>
+            </div>
+            <input
+              ref={videoRef}
+              type="file"
+              accept="video/mp4,video/quicktime,video/mov"
+              onChange={handleVideoUpload}
+              className="hidden"
+            />
           </div>
 
           {/* Preview */}
