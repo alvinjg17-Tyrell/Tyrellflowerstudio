@@ -64,7 +64,14 @@ export const Footer = ({ siteData }) => {
             <ul className="space-y-4">
               <li className="flex items-start gap-3">
                 <MapPin className="w-4 h-4 text-tyrell-gold mt-0.5 flex-shrink-0" />
-                <span className="text-white/40 text-sm font-light">{contact.address}</span>
+                <a
+                  href={brand.locationUrl || "#"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/40 hover:text-tyrell-gold text-sm font-light transition-colors duration-300"
+                >
+                  {contact.address}
+                </a>
               </li>
               <li className="flex items-start gap-3">
                 <MessageCircle className="w-4 h-4 text-tyrell-gold mt-0.5 flex-shrink-0" />
