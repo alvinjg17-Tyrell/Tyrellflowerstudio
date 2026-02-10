@@ -76,10 +76,11 @@ export const AdminHero = ({ content, onSave, saving }) => {
             />
           </div>
 
-          <div>
-            <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">URL de imagen (fallback)</label>
-            <Input value={form.image || ""} onChange={e => update("image", e.target.value)} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 h-11" placeholder="https://..." />
-          </div>
+          <ImageUploader
+            label="Imagen de fondo (fallback)"
+            value={form.image || ""}
+            onChange={(url) => update("image", url)}
+          />
 
           <div>
             <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">URL de video</label>
