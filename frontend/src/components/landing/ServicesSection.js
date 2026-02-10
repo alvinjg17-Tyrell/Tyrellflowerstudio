@@ -27,14 +27,14 @@ export const ServicesSection = ({ services, siteData }) => {
         <div className={`text-center mb-16 lg:mb-20 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <div className="flex items-center justify-center gap-4 mb-6">
             <div className="h-[1px] w-10 bg-tyrell-gold/40" />
-            <span className="text-tyrell-gold text-xs tracking-[0.3em] uppercase font-light">Nuestros Servicios</span>
+            <span className="text-tyrell-gold text-xs tracking-[0.3em] uppercase font-light">{svcSection.label || "Nuestros Servicios"}</span>
             <div className="h-[1px] w-10 bg-tyrell-gold/40" />
           </div>
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl text-tyrell-dark font-light tracking-tight">
-            Creaciones para cada<span className="text-tyrell-gold"> momento</span>
+            {svcSection.title || "Creaciones para cada"}<span className="text-tyrell-gold"> {svcSection.titleHighlight || "momento"}</span>
           </h2>
           <p className="mt-4 text-tyrell-dark/50 text-lg font-light max-w-xl mx-auto">
-            Descubre nuestra colección de arreglos florales y servicios diseñados para sorprender.
+            {svcSection.subtitle || "Descubre nuestra colección de arreglos florales y servicios diseñados para sorprender."}
           </p>
         </div>
 
