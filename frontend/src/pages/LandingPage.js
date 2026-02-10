@@ -4,7 +4,7 @@ import { Header } from "../components/landing/Header";
 import { HeroSection } from "../components/landing/HeroSection";
 import { AboutSection } from "../components/landing/AboutSection";
 import { ServicesSection } from "../components/landing/ServicesSection";
-import { TestimonialsSection } from "../components/landing/TestimonialsSection";
+import { CatalogLinksSection } from "../components/landing/CatalogLinksSection";
 import { ContactSection } from "../components/landing/ContactSection";
 import { Footer } from "../components/landing/Footer";
 import { Toaster } from "sonner";
@@ -51,7 +51,9 @@ export default function LandingPage() {
       <HeroSection siteData={data.site} />
       <AboutSection siteData={data.site} />
       <ServicesSection services={data.services} siteData={data.site} />
-      <TestimonialsSection testimonials={data.testimonials} />
+      {data.catalogLinks && data.catalogLinks.length > 0 && (
+        <CatalogLinksSection catalogLinks={data.catalogLinks} />
+      )}
       <ContactSection siteData={data.site} />
       <Footer siteData={data.site} />
     </div>
