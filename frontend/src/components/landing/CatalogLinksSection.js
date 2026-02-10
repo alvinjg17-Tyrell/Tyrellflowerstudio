@@ -1,0 +1,60 @@
+import { useEffect, useRef, useState } from "react";
+import { ExternalLink } from "lucide-react";
+import { Button } from "../ui/button";
+
+export const CatalogLinksSection = ({ catalogLinks }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) setIsVisible(true); },
+      { threshold: 0.2 }
+    );
+    if (sectionRef.current) observer.observe(sectionRef.current);
+    return () => observer.disconnect();
+  }, []);
+
+  if (!catalogLinks || catalogLinks.length === 0) return null;
+
+  return (
+    <section ref={sectionRef} className="relative py-20 lg:py-24 bg-white overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-tyrell-gold/15 to-transparent" />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className={`text-center transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <div className="h-[1px] w-10 bg-tyrell-gold/40" />
+            <span className="text-tyrell-gold text-xs tracking-[0.3em] uppercase font-light">
+              Nuestros Catálogos
+            </span>
+            <div className="h-[1px] w-10 bg-tyrell-gold/40" />
+          </div>
+          <h2 className="font-display text-3xl sm:text-4xl text-tyrell-dark font-light tracking-tight mb-10">
+            Explora nuestras <span className="text-tyrell-gold">colecciones</span>
+          </h2>
+
+          <div className="flex flex-wrap justify-center gap-4">
+            {catalogLinks.map((link, index) => (
+              <a
+                key={link.id}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`transition-all duration-700 ${
+                  isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+                }`}
+                style={{ transitionDelay: `${200 + index * 100}ms` }}
+              >
+                <Button className="bg-tyrell-gold hover:bg-tyrell-gold-dark text-white px-8 py-6 text-sm tracking-[0.15em] uppercase rounded-none transition-all duration-300 hover:shadow-[0_8px_30px_rgba(201,169,110,0.35)] group">
+                  {link.title}
+                  <ExternalLink className="ml-2 w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </Button>
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+};
