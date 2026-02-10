@@ -7,6 +7,7 @@ export const ServicesSection = ({ services, siteData }) => {
   const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef(null);
   const brand = siteData?.brand || {};
+  const svcSection = siteData?.services || {};
 
   useEffect(() => {
     const observer = new IntersectionObserver(
