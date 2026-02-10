@@ -28,7 +28,7 @@ export const AboutSection = ({ siteData }) => {
         <div className={`text-center mb-16 lg:mb-20 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <div className="flex items-center justify-center gap-4 mb-6">
             <div className="h-[1px] w-10 bg-tyrell-gold/40" />
-            <span className="text-tyrell-gold text-xs tracking-[0.3em] uppercase font-light">Conócenos</span>
+            <span className="text-tyrell-gold text-xs tracking-[0.3em] uppercase font-light">{about.label || "Conócenos"}</span>
             <div className="h-[1px] w-10 bg-tyrell-gold/40" />
           </div>
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl text-tyrell-dark font-light tracking-tight">{about.title}</h2>
