@@ -13,7 +13,6 @@ from datetime import datetime
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
 
-# MongoDB connection
 mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
@@ -35,9 +34,11 @@ class BrandContent(BaseModel):
     catalogUrl: str = ""
     whatsappLink: str = ""
     location: str = ""
+    locationUrl: str = ""
     whatsappNumber: str = ""
 
 class HeroContent(BaseModel):
+    label: str = "Flower Studio"
     title: str = ""
     titleHighlight: str = ""
     subtitle: str = ""
@@ -48,11 +49,20 @@ class HeroContent(BaseModel):
     useVideo: bool = False
 
 class AboutContent(BaseModel):
+    label: str = "Conócenos"
     title: str = ""
     subtitle: str = ""
     description: str = ""
+    badgeNumber: str = "+2000"
+    badgeLabel: str = "Arreglos Entregados"
     features: List[Feature] = []
     image: str = ""
+
+class ServicesContent(BaseModel):
+    label: str = "Nuestros Servicios"
+    title: str = "Creaciones para cada"
+    titleHighlight: str = "momento"
+    subtitle: str = "Descubre nuestra colección de arreglos florales y servicios diseñados para sorprender."
 
 class ContactContent(BaseModel):
     title: str = ""
@@ -67,6 +77,7 @@ class SiteContent(BaseModel):
     brand: BrandContent = BrandContent()
     hero: HeroContent = HeroContent()
     about: AboutContent = AboutContent()
+    services: ServicesContent = ServicesContent()
     contact: ContactContent = ContactContent()
 
 class ServiceCreate(BaseModel):
@@ -87,22 +98,17 @@ class ServiceResponse(BaseModel):
     order: int
     created_at: datetime
 
-class TestimonialCreate(BaseModel):
-    name: str
-    text: str
-    rating: int = 5
+class CatalogLinkCreate(BaseModel):
+    title: str
+    url: str
+    order: int = 0
 
-class TestimonialResponse(BaseModel):
+class CatalogLinkResponse(BaseModel):
     id: str
-    name: str
-    text: str
-    rating: int
+    title: str
+    url: str
+    order: int
     created_at: datetime
-
-class AllContentResponse(BaseModel):
-    site: SiteContent
-    services: List[ServiceResponse]
-    testimonials: List[TestimonialResponse]
 
 # ─── Default seed data ────────────────────────────────────
 
@@ -110,23 +116,31 @@ DEFAULT_SITE = {
     "brand": {
         "name": "TYRELL",
         "tagline": "Donde cada pétalo cuenta una historia de amor",
-        "description": "En TYRELL, transformamos flores frescas en obras de arte que transmiten emociones. Con dedicación artesanal y los arreglos más exclusivos de Moyobamba, creamos experiencias inolvidables para cada momento especial de tu vida.",
+        "description": "En TYRELL, transformamos flores frescas en obras de arte que transmiten emociones.",
         "catalogUrl": "https://heyzine.com/flip-book/9c9575825d.html#page/14",
         "whatsappLink": "https://wa.me/51910770284",
-        "location": "Moyobamba, San Martín, Perú",
+        "location": "Jirón Pedro Pascasio Noriega, Moyobamba, Perú",
+        "locationUrl": "https://www.google.com/maps/search/Jir%C3%B3n+Pedro+Pascasio+Noriega,+Moyobamba,+Per%C3%BA/@-6.0289855,-76.9782139,15.93z?hl=es&entry=ttu&g_ep=EgoyMDI2MDIwOC4wIKXMDSoASAFQAw%3D%3D",
         "whatsappNumber": "+51 910 770 284",
     },
     "hero": {
-        "title": "Elegancia en",
-        "titleHighlight": "cada flor",
+        "label": "Flower Studio",
+        "title": "Flores pɑrɑ quienes",
+        "titleHighlight": "ɑmɑn lo extrɑordinɑrio.",
         "subtitle": "Arreglos florales exclusivos que expresan tus sentimientos más profundos. Calidad premium, creatividad sin límites y entrega puntual.",
         "ctaText": "Ver Catálogo",
+        "ctaSecondaryText": "Nuestros Servicios",
         "image": "https://images.unsplash.com/photo-1706064955769-2e6208cb1671?crop=entropy&cs=srgb&fm=jpg&q=85&w=1200",
+        "video": "https://customer-assets.emergentagent.com/job_tyrell-floreria/artifacts/wbf3py5n_IMG_3174.MOV",
+        "useVideo": True,
     },
     "about": {
+        "label": "Conócenos",
         "title": "Nuestra Esencia",
         "subtitle": "Más que flores, creamos momentos",
         "description": "En TYRELL nos apasiona el arte floral. Cada arreglo es diseñado con esmero, seleccionando las flores más frescas y combinándolas con creatividad para crear piezas únicas que transmiten emociones genuinas.",
+        "badgeNumber": "+2000",
+        "badgeLabel": "Arreglos Entregados",
         "features": [
             {"title": "Flores Frescas", "description": "Seleccionamos las mejores flores cada día para garantizar frescura y durabilidad en cada arreglo.", "icon": "Flower2"},
             {"title": "Diseño Exclusivo", "description": "Cada creación es única, diseñada con pasión y atención al detalle para sorprender.", "icon": "Sparkles"},
@@ -134,10 +148,16 @@ DEFAULT_SITE = {
         ],
         "image": "https://images.unsplash.com/photo-1584515453937-c00929e621d1?crop=entropy&cs=srgb&fm=jpg&q=85&w=800",
     },
+    "services": {
+        "label": "Nuestros Servicios",
+        "title": "Creaciones para cada",
+        "titleHighlight": "momento",
+        "subtitle": "Descubre nuestra colección de arreglos florales y servicios diseñados para sorprender.",
+    },
     "contact": {
         "title": "Contáctanos",
         "subtitle": "Estamos aquí para hacer realidad tu visión floral",
-        "address": "Moyobamba, San Martín, Perú",
+        "address": "Jirón Pedro Pascasio Noriega, Moyobamba, Perú",
         "whatsappLabel": "Escríbenos por WhatsApp",
         "scheduleTitle": "Horario de Atención",
         "schedule": "Lunes a Sábado: 8:00 AM - 7:00 PM",
@@ -153,10 +173,8 @@ DEFAULT_SERVICES = [
     {"id": str(uuid.uuid4()), "title": "Tulipanes Elegantes", "description": "Hermosos arreglos con tulipanes importados, símbolo de amor perfecto y elegancia atemporal.", "image": "https://images.unsplash.com/photo-1613386080939-170e1e833f70?crop=entropy&cs=srgb&fm=jpg&q=85&w=600", "tag": "Temporada", "price": "", "order": 4, "created_at": datetime.utcnow()},
 ]
 
-DEFAULT_TESTIMONIALS = [
-    {"id": str(uuid.uuid4()), "name": "María García", "text": "Los arreglos de TYRELL son simplemente hermosos. Siempre llegan frescos y puntuales. ¡Mi florería favorita!", "rating": 5, "created_at": datetime.utcnow()},
-    {"id": str(uuid.uuid4()), "name": "Carlos Mendoza", "text": "Sorprendí a mi esposa con un ramo personalizado y quedó encantada. La calidad y el detalle son excepcionales.", "rating": 5, "created_at": datetime.utcnow()},
-    {"id": str(uuid.uuid4()), "name": "Ana Lucía Torres", "text": "La decoración floral de mi boda fue un sueño hecho realidad. El equipo de TYRELL superó todas mis expectativas.", "rating": 5, "created_at": datetime.utcnow()},
+DEFAULT_CATALOG_LINKS = [
+    {"id": str(uuid.uuid4()), "title": "Catálogo Principal", "url": "https://heyzine.com/flip-book/9c9575825d.html#page/14", "order": 0, "created_at": datetime.utcnow()},
 ]
 
 # ─── Seed helper ──────────────────────────────────────────
@@ -166,14 +184,32 @@ async def seed_data():
     if not existing:
         await db.site_content.insert_one(DEFAULT_SITE)
         logger.info("Seeded site_content")
+    else:
+        # Ensure new fields exist
+        update_fields = {}
+        if "services" not in existing:
+            update_fields["services"] = DEFAULT_SITE["services"]
+        if "locationUrl" not in existing.get("brand", {}):
+            update_fields["brand.locationUrl"] = DEFAULT_SITE["brand"]["locationUrl"]
+        if "label" not in existing.get("hero", {}):
+            update_fields["hero.label"] = DEFAULT_SITE["hero"]["label"]
+        if "label" not in existing.get("about", {}):
+            update_fields["about.label"] = DEFAULT_SITE["about"]["label"]
+            update_fields["about.badgeNumber"] = DEFAULT_SITE["about"]["badgeNumber"]
+            update_fields["about.badgeLabel"] = DEFAULT_SITE["about"]["badgeLabel"]
+        if update_fields:
+            await db.site_content.update_one({}, {"$set": update_fields})
+            logger.info("Updated site_content with new fields")
+
     svc_count = await db.services.count_documents({})
     if svc_count == 0:
         await db.services.insert_many(DEFAULT_SERVICES)
         logger.info("Seeded services")
-    test_count = await db.testimonials.count_documents({})
-    if test_count == 0:
-        await db.testimonials.insert_many(DEFAULT_TESTIMONIALS)
-        logger.info("Seeded testimonials")
+
+    cat_count = await db.catalog_links.count_documents({})
+    if cat_count == 0:
+        await db.catalog_links.insert_many(DEFAULT_CATALOG_LINKS)
+        logger.info("Seeded catalog_links")
 
 # ─── Routes ───────────────────────────────────────────────
 
@@ -181,7 +217,6 @@ async def seed_data():
 async def root():
     return {"message": "TYRELL API running"}
 
-# Get ALL content for landing page
 @api_router.get("/content")
 async def get_all_content():
     site = await db.site_content.find_one()
@@ -190,21 +225,18 @@ async def get_all_content():
     else:
         site = DEFAULT_SITE
 
-    services_cursor = db.services.find().sort("order", 1)
     services = []
-    async for svc in services_cursor:
+    async for svc in db.services.find().sort("order", 1):
         svc.pop("_id", None)
         services.append(svc)
 
-    testimonials_cursor = db.testimonials.find().sort("created_at", -1)
-    testimonials = []
-    async for t in testimonials_cursor:
-        t.pop("_id", None)
-        testimonials.append(t)
+    catalog_links = []
+    async for cl in db.catalog_links.find().sort("order", 1):
+        cl.pop("_id", None)
+        catalog_links.append(cl)
 
-    return {"site": site, "services": services, "testimonials": testimonials}
+    return {"site": site, "services": services, "catalogLinks": catalog_links}
 
-# Update site content
 @api_router.put("/content")
 async def update_site_content(content: SiteContent):
     content_dict = content.dict()
@@ -215,9 +247,8 @@ async def update_site_content(content: SiteContent):
 
 @api_router.get("/services", response_model=List[ServiceResponse])
 async def get_services():
-    cursor = db.services.find().sort("order", 1)
     services = []
-    async for svc in cursor:
+    async for svc in db.services.find().sort("order", 1):
         svc.pop("_id", None)
         services.append(ServiceResponse(**svc))
     return services
@@ -235,8 +266,7 @@ async def update_service(service_id: str, service: ServiceCreate):
     result = await db.services.find_one({"id": service_id})
     if not result:
         raise HTTPException(status_code=404, detail="Servicio no encontrado")
-    update_data = service.dict()
-    await db.services.update_one({"id": service_id}, {"$set": update_data})
+    await db.services.update_one({"id": service_id}, {"$set": service.dict()})
     updated = await db.services.find_one({"id": service_id})
     updated.pop("_id", None)
     return ServiceResponse(**updated)
@@ -248,42 +278,40 @@ async def delete_service(service_id: str):
         raise HTTPException(status_code=404, detail="Servicio no encontrado")
     return {"message": "Servicio eliminado"}
 
-# ─── Testimonials CRUD ────────────────────────────────────
+# ─── Catalog Links CRUD ──────────────────────────────────
 
-@api_router.get("/testimonials", response_model=List[TestimonialResponse])
-async def get_testimonials():
-    cursor = db.testimonials.find().sort("created_at", -1)
-    testimonials = []
-    async for t in cursor:
-        t.pop("_id", None)
-        testimonials.append(TestimonialResponse(**t))
-    return testimonials
+@api_router.get("/catalog-links", response_model=List[CatalogLinkResponse])
+async def get_catalog_links():
+    links = []
+    async for cl in db.catalog_links.find().sort("order", 1):
+        cl.pop("_id", None)
+        links.append(CatalogLinkResponse(**cl))
+    return links
 
-@api_router.post("/testimonials", response_model=TestimonialResponse)
-async def create_testimonial(testimonial: TestimonialCreate):
-    t_dict = testimonial.dict()
-    t_dict["id"] = str(uuid.uuid4())
-    t_dict["created_at"] = datetime.utcnow()
-    await db.testimonials.insert_one(t_dict)
-    return TestimonialResponse(**t_dict)
+@api_router.post("/catalog-links", response_model=CatalogLinkResponse)
+async def create_catalog_link(link: CatalogLinkCreate):
+    link_dict = link.dict()
+    link_dict["id"] = str(uuid.uuid4())
+    link_dict["created_at"] = datetime.utcnow()
+    await db.catalog_links.insert_one(link_dict)
+    return CatalogLinkResponse(**link_dict)
 
-@api_router.put("/testimonials/{testimonial_id}", response_model=TestimonialResponse)
-async def update_testimonial(testimonial_id: str, testimonial: TestimonialCreate):
-    result = await db.testimonials.find_one({"id": testimonial_id})
+@api_router.put("/catalog-links/{link_id}", response_model=CatalogLinkResponse)
+async def update_catalog_link(link_id: str, link: CatalogLinkCreate):
+    result = await db.catalog_links.find_one({"id": link_id})
     if not result:
-        raise HTTPException(status_code=404, detail="Testimonio no encontrado")
-    update_data = testimonial.dict()
-    await db.testimonials.update_one({"id": testimonial_id}, {"$set": update_data})
-    updated = await db.testimonials.find_one({"id": testimonial_id})
+        raise HTTPException(status_code=404, detail="Enlace no encontrado")
+    await db.catalog_links.update_one({"id": link_id}, {"$set": link.dict()})
+    updated = await db.catalog_links.find_one({"id": link_id})
     updated.pop("_id", None)
-    return TestimonialResponse(**updated)
+    return CatalogLinkResponse(**updated)
 
-@api_router.delete("/testimonials/{testimonial_id}")
-async def delete_testimonial(testimonial_id: str):
-    result = await db.testimonials.delete_one({"id": testimonial_id})
+@api_router.delete("/catalog-links/{link_id}")
+async def delete_catalog_link(link_id: str):
+    result = await db.catalog_links.delete_one({"id": link_id})
     if result.deleted_count == 0:
-        raise HTTPException(status_code=404, detail="Testimonio no encontrado")
-    return {"message": "Testimonio eliminado"}
+        raise HTTPException(status_code=404, detail="Enlace no encontrado")
+    return {"message": "Enlace eliminado"}
 
 # ─── App setup ────────────────────────────────────────────
 
