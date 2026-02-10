@@ -3,7 +3,8 @@ import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { Switch } from "../ui/switch";
-import { Save, Loader2, Image as ImageIcon, Video } from "lucide-react";
+import { ImageUploader } from "./ImageUploader";
+import { Save, Loader2, Video } from "lucide-react";
 
 export const AdminHero = ({ content, onSave, saving }) => {
   const [form, setForm] = useState(content.hero);
