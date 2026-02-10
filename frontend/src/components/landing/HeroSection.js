@@ -24,13 +24,33 @@ export const HeroSection = ({ siteData }) => {
       id="inicio"
       className="relative min-h-screen flex items-center overflow-hidden"
     >
-      {/* Background image */}
+      {/* Background - Video or Image */}
       <div className="absolute inset-0">
-        <img
-          src={hero.image}
-          alt="Arreglos florales TYRELL"
-          className="w-full h-full object-cover"
-        />
+        {hero.useVideo && hero.video ? (
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-full object-cover"
+            poster={hero.image || ""}
+          >
+            <source src={hero.video} type="video/quicktime" />
+            <source src={hero.video} type="video/mp4" />
+            {/* Fallback to image if video fails */}
+            <img
+              src={hero.image}
+              alt="TYRELL Florería"
+              className="w-full h-full object-cover"
+            />
+          </video>
+        ) : (
+          <img
+            src={hero.image}
+            alt="Arreglos florales TYRELL"
+            className="w-full h-full object-cover"
+          />
+        )}
         <div className="absolute inset-0 bg-gradient-to-r from-tyrell-dark/85 via-tyrell-dark/60 to-tyrell-dark/30" />
         <div className="absolute inset-0 bg-gradient-to-t from-tyrell-dark/50 via-transparent to-transparent" />
       </div>
@@ -52,7 +72,7 @@ export const HeroSection = ({ siteData }) => {
           >
             <div className="h-[1px] w-12 bg-tyrell-gold" />
             <span className="text-tyrell-gold text-xs tracking-[0.3em] uppercase font-light">
-              Florería Artesanal
+              Flower Studio
             </span>
           </div>
 
@@ -106,7 +126,7 @@ export const HeroSection = ({ siteData }) => {
               variant="outline"
               className="border-white/30 text-white hover:bg-white/10 hover:border-white/50 px-8 py-6 text-sm tracking-[0.2em] uppercase rounded-none transition-all duration-300 bg-transparent"
             >
-              Nuestros Servicios
+              {hero.ctaSecondaryText || "Nuestros Servicios"}
             </Button>
           </div>
         </div>
@@ -126,7 +146,7 @@ export const HeroSection = ({ siteData }) => {
       {/* Side decorative text */}
       <div className="absolute right-8 top-1/2 -translate-y-1/2 hidden xl:block">
         <span className="text-white/10 font-display text-sm tracking-[0.5em] uppercase writing-vertical">
-          {brand.name || "TYRELL"} · Florería
+          {brand.name || "TYRELL"} · Flower Studio
         </span>
       </div>
     </section>
