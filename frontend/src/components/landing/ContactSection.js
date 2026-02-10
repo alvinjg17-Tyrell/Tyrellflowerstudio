@@ -89,6 +89,17 @@ export const ContactSection = ({ siteData }) => {
                 <div>
                   <h3 className="font-display text-lg text-white font-medium tracking-wide">Ubicación</h3>
                   <p className="mt-1 text-white/40 text-sm font-light">{contact.address}</p>
+                  {brand.locationUrl && (
+                    <a
+                      href={brand.locationUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 mt-2 text-tyrell-gold text-sm tracking-wider hover:text-tyrell-gold-light transition-colors duration-300"
+                    >
+                      <span>Ver en Google Maps</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </a>
+                  )}
                 </div>
               </div>
 
