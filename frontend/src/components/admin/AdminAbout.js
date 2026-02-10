@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
+import { ImageUploader } from "./ImageUploader";
 import { Save, Loader2, Plus, Trash2 } from "lucide-react";
 
 export const AdminAbout = ({ content, onSave, saving }) => {
