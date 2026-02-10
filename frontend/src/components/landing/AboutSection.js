@@ -44,8 +44,8 @@ export const AboutSection = ({ siteData }) => {
             </div>
             <div className="absolute -bottom-6 -right-2 lg:right-8 z-20 bg-white shadow-[0_10px_40px_rgba(201,169,110,0.15)] px-6 py-4">
               <div className="text-center">
-                <span className="block font-display text-3xl text-tyrell-gold font-light">+2000</span>
-                <span className="text-[11px] text-tyrell-dark/60 tracking-wider uppercase">Arreglos Entregados</span>
+                <span className="block font-display text-3xl text-tyrell-gold font-light">{about.badgeNumber || "+2000"}</span>
+                <span className="text-[11px] text-tyrell-dark/60 tracking-wider uppercase">{about.badgeLabel || "Arreglos Entregados"}</span>
               </div>
             </div>
           </div>
