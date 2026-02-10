@@ -28,34 +28,38 @@ export const AdminBrand = ({ content, onSave, saving }) => {
       <div className="bg-white border border-[#C9A96E]/10 p-6 space-y-5">
         <div>
           <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">Nombre del negocio</label>
-          <Input value={form.name} onChange={e => update("name", e.target.value)} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 h-11" />
+          <Input value={form.name || ""} onChange={e => update("name", e.target.value)} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 h-11" />
         </div>
         <div>
           <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">Frase/Tagline</label>
-          <Input value={form.tagline} onChange={e => update("tagline", e.target.value)} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 h-11" />
+          <Input value={form.tagline || ""} onChange={e => update("tagline", e.target.value)} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 h-11" />
         </div>
         <div>
           <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">Descripción del negocio</label>
-          <Textarea value={form.description} onChange={e => update("description", e.target.value)} rows={3} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 resize-none" />
+          <Textarea value={form.description || ""} onChange={e => update("description", e.target.value)} rows={3} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 resize-none" />
         </div>
         <div className="grid md:grid-cols-2 gap-5">
           <div>
-            <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">URL del Catálogo</label>
-            <Input value={form.catalogUrl} onChange={e => update("catalogUrl", e.target.value)} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 h-11" placeholder="https://..." />
+            <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">URL del Catálogo principal</label>
+            <Input value={form.catalogUrl || ""} onChange={e => update("catalogUrl", e.target.value)} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 h-11" placeholder="https://..." />
           </div>
           <div>
-            <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">Ubicación</label>
-            <Input value={form.location} onChange={e => update("location", e.target.value)} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 h-11" />
+            <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">Ubicación (texto)</label>
+            <Input value={form.location || ""} onChange={e => update("location", e.target.value)} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 h-11" />
           </div>
+        </div>
+        <div>
+          <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">Enlace Google Maps (ubicación)</label>
+          <Input value={form.locationUrl || ""} onChange={e => update("locationUrl", e.target.value)} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 h-11" placeholder="https://www.google.com/maps/..." />
         </div>
         <div className="grid md:grid-cols-2 gap-5">
           <div>
             <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">Enlace WhatsApp</label>
-            <Input value={form.whatsappLink} onChange={e => update("whatsappLink", e.target.value)} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 h-11" placeholder="https://wa.me/51..." />
+            <Input value={form.whatsappLink || ""} onChange={e => update("whatsappLink", e.target.value)} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 h-11" placeholder="https://wa.me/51..." />
           </div>
           <div>
             <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">Número WhatsApp (visible)</label>
-            <Input value={form.whatsappNumber} onChange={e => update("whatsappNumber", e.target.value)} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 h-11" placeholder="+51 ..." />
+            <Input value={form.whatsappNumber || ""} onChange={e => update("whatsappNumber", e.target.value)} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 h-11" placeholder="+51 ..." />
           </div>
         </div>
       </div>
