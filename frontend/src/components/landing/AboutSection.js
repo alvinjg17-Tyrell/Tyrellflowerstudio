@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Flower2, Sparkles, Clock, Heart, Star, Gift, Truck, Shield, Award, Leaf } from "lucide-react";
 
 const iconMap = {
-  Flower2, Sparkles, Clock, Heart, Star, Gift, Truck, Shield, Award, Leaf,
+  Flower2, Sparkles, Clock, Heart, Star, Gift, Truck, Shield, Award, Leaf
 };
 
 export const AboutSection = ({ siteData }) => {
@@ -12,7 +12,7 @@ export const AboutSection = ({ siteData }) => {
 
   useEffect(() => {
     const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setIsVisible(true); },
+      ([entry]) => {if (entry.isIntersecting) setIsVisible(true);},
       { threshold: 0.2 }
     );
     if (sectionRef.current) observer.observe(sectionRef.current);
@@ -44,7 +44,7 @@ export const AboutSection = ({ siteData }) => {
             </div>
             <div className="absolute -bottom-6 -right-2 lg:right-8 z-20 bg-white shadow-[0_10px_40px_rgba(201,169,110,0.15)] px-6 py-4">
               <div className="text-center">
-                <span className="block font-display text-3xl text-tyrell-gold font-light">+500</span>
+                <span className="block font-display text-3xl text-tyrell-gold font-light">+2000</span>
                 <span className="text-[11px] text-tyrell-dark/60 tracking-wider uppercase">Arreglos Entregados</span>
               </div>
             </div>
@@ -64,13 +64,13 @@ export const AboutSection = ({ siteData }) => {
                       <h3 className="font-display text-lg text-tyrell-dark font-medium tracking-wide">{feature.title}</h3>
                       <p className="mt-1 text-tyrell-dark/50 text-sm font-light leading-relaxed">{feature.description}</p>
                     </div>
-                  </div>
-                );
+                  </div>);
+
               })}
             </div>
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>);
+
 };
