@@ -7,7 +7,7 @@ export const api = {
   // Get all content
   getContent: () => axios.get(`${API}/content`).then(r => r.data),
 
-  // Update site content (brand, hero, about, contact)
+  // Update site content (brand, hero, about, services section, contact)
   updateContent: (data) => axios.put(`${API}/content`, data).then(r => r.data),
 
   // Services CRUD
@@ -16,9 +16,9 @@ export const api = {
   updateService: (id, data) => axios.put(`${API}/services/${id}`, data).then(r => r.data),
   deleteService: (id) => axios.delete(`${API}/services/${id}`).then(r => r.data),
 
-  // Testimonials CRUD
-  getTestimonials: () => axios.get(`${API}/testimonials`).then(r => r.data),
-  createTestimonial: (data) => axios.post(`${API}/testimonials`, data).then(r => r.data),
-  updateTestimonial: (id, data) => axios.put(`${API}/testimonials/${id}`, data).then(r => r.data),
-  deleteTestimonial: (id) => axios.delete(`${API}/testimonials/${id}`).then(r => r.data),
+  // Catalog Links CRUD
+  getCatalogLinks: () => axios.get(`${API}/catalog-links`).then(r => r.data),
+  createCatalogLink: (data) => axios.post(`${API}/catalog-links`, data).then(r => r.data),
+  updateCatalogLink: (id, data) => axios.put(`${API}/catalog-links/${id}`, data).then(r => r.data),
+  deleteCatalogLink: (id) => axios.delete(`${API}/catalog-links/${id}`).then(r => r.data),
 };
