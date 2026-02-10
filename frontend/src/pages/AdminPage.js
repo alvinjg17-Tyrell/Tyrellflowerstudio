@@ -5,7 +5,8 @@ import { AdminBrand } from "../components/admin/AdminBrand";
 import { AdminHero } from "../components/admin/AdminHero";
 import { AdminAbout } from "../components/admin/AdminAbout";
 import { AdminServices } from "../components/admin/AdminServices";
-import { AdminTestimonials } from "../components/admin/AdminTestimonials";
+import { AdminServicesSection } from "../components/admin/AdminServicesSection";
+import { AdminCatalogLinks } from "../components/admin/AdminCatalogLinks";
 import { AdminContact } from "../components/admin/AdminContact";
 import { Toaster, toast } from "sonner";
 import { Loader2 } from "lucide-react";
@@ -15,7 +16,7 @@ const TABS = [
   { id: "hero", label: "Hero" },
   { id: "about", label: "Nosotros" },
   { id: "services", label: "Servicios" },
-  { id: "testimonials", label: "Testimonios" },
+  { id: "catalogs", label: "Catálogos" },
   { id: "contact", label: "Contacto" },
 ];
 
@@ -23,7 +24,7 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState("brand");
   const [siteContent, setSiteContent] = useState(null);
   const [services, setServices] = useState([]);
-  const [testimonials, setTestimonials] = useState([]);
+  const [catalogLinks, setCatalogLinks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
@@ -33,7 +34,7 @@ export default function AdminPage() {
       const data = await api.getContent();
       setSiteContent(data.site);
       setServices(data.services);
-      setTestimonials(data.testimonials);
+      setCatalogLinks(data.catalogLinks || []);
     } catch (err) {
       toast.error("Error cargando datos");
     } finally {
@@ -97,11 +98,14 @@ export default function AdminPage() {
         {activeTab === "about" && siteContent && (
           <AdminAbout content={siteContent} onSave={saveSiteContent} saving={saving} />
         )}
-        {activeTab === "services" && (
-          <AdminServices services={services} setServices={setServices} />
+        {activeTab === "services" && siteContent && (
+          <>
+            <AdminServicesSection content={siteContent} onSave={saveSiteContent} saving={saving} />
+            <AdminServices services={services} setServices={setServices} />
+          </>
         )}
-        {activeTab === "testimonials" && (
-          <AdminTestimonials testimonials={testimonials} setTestimonials={setTestimonials} />
+        {activeTab === "catalogs" && (
+          <AdminCatalogLinks catalogLinks={catalogLinks} setCatalogLinks={setCatalogLinks} />
         )}
         {activeTab === "contact" && siteContent && (
           <AdminContact content={siteContent} onSave={saveSiteContent} saving={saving} />
