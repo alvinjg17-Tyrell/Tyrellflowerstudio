@@ -76,11 +76,11 @@ export const AdminAbout = ({ content, onSave, saving }) => {
               <Input value={form.badgeLabel || ""} onChange={e => update("badgeLabel", e.target.value)} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 h-11" placeholder="Arreglos Entregados" />
             </div>
           </div>
-          <div>
-            <label className="block text-xs tracking-wider uppercase text-[#1a1a1a]/50 mb-1.5">URL de imagen</label>
-            <Input value={form.image || ""} onChange={e => update("image", e.target.value)} className="rounded-none border-[#C9A96E]/20 focus:border-[#C9A96E]/50 h-11" placeholder="https://..." />
-          </div>
-          {form.image && <img src={form.image} alt="About preview" className="w-full h-40 object-cover" />}
+          <ImageUploader
+            label="Imagen de la sección"
+            value={form.image || ""}
+            onChange={(url) => update("image", url)}
+          />
         </div>
 
         <div className="bg-white border border-[#C9A96E]/10 p-6 space-y-5">
