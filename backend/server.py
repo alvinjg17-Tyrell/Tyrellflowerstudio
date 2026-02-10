@@ -89,6 +89,7 @@ class ServiceCreate(BaseModel):
     title: str
     description: str = ""
     image: str = ""
+    images: List[str] = []
     tag: str = ""
     price: str = ""
     order: int = 0
@@ -98,6 +99,7 @@ class ServiceResponse(BaseModel):
     title: str
     description: str
     image: str
+    images: List[str] = []
     tag: str
     price: str
     order: int
