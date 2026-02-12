@@ -21,8 +21,9 @@ export const AboutSection = ({ siteData }) => {
 
   return (
     <section id="nosotros" ref={sectionRef} className="relative py-24 lg:py-32 bg-white overflow-hidden">
-      <div className="absolute top-0 right-0 w-96 h-96 bg-tyrell-gold/[0.03] rounded-full blur-3xl" />
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-tyrell-cream/50 rounded-full blur-3xl" />
+      <div className="absolute top-0 right-0 w-96 h-96 bg-tyrell-rose-light/40 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-tyrell-sage-light/30 rounded-full blur-3xl" />
+      <div className="absolute top-1/2 left-1/3 w-64 h-64 bg-tyrell-gold/[0.03] rounded-full blur-3xl" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className={`text-center mb-16 lg:mb-20 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
