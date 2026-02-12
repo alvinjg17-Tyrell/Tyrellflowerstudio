@@ -109,7 +109,7 @@ export const ServicesSection = ({ services, siteData }) => {
   };
 
   return (
-    <section id="servicios" ref={sectionRef} className="relative py-24 lg:py-32 bg-tyrell-cream/40 overflow-hidden">
+    <section id="servicios" ref={sectionRef} className="relative py-24 lg:py-32 bg-gradient-to-b from-tyrell-sage-light/30 via-tyrell-cream/40 to-tyrell-rose-light/20 overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-tyrell-gold/20 to-transparent" />
       <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-tyrell-gold/20 to-transparent" />
 
