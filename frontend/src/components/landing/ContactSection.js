@@ -83,8 +83,8 @@ export const ContactSection = ({ siteData }) => {
 
               {/* Location */}
               <div className="flex gap-5 group">
-                <div className="flex-shrink-0 w-14 h-14 border border-tyrell-gold/30 flex items-center justify-center transition-all duration-300 group-hover:bg-tyrell-gold/10 group-hover:border-tyrell-gold/50">
-                  <MapPin className="w-6 h-6 text-tyrell-gold" />
+                <div className="flex-shrink-0 w-14 h-14 border border-tyrell-sage/30 bg-tyrell-sage/5 flex items-center justify-center transition-all duration-300 group-hover:bg-tyrell-sage/15 group-hover:border-tyrell-sage/50">
+                  <MapPin className="w-6 h-6 text-tyrell-sage" />
                 </div>
                 <div>
                   <h3 className="font-display text-lg text-white font-medium tracking-wide">Ubicación</h3>
