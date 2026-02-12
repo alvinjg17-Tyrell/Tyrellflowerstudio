@@ -63,8 +63,8 @@ export const ContactSection = ({ siteData }) => {
             <div className="space-y-8">
               {/* WhatsApp */}
               <div className="flex gap-5 group">
-                <div className="flex-shrink-0 w-14 h-14 border border-tyrell-gold/30 flex items-center justify-center transition-all duration-300 group-hover:bg-tyrell-gold/10 group-hover:border-tyrell-gold/50">
-                  <MessageCircle className="w-6 h-6 text-tyrell-gold" />
+                <div className="flex-shrink-0 w-14 h-14 border border-tyrell-rose/30 bg-tyrell-rose/5 flex items-center justify-center transition-all duration-300 group-hover:bg-tyrell-rose/15 group-hover:border-tyrell-rose/50">
+                  <MessageCircle className="w-6 h-6 text-tyrell-rose" />
                 </div>
                 <div>
                   <h3 className="font-display text-lg text-white font-medium tracking-wide">{contact.whatsappLabel}</h3>
