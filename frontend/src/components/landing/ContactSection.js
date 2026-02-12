@@ -105,7 +105,7 @@ export const ContactSection = ({ siteData }) => {
 
               {/* Schedule */}
               <div className="flex gap-5 group">
-                <div className="flex-shrink-0 w-14 h-14 border border-tyrell-gold/30 flex items-center justify-center transition-all duration-300 group-hover:bg-tyrell-gold/10 group-hover:border-tyrell-gold/50">
+                <div className="flex-shrink-0 w-14 h-14 border border-tyrell-gold/30 bg-tyrell-gold/5 flex items-center justify-center transition-all duration-300 group-hover:bg-tyrell-gold/15 group-hover:border-tyrell-gold/50">
                   <Clock className="w-6 h-6 text-tyrell-gold" />
                 </div>
                 <div>
