@@ -41,10 +41,10 @@ export const ContactSection = ({ siteData }) => {
   };
 
   return (
-    <section id="contacto" ref={sectionRef} className="relative py-24 lg:py-32 bg-tyrell-dark overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-tyrell-gold/20 to-transparent" />
-      <div className="absolute top-20 right-0 w-72 h-72 bg-tyrell-gold/[0.03] rounded-full blur-3xl" />
-      <div className="absolute bottom-20 left-0 w-80 h-80 bg-tyrell-gold/[0.02] rounded-full blur-3xl" />
+    <section id="contacto" ref={sectionRef} className="relative py-24 lg:py-32 bg-gradient-to-br from-tyrell-dark via-tyrell-burgundy/90 to-tyrell-dark overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-tyrell-rose/20 to-transparent" />
+      <div className="absolute top-20 right-0 w-72 h-72 bg-tyrell-rose/[0.05] rounded-full blur-3xl" />
+      <div className="absolute bottom-20 left-0 w-80 h-80 bg-tyrell-gold/[0.03] rounded-full blur-3xl" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className={`text-center mb-16 lg:mb-20 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
