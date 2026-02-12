@@ -18,7 +18,7 @@ export const CatalogLinksSection = ({ catalogLinks }) => {
   if (!catalogLinks || catalogLinks.length === 0) return null;
 
   return (
-    <section ref={sectionRef} className="relative py-20 lg:py-24 bg-white overflow-hidden">
+    <section ref={sectionRef} className="relative py-20 lg:py-24 bg-gradient-to-b from-white via-tyrell-rose-light/15 to-white overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-tyrell-gold/15 to-transparent" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
