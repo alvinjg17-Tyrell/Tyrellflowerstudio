@@ -11,7 +11,7 @@ export const Footer = ({ siteData }) => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative bg-tyrell-dark border-t border-tyrell-gold/10">
+    <footer className="relative bg-gradient-to-b from-tyrell-dark to-tyrell-burgundy/40 border-t border-tyrell-rose/10">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="py-16 grid md:grid-cols-3 gap-12">
           {/* Brand */}
