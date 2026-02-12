@@ -46,7 +46,7 @@ export const Header = ({ siteData }) => {
         isScrolled ? "max-h-0 opacity-0" : "max-h-10 opacity-100"}`
         }>
 
-        <div className="bg-tyrell-dark/90 backdrop-blur-sm">
+        <div className="bg-tyrell-burgundy/95 backdrop-blur-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between py-1.5 text-xs text-tyrell-cream/80">
             <div className="flex items-center gap-4">
               <span className="flex items-center gap-1">
