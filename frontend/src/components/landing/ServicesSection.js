@@ -162,7 +162,7 @@ export const ServicesSection = ({ services, siteData }) => {
                   href={getWhatsAppUrl(service.title)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-5 inline-flex items-center gap-2 text-tyrell-gold hover:text-tyrell-gold-dark text-sm tracking-wider transition-colors duration-300 group/btn"
+                  className="mt-5 inline-flex items-center gap-2 bg-tyrell-burgundy/10 hover:bg-tyrell-burgundy/20 text-tyrell-burgundy px-4 py-2 text-sm tracking-wider transition-all duration-300 group/btn"
                 >
                   <MessageCircle className="w-4 h-4" />
                   <span className="font-light uppercase text-xs">Pedir</span>
