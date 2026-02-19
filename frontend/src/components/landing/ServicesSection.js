@@ -168,7 +168,7 @@ export const ServicesSection = ({ services, siteData }) => {
   };
 
   return (
-    <section id="servicios" ref={sectionRef} className="relative py-24 lg:py-32 bg-gradient-to-b from-tyrell-sage-light/30 via-tyrell-cream/40 to-tyrell-rose-light/20 overflow-hidden">
+    <section id="servicios" ref={sectionRef} className="relative py-24 lg:py-32 bg-gradient-to-b from-tyrell-ivory via-tyrell-nude/20 to-tyrell-rose/10 overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-tyrell-gold/20 to-transparent" />
       <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-tyrell-gold/20 to-transparent" />
 
@@ -179,10 +179,10 @@ export const ServicesSection = ({ services, siteData }) => {
             <span className="text-tyrell-gold text-xs tracking-[0.3em] uppercase font-light">{svcSection.label || "Nuestros Servicios"}</span>
             <div className="h-[1px] w-10 bg-tyrell-gold/40" />
           </div>
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl text-tyrell-dark font-light tracking-tight">
+          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl text-tyrell-olive font-light tracking-tight">
             {svcSection.title || "Creaciones para cada"}<span className="text-tyrell-gold"> {svcSection.titleHighlight || "momento"}</span>
           </h2>
-          <p className="mt-4 text-tyrell-dark/50 text-lg font-light max-w-xl mx-auto">
+          <p className="mt-4 text-tyrell-olive/50 text-lg font-light max-w-xl mx-auto">
             {svcSection.subtitle || "Descubre nuestra colección de arreglos florales y servicios diseñados para sorprender."}
           </p>
         </div>
@@ -191,7 +191,7 @@ export const ServicesSection = ({ services, siteData }) => {
           {(services || []).map((service, index) => (
             <div
               key={service.id}
-              className={`group relative bg-white overflow-hidden transition-all duration-700 hover:shadow-[0_20px_60px_rgba(201,169,110,0.12)] ${
+              className={`group relative bg-white overflow-hidden transition-all duration-700 hover:shadow-[0_20px_60px_rgba(218,166,9,0.12)] ${
                 index === 0 ? "md:col-span-2 lg:col-span-2" : ""
               } ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
               style={{ transitionDelay: `${200 + index * 150}ms` }}
