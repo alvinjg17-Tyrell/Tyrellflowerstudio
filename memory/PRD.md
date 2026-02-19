@@ -2,7 +2,7 @@
 
 ## Original Problem Statement
 Create a professional and elegant website for "TYRELL" flower shop with:
-- Modern design with soft, floral aesthetic (gold and white colors)
+- Modern design with soft, floral aesthetic
 - Homepage with hero, services, catalog links, contact sections
 - Full CMS admin panel for managing all content
 - WhatsApp integration for orders
@@ -15,7 +15,7 @@ Create a professional and elegant website for "TYRELL" flower shop with:
 
 ## Core Requirements
 1. Public landing page with elegant design
-2. Admin panel for CRUD operations on all content
+2. Admin panel with authentication for CRUD operations
 3. WhatsApp integration for order requests
 4. File upload for images and videos
 5. Responsive mobile design
@@ -30,83 +30,80 @@ Create a professional and elegant website for "TYRELL" flower shop with:
 - [x] Catalog links section
 - [x] Contact section with WhatsApp link
 - [x] Footer
+- [x] Floating WhatsApp button with default message
 
 ### Admin Panel (/admin)
+- [x] **Authentication** - Login required (tyrellflowerstudio@gmail.com)
 - [x] Brand settings (name, tagline, WhatsApp number)
+- [x] Header section editor (top bar, navigation)
 - [x] Hero section editor (title, subtitle, video/image)
 - [x] About section editor
 - [x] Services CRUD (add, edit, delete products)
+- [x] Services section titles editor
 - [x] Catalog links management
 - [x] Contact information editor
+- [x] Footer editor
 
 ### Technical Features
 - [x] Image upload to server
 - [x] Video upload support
 - [x] Multiple images per service (carousel)
 - [x] MongoDB database integration
+- [x] JWT authentication for admin
 
-### UX Features (Feb 19, 2026)
+### UX Features
 - [x] **Image Lightbox**: Click service images to view in full-size modal with navigation
 - [x] **Auto-scroll Carousel**: Service images auto-scroll every 5 seconds
-- [x] **WhatsApp Default Message**: "Ver Catálogo" buttons send "Hola Tyrell quisiera información sobre ..."
-- [x] **Service-specific WhatsApp**: "Pedir" buttons include product name in message
+- [x] **WhatsApp Default Message**: All catalog buttons send "Hola Tyrell quisiera información sobre ..."
+- [x] **Floating WhatsApp Button**: Green button at bottom-right of page
 
-### Styling Updates (Feb 19, 2026)
+### Styling (Feb 19, 2026)
 - [x] **Perfectly Vintages Font**: Serif vintage typography applied globally
-- [x] **New Gold Color**: #daa609 for brighter, more vibrant gold
-- [x] **Pink Accents**: Soft pink in backgrounds and hover states
-- [x] **Circular Icons**: About section icons changed from squares to circles
-- [x] **Image URL Migration**: Fixed broken image URLs after domain change
+- [x] **New Color Palette**:
+  - Verde oliva: #4F6D5E (primary text)
+  - Rosa empolvado: #D8A7B1
+  - Nude durazno: #E8C1B5
+  - Marfil cálido: #F5F1EB (background)
+  - Rosa viejo: #B76E79
+  - Dorado: #daa609 (accents, buttons)
+- [x] **Service tags removed** (POPULAR, EXCLUSIVO no longer displayed)
+- [x] **Circular Icons** in About section
 
 ## Tech Stack
 - **Frontend**: React, TailwindCSS, shadcn/ui
-- **Backend**: FastAPI, Python
+- **Backend**: FastAPI, Python, JWT Auth
 - **Database**: MongoDB
 - **Fonts**: Perfectly Vintages (CDNFonts), Playfair Display (fallback)
 - **File Storage**: Local uploads directory
 
 ## Color Palette
-- **Primary Gold**: #daa609
-- **Dark Gold**: #b8890a
-- **Light Gold**: #f5d66e
-- **Rose**: #f5b5c8
-- **Rose Light**: #fce8ed
-- **Burgundy**: #c4506a
-- **Dark**: #1a1a1a
-- **Cream**: #FFFDF8
+| Color | Hex | Use |
+|-------|-----|-----|
+| Verde Oliva | #4F6D5E | Primary text, dark sections |
+| Rosa Empolvado | #D8A7B1 | Highlights, icons |
+| Nude Durazno | #E8C1B5 | Accents |
+| Marfil Cálido | #F5F1EB | Backgrounds |
+| Rosa Viejo | #B76E79 | Top bar, buttons |
+| Dorado | #DAA609 | CTAs, accents |
 
 ## API Endpoints
+- `POST /api/auth/login` - Admin login
+- `GET /api/auth/verify` - Verify token
 - `GET /api/content` - Fetch all site content
-- `PUT /api/content` - Update site content
+- `PUT /api/content` - Update site content (auth required)
 - `GET /api/services` - List all services
-- `POST /api/services` - Create service
-- `PUT /api/services/{id}` - Update service
-- `DELETE /api/services/{id}` - Delete service
+- `POST /api/services` - Create service (auth required)
+- `PUT /api/services/{id}` - Update service (auth required)
+- `DELETE /api/services/{id}` - Delete service (auth required)
 - `POST /api/upload` - Upload file
 
-## File Structure
-```
-/app
-├── backend/
-│   ├── server.py (FastAPI app)
-│   ├── uploads/ (uploaded files)
-│   └── .env
-├── frontend/
-│   └── src/
-│       ├── components/
-│       │   ├── landing/ (public page components)
-│       │   ├── admin/ (admin panel components)
-│       │   └── ui/ (shadcn components)
-│       ├── pages/
-│       │   ├── LandingPage.js
-│       │   └── AdminPage.js
-│       └── lib/api.js
-└── memory/
-    └── PRD.md
-```
+## Admin Credentials
+- Email: tyrellflowerstudio@gmail.com
+- Password: 897355
 
 ## Backlog / Future Enhancements
-- [ ] Authentication for admin panel
+- [ ] Password reset functionality
+- [ ] Multiple admin users
 - [ ] Order tracking system
 - [ ] Email notifications
 - [ ] SEO optimization
