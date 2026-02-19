@@ -1,8 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, MessageCircle, X } from "lucide-react";
+import { ArrowRight, ChevronLeft, ChevronRight, MessageCircle, X } from "lucide-react";
 import { Button } from "../ui/button";
-import { Badge } from "../ui/badge";
-import { Dialog, DialogContent, DialogClose } from "../ui/dialog";
+import { Dialog, DialogContent } from "../ui/dialog";
 
 const ServiceImageCarousel = ({ images, mainImage, title, onImageClick }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
