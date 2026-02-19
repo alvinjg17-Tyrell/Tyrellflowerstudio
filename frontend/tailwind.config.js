@@ -8,8 +8,9 @@ module.exports = {
   theme: {
         extend: {
                 fontFamily: {
-                        'display': ['"Playfair Display"', 'Georgia', 'serif'],
-                        'body': ['Lato', 'sans-serif'],
+                        'display': ['"Perfectly Vintages"', '"Playfair Display"', 'Georgia', 'serif'],
+                        'body': ['"Perfectly Vintages"', 'Georgia', 'serif'],
+                        'vintage': ['"Perfectly Vintages"', 'serif'],
                 },
                 borderRadius: {
                         lg: 'var(--radius)',
@@ -18,27 +19,27 @@ module.exports = {
                 },
                 colors: {
                         'tyrell-gold': {
-                                DEFAULT: '#C9A96E',
-                                dark: '#A67C52',
-                                light: '#E8D5B5',
+                                DEFAULT: '#daa609',
+                                dark: '#b8890a',
+                                light: '#f5d66e',
                         },
                         'tyrell-dark': {
                                 DEFAULT: '#1a1a1a',
                         },
                         'tyrell-cream': {
-                                DEFAULT: '#FFF9F0',
+                                DEFAULT: '#FFFDF8',
                         },
                         'tyrell-warm': {
                                 DEFAULT: '#8A7968',
                         },
                         'tyrell-rose': {
-                                DEFAULT: '#D4A0A0',
-                                light: '#F5E8E8',
-                                dark: '#8B3A3A',
+                                DEFAULT: '#f5b5c8',
+                                light: '#fce8ed',
+                                dark: '#d4809a',
                         },
                         'tyrell-burgundy': {
-                                DEFAULT: '#6B2D3E',
-                                light: '#8B4A5E',
+                                DEFAULT: '#c4506a',
+                                light: '#d4809a',
                         },
                         'tyrell-sage': {
                                 DEFAULT: '#A8B5A0',
