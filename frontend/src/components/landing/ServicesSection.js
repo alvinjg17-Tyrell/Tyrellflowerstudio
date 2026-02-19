@@ -204,12 +204,7 @@ export const ServicesSection = ({ services, siteData }) => {
                   title={service.title}
                   onImageClick={openLightbox}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-tyrell-dark/60 via-tyrell-dark/10 to-transparent pointer-events-none" />
-                {service.tag && (
-                  <div className="absolute top-4 left-4 z-10">
-                    <Badge className="bg-white/90 text-tyrell-dark text-[10px] tracking-wider uppercase font-medium rounded-none px-3 py-1 hover:bg-white/90">{service.tag}</Badge>
-                  </div>
-                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-tyrell-olive/60 via-tyrell-olive/10 to-transparent pointer-events-none" />
                 {service.price && (
                   <div className="absolute bottom-4 left-4 z-10">
                     <span className="bg-tyrell-gold/90 text-white text-sm font-medium px-3 py-1.5 backdrop-blur-sm">{service.price}</span>
