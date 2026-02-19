@@ -211,13 +211,13 @@ export const ServicesSection = ({ services, siteData }) => {
                 )}
               </div>
               <div className="p-6 lg:p-8">
-                <h3 className="font-display text-xl lg:text-2xl text-tyrell-dark font-medium tracking-wide">{service.title}</h3>
-                <p className="mt-3 text-tyrell-dark/50 text-sm font-light leading-relaxed">{service.description}</p>
+                <h3 className="font-display text-xl lg:text-2xl text-tyrell-olive font-medium tracking-wide">{service.title}</h3>
+                <p className="mt-3 text-tyrell-olive/50 text-sm font-light leading-relaxed">{service.description}</p>
                 <a
                   href={getWhatsAppUrl(service.title)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-5 inline-flex items-center gap-2 bg-tyrell-burgundy/10 hover:bg-tyrell-burgundy/20 text-tyrell-burgundy px-4 py-2 text-sm tracking-wider transition-all duration-300 group/btn"
+                  className="mt-5 inline-flex items-center gap-2 bg-tyrell-rose/20 hover:bg-tyrell-rose/40 text-tyrell-rose-dark px-4 py-2 text-sm tracking-wider transition-all duration-300 group/btn"
                 >
                   <MessageCircle className="w-4 h-4" />
                   <span className="font-light uppercase text-xs">Pedir</span>
@@ -230,7 +230,7 @@ export const ServicesSection = ({ services, siteData }) => {
 
         <div className={`text-center mt-16 transition-all duration-1000 delay-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <a href={getGenericWhatsAppUrl()} target="_blank" rel="noopener noreferrer" data-testid="services-catalog-btn">
-            <Button className="bg-tyrell-gold hover:bg-tyrell-gold-dark text-white px-10 py-6 text-sm tracking-[0.2em] uppercase rounded-none transition-all duration-300 hover:shadow-[0_8px_30px_rgba(201,169,110,0.35)] group">
+            <Button className="bg-tyrell-gold hover:bg-tyrell-gold-dark text-white px-10 py-6 text-sm tracking-[0.2em] uppercase rounded-none transition-all duration-300 hover:shadow-[0_8px_30px_rgba(218,166,9,0.35)] group">
               Ver Catálogo Completo
               <ArrowRight className="ml-2 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
             </Button>
