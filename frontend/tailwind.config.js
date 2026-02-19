@@ -24,10 +24,10 @@ module.exports = {
                                 light: '#f5d66e',
                         },
                         'tyrell-dark': {
-                                DEFAULT: '#4F6D5E',
+                                DEFAULT: '#1a1a1a',
                         },
                         'tyrell-cream': {
-                                DEFAULT: '#F5F1EB',
+                                DEFAULT: '#FFFDF8',
                         },
                         'tyrell-warm': {
                                 DEFAULT: '#E8C1B5',
