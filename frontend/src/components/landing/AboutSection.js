@@ -20,9 +20,9 @@ export const AboutSection = ({ siteData }) => {
   }, []);
 
   return (
-    <section id="nosotros" ref={sectionRef} className="relative py-24 lg:py-32 bg-tyrell-ivory overflow-hidden">
-      <div className="absolute top-0 right-0 w-96 h-96 bg-tyrell-rose/20 rounded-full blur-3xl" />
-      <div className="absolute bottom-0 left-0 w-80 h-80 bg-tyrell-nude/30 rounded-full blur-3xl" />
+    <section id="nosotros" ref={sectionRef} className="relative py-24 lg:py-32 bg-[#F5F1EB] overflow-hidden">
+      <div className="absolute top-0 right-0 w-96 h-96 bg-[#D8A7B1]/20 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 left-0 w-80 h-80 bg-[#E8C1B5]/30 rounded-full blur-3xl" />
       <div className="absolute top-1/2 left-1/3 w-64 h-64 bg-tyrell-gold/[0.05] rounded-full blur-3xl" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -32,8 +32,8 @@ export const AboutSection = ({ siteData }) => {
             <span className="text-tyrell-gold text-xs tracking-[0.3em] uppercase font-light">{about.label || "Conócenos"}</span>
             <div className="h-[1px] w-10 bg-tyrell-gold/40" />
           </div>
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl text-tyrell-olive font-light tracking-tight">{about.title}</h2>
-          <p className="mt-4 text-tyrell-olive/50 text-lg font-light">{about.subtitle}</p>
+          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl text-tyrell-dark font-light tracking-tight">{about.title}</h2>
+          <p className="mt-4 text-tyrell-dark/50 text-lg font-light">{about.subtitle}</p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -41,29 +41,29 @@ export const AboutSection = ({ siteData }) => {
             <div className="relative">
               <div className="absolute -top-4 -left-4 w-full h-full border border-tyrell-gold/20 z-0" />
               <img src={about.image} alt="Florería TYRELL" className="relative z-10 w-full h-[400px] lg:h-[500px] object-cover" />
-              <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-tyrell-rose/20 z-0" />
+              <div className="absolute -bottom-4 -right-4 w-32 h-32 bg-[#D8A7B1]/30 z-0" />
             </div>
             <div className="absolute -bottom-6 -right-2 lg:right-8 z-20 bg-white shadow-[0_10px_40px_rgba(218,166,9,0.15)] px-6 py-4">
               <div className="text-center">
                 <span className="block font-display text-3xl text-tyrell-gold font-light">{about.badgeNumber || "+2000"}</span>
-                <span className="text-[11px] text-tyrell-olive/60 tracking-wider uppercase">{about.badgeLabel || "Arreglos Entregados"}</span>
+                <span className="text-[11px] text-tyrell-dark/60 tracking-wider uppercase">{about.badgeLabel || "Arreglos Entregados"}</span>
               </div>
             </div>
           </div>
 
           <div className={`transition-all duration-1000 delay-500 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-12"}`}>
-            <p className="text-tyrell-olive/60 text-base lg:text-lg leading-relaxed font-light mb-10">{about.description}</p>
+            <p className="text-tyrell-dark/60 text-base lg:text-lg leading-relaxed font-light mb-10">{about.description}</p>
             <div className="space-y-8">
               {(about.features || []).map((feature, index) => {
                 const IconComponent = iconMap[feature.icon] || Flower2;
                 return (
                   <div key={index} className="flex gap-5 group">
-                    <div className="flex-shrink-0 w-12 h-12 rounded-full border border-tyrell-rose/40 bg-tyrell-rose/20 flex items-center justify-center transition-all duration-300 group-hover:bg-tyrell-rose/40 group-hover:border-tyrell-rose/60">
-                      <IconComponent className="w-5 h-5 text-tyrell-rose-dark" />
+                    <div className="flex-shrink-0 w-12 h-12 rounded-full border border-[#D8A7B1]/50 bg-[#D8A7B1]/20 flex items-center justify-center transition-all duration-300 group-hover:bg-[#D8A7B1]/40 group-hover:border-[#D8A7B1]/70">
+                      <IconComponent className="w-5 h-5 text-[#B76E79]" />
                     </div>
                     <div>
-                      <h3 className="font-display text-lg text-tyrell-olive font-medium tracking-wide">{feature.title}</h3>
-                      <p className="mt-1 text-tyrell-olive/50 text-sm font-light leading-relaxed">{feature.description}</p>
+                      <h3 className="font-display text-lg text-tyrell-dark font-medium tracking-wide">{feature.title}</h3>
+                      <p className="mt-1 text-tyrell-dark/50 text-sm font-light leading-relaxed">{feature.description}</p>
                     </div>
                   </div>);
 
