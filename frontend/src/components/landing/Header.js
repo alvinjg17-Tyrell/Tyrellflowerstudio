@@ -7,6 +7,7 @@ export const Header = ({ siteData }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const brand = siteData?.brand || {};
+  const header = siteData?.header || {};
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,10 +18,10 @@ export const Header = ({ siteData }) => {
   }, []);
 
   const navLinks = [
-  { label: "Inicio", href: "#inicio" },
-  { label: "Nosotros", href: "#nosotros" },
-  { label: "Servicios", href: "#servicios" },
-  { label: "Contacto", href: "#contacto" }];
+  { label: header.navItems?.[0] || "Inicio", href: "#inicio" },
+  { label: header.navItems?.[1] || "Nosotros", href: "#nosotros" },
+  { label: header.navItems?.[2] || "Servicios", href: "#servicios" },
+  { label: header.navItems?.[3] || "Contacto", href: "#contacto" }];
 
 
   const scrollToSection = (e, href) => {
@@ -36,7 +37,7 @@ export const Header = ({ siteData }) => {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
       isScrolled ?
-      "bg-white/95 backdrop-blur-xl shadow-[0_2px_30px_rgba(201,169,110,0.1)]" :
+      "bg-tyrell-ivory/95 backdrop-blur-xl shadow-[0_2px_30px_rgba(218,166,9,0.1)]" :
       "bg-transparent"}`
       }>
 
@@ -46,16 +47,16 @@ export const Header = ({ siteData }) => {
         isScrolled ? "max-h-0 opacity-0" : "max-h-10 opacity-100"}`
         }>
 
-        <div className="bg-tyrell-burgundy/95 backdrop-blur-sm">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between py-1.5 text-xs text-tyrell-cream/80">
+        <div className="bg-tyrell-rose-dark/95 backdrop-blur-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between py-1.5 text-xs text-tyrell-ivory/90">
             <div className="flex items-center gap-4">
               <span className="flex items-center gap-1">
                 <MapPin className="w-3 h-3 text-tyrell-gold" />
-                {brand.location}
+                {header.topBarLeft || brand.location}
               </span>
             </div>
             <span className="hidden sm:block font-light tracking-wider">
-              Entrega a domicilio disponible
+              {header.topBarRight || "Entrega a domicilio disponible"}
             </span>
           </div>
         </div>
@@ -88,7 +89,7 @@ export const Header = ({ siteData }) => {
               onClick={(e) => scrollToSection(e, link.href)}
               className={`text-sm tracking-wider uppercase font-light transition-all duration-300 hover:opacity-100 relative group ${
               isScrolled ?
-              "text-tyrell-dark/70 hover:text-tyrell-dark" :
+              "text-tyrell-olive/70 hover:text-tyrell-olive" :
               "text-white/80 hover:text-white"}`
               }>
 
@@ -101,8 +102,8 @@ export const Header = ({ siteData }) => {
               target="_blank"
               rel="noopener noreferrer">
 
-              <Button className="bg-tyrell-gold hover:bg-tyrell-gold-dark text-white text-sm tracking-wider uppercase px-6 py-2 rounded-none border-0 transition-all duration-300 hover:shadow-[0_4px_20px_rgba(201,169,110,0.4)]">
-                Ver Catálogo
+              <Button className="bg-tyrell-gold hover:bg-tyrell-gold-dark text-white text-sm tracking-wider uppercase px-6 py-2 rounded-none border-0 transition-all duration-300 hover:shadow-[0_4px_20px_rgba(218,166,9,0.4)]">
+                {header.ctaText || "Ver Catálogo"}
               </Button>
             </a>
           </div>
@@ -111,7 +112,7 @@ export const Header = ({ siteData }) => {
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className={`lg:hidden p-2 transition-colors duration-300 ${
-            isScrolled ? "text-tyrell-dark" : "text-white"}`
+            isScrolled ? "text-tyrell-olive" : "text-white"}`
             }>
 
             {isMobileMenuOpen ?
@@ -129,13 +130,13 @@ export const Header = ({ siteData }) => {
         isMobileMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`
         }>
 
-        <div className="bg-white/98 backdrop-blur-xl border-t border-tyrell-gold/10 px-4 py-6 space-y-4">
+        <div className="bg-tyrell-ivory/98 backdrop-blur-xl border-t border-tyrell-gold/10 px-4 py-6 space-y-4">
           {navLinks.map((link) =>
           <a
             key={link.label}
             href={link.href}
             onClick={(e) => scrollToSection(e, link.href)}
-            className="block text-sm tracking-wider uppercase text-tyrell-dark/70 hover:text-tyrell-dark transition-colors duration-300 py-2">
+            className="block text-sm tracking-wider uppercase text-tyrell-olive/70 hover:text-tyrell-olive transition-colors duration-300 py-2">
 
               {link.label}
             </a>
@@ -147,7 +148,7 @@ export const Header = ({ siteData }) => {
             className="block">
 
             <Button className="w-full bg-tyrell-gold hover:bg-tyrell-gold-dark text-white text-sm tracking-wider uppercase rounded-none">
-              Ver Catálogo
+              {header.ctaText || "Ver Catálogo"}
             </Button>
           </a>
         </div>
