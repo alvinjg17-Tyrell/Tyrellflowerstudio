@@ -265,6 +265,22 @@ async def seed_data():
 async def root():
     return {"message": "TYRELL API running"}
 
+# ─── Auth Routes ──────────────────────────────────────────
+
+@api_router.post("/auth/login", response_model=TokenResponse)
+async def login(request: LoginRequest):
+    if request.email != ADMIN_EMAIL:
+        raise HTTPException(status_code=401, detail="Credenciales incorrectas")
+    if not pwd_context.verify(request.password, ADMIN_PASSWORD_HASH):
+        raise HTTPException(status_code=401, detail="Credenciales incorrectas")
+    
+    access_token = create_access_token(data={"sub": request.email})
+    return TokenResponse(access_token=access_token)
+
+@api_router.get("/auth/verify")
+async def verify_auth(email: str = Depends(verify_token)):
+    return {"valid": True, "email": email}
+
 # ─── File Upload ──────────────────────────────────────────
 
 @api_router.post("/upload")
