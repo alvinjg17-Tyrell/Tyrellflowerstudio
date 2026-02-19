@@ -192,6 +192,7 @@ export const ServicesSection = ({ services, siteData }) => {
                   images={service.images || []}
                   mainImage={service.image}
                   title={service.title}
+                  onImageClick={openLightbox}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-tyrell-dark/60 via-tyrell-dark/10 to-transparent pointer-events-none" />
                 {service.tag && (
