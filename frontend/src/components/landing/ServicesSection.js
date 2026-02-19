@@ -88,7 +88,7 @@ const ServiceImageCarousel = ({ images, mainImage, title, onImageClick }) => {
         ))}
       </div>
 
-      {allImages.length > 1 && (
+      {imageCount > 1 && (
         <>
           <button
             onClick={prev}
