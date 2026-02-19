@@ -37,7 +37,7 @@ export const Header = ({ siteData }) => {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
       isScrolled ?
-      "bg-tyrell-ivory/95 backdrop-blur-xl shadow-[0_2px_30px_rgba(218,166,9,0.1)]" :
+      "bg-white/95 backdrop-blur-xl shadow-[0_2px_30px_rgba(218,166,9,0.1)]" :
       "bg-transparent"}`
       }>
 
@@ -47,8 +47,8 @@ export const Header = ({ siteData }) => {
         isScrolled ? "max-h-0 opacity-0" : "max-h-10 opacity-100"}`
         }>
 
-        <div className="bg-tyrell-rose-dark/95 backdrop-blur-sm">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between py-1.5 text-xs text-tyrell-ivory/90">
+        <div className="bg-tyrell-burgundy/95 backdrop-blur-sm">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between py-1.5 text-xs text-white/90">
             <div className="flex items-center gap-4">
               <span className="flex items-center gap-1">
                 <MapPin className="w-3 h-3 text-tyrell-gold" />
@@ -89,7 +89,7 @@ export const Header = ({ siteData }) => {
               onClick={(e) => scrollToSection(e, link.href)}
               className={`text-sm tracking-wider uppercase font-light transition-all duration-300 hover:opacity-100 relative group ${
               isScrolled ?
-              "text-tyrell-olive/70 hover:text-tyrell-olive" :
+              "text-tyrell-dark/70 hover:text-tyrell-dark" :
               "text-white/80 hover:text-white"}`
               }>
 
@@ -112,7 +112,7 @@ export const Header = ({ siteData }) => {
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className={`lg:hidden p-2 transition-colors duration-300 ${
-            isScrolled ? "text-tyrell-olive" : "text-white"}`
+            isScrolled ? "text-tyrell-dark" : "text-white"}`
             }>
 
             {isMobileMenuOpen ?
@@ -130,13 +130,13 @@ export const Header = ({ siteData }) => {
         isMobileMenuOpen ? "max-h-96 opacity-100" : "max-h-0 opacity-0"}`
         }>
 
-        <div className="bg-tyrell-ivory/98 backdrop-blur-xl border-t border-tyrell-gold/10 px-4 py-6 space-y-4">
+        <div className="bg-white/98 backdrop-blur-xl border-t border-tyrell-gold/10 px-4 py-6 space-y-4">
           {navLinks.map((link) =>
           <a
             key={link.label}
             href={link.href}
             onClick={(e) => scrollToSection(e, link.href)}
-            className="block text-sm tracking-wider uppercase text-tyrell-olive/70 hover:text-tyrell-olive transition-colors duration-300 py-2">
+            className="block text-sm tracking-wider uppercase text-tyrell-dark/70 hover:text-tyrell-dark transition-colors duration-300 py-2">
 
               {link.label}
             </a>
