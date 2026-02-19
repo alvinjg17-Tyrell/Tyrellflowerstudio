@@ -118,9 +118,10 @@ export const HeroSection = ({ siteData }) => {
             }`}
           >
             <a
-              href={brand.catalogUrl || "#"}
+              href={getGenericWhatsAppUrl()}
               target="_blank"
               rel="noopener noreferrer"
+              data-testid="hero-catalog-btn"
             >
               <Button className="bg-tyrell-gold hover:bg-tyrell-gold-dark text-white px-8 py-6 text-sm tracking-[0.2em] uppercase rounded-none transition-all duration-300 hover:shadow-[0_8px_30px_rgba(201,169,110,0.35)] group">
                 {hero.ctaText || "Ver Catálogo"}
