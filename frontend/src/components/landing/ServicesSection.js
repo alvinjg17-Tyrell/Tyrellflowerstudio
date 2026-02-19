@@ -158,6 +158,12 @@ export const ServicesSection = ({ services, siteData }) => {
     return number ? `https://wa.me/${number}?text=${message}` : `https://wa.me/?text=${message}`;
   };
 
+  const getGenericWhatsAppUrl = () => {
+    const number = brand.whatsappLink ? brand.whatsappLink.replace("https://wa.me/", "") : "";
+    const message = encodeURIComponent("Hola Tyrell quisiera información sobre ...");
+    return number ? `https://wa.me/${number}?text=${message}` : `https://wa.me/?text=${message}`;
+  };
+
   return (
     <section id="servicios" ref={sectionRef} className="relative py-24 lg:py-32 bg-gradient-to-b from-tyrell-sage-light/30 via-tyrell-cream/40 to-tyrell-rose-light/20 overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-tyrell-gold/20 to-transparent" />
