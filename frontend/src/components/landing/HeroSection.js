@@ -39,23 +39,27 @@ export const HeroSection = ({ siteData }) => {
             loop
             playsInline
             className="w-full h-full object-cover"
-            poster={hero.image || ""}
+            poster={hero.image || undefined}
           >
             <source src={hero.video} type="video/quicktime" />
             <source src={hero.video} type="video/mp4" />
             {/* Fallback to image if video fails */}
-            <img
-              src={hero.image}
-              alt="TYRELL Florería"
-              className="w-full h-full object-cover"
-            />
+            {hero.image && (
+              <img
+                src={hero.image}
+                alt="TYRELL Florería"
+                className="w-full h-full object-cover"
+              />
+            )}
           </video>
-        ) : (
+        ) : hero.image ? (
           <img
             src={hero.image}
             alt="Arreglos florales TYRELL"
             className="w-full h-full object-cover"
           />
+        ) : (
+          <div className="w-full h-full bg-tyrell-dark" />
         )}
         <div className="absolute inset-0 bg-gradient-to-r from-tyrell-dark/85 via-tyrell-dark/60 to-tyrell-dark/30" />
         <div className="absolute inset-0 bg-gradient-to-t from-tyrell-dark/50 via-transparent to-transparent" />
