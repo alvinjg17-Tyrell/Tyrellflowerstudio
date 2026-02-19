@@ -4,7 +4,7 @@ import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { Switch } from "../ui/switch";
 import { ImageUploader } from "./ImageUploader";
-import { Save, Loader2, Video, Upload } from "lucide-react";
+import { Save, Loader2, Video, Upload, Image as ImageIcon } from "lucide-react";
 import axios from "axios";
 import { toast } from "sonner";
 
