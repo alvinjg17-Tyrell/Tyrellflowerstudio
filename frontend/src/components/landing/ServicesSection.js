@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, MessageCircle } from "lucide-react";
+import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, MessageCircle, X } from "lucide-react";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
+import { Dialog, DialogContent, DialogClose } from "../ui/dialog";
 
-const ServiceImageCarousel = ({ images, mainImage, title }) => {
+const ServiceImageCarousel = ({ images, mainImage, title, onImageClick }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const allImages = [mainImage, ...(images || [])].filter(Boolean);
   const scrollRef = useRef(null);
+  const autoScrollRef = useRef(null);
 
   if (allImages.length === 0) return null;
 
@@ -21,15 +23,41 @@ const ServiceImageCarousel = ({ images, mainImage, title }) => {
   };
 
   const next = (e) => {
-    e.preventDefault();
-    e.stopPropagation();
+    if (e) { e.preventDefault(); e.stopPropagation(); }
     scrollTo((currentIndex + 1) % allImages.length);
   };
 
   const prev = (e) => {
+    if (e) { e.preventDefault(); e.stopPropagation(); }
+    scrollTo((currentIndex - 1 + allImages.length) % allImages.length);
+  };
+
+  // Auto-scroll every 5 seconds
+  useEffect(() => {
+    if (allImages.length <= 1) return;
+    
+    autoScrollRef.current = setInterval(() => {
+      setCurrentIndex(prev => {
+        const nextIndex = (prev + 1) % allImages.length;
+        if (scrollRef.current) {
+          const child = scrollRef.current.children[nextIndex];
+          if (child) {
+            child.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+          }
+        }
+        return nextIndex;
+      });
+    }, 5000);
+
+    return () => {
+      if (autoScrollRef.current) clearInterval(autoScrollRef.current);
+    };
+  }, [allImages.length]);
+
+  const handleImageClick = (e, index) => {
     e.preventDefault();
     e.stopPropagation();
-    scrollTo((currentIndex - 1 + allImages.length) % allImages.length);
+    if (onImageClick) onImageClick(allImages, index);
   };
 
   return (
@@ -49,7 +77,9 @@ const ServiceImageCarousel = ({ images, mainImage, title }) => {
             key={i}
             src={img}
             alt={`${title} ${i + 1}`}
-            className="w-full h-full object-cover flex-shrink-0 snap-center"
+            className="w-full h-full object-cover flex-shrink-0 snap-center cursor-pointer hover:opacity-95 transition-opacity"
+            onClick={(e) => handleImageClick(e, i)}
+            data-testid={`service-image-${i}`}
           />
         ))}
       </div>
@@ -59,12 +89,14 @@ const ServiceImageCarousel = ({ images, mainImage, title }) => {
           <button
             onClick={prev}
             className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover/carousel:opacity-100 transition-opacity z-10"
+            data-testid="carousel-prev-btn"
           >
             <ChevronLeft className="w-4 h-4 text-[#1a1a1a]" />
           </button>
           <button
             onClick={next}
             className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover/carousel:opacity-100 transition-opacity z-10"
+            data-testid="carousel-next-btn"
           >
             <ChevronRight className="w-4 h-4 text-[#1a1a1a]" />
           </button>
@@ -78,6 +110,7 @@ const ServiceImageCarousel = ({ images, mainImage, title }) => {
                 className={`w-2 h-2 rounded-full transition-all ${
                   i === currentIndex ? "bg-white w-4" : "bg-white/50"
                 }`}
+                data-testid={`carousel-dot-${i}`}
               />
             ))}
           </div>
@@ -89,9 +122,26 @@ const ServiceImageCarousel = ({ images, mainImage, title }) => {
 
 export const ServicesSection = ({ services, siteData }) => {
   const [isVisible, setIsVisible] = useState(false);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [lightboxImages, setLightboxImages] = useState([]);
+  const [lightboxIndex, setLightboxIndex] = useState(0);
   const sectionRef = useRef(null);
   const brand = siteData?.brand || {};
   const svcSection = siteData?.services || {};
+
+  const openLightbox = (images, index) => {
+    setLightboxImages(images);
+    setLightboxIndex(index);
+    setLightboxOpen(true);
+  };
+
+  const lightboxNext = () => {
+    setLightboxIndex((prev) => (prev + 1) % lightboxImages.length);
+  };
+
+  const lightboxPrev = () => {
+    setLightboxIndex((prev) => (prev - 1 + lightboxImages.length) % lightboxImages.length);
+  };
 
   useEffect(() => {
     const observer = new IntersectionObserver(
