@@ -1,5 +1,6 @@
-from fastapi import FastAPI, APIRouter, HTTPException, UploadFile, File
+from fastapi import FastAPI, APIRouter, HTTPException, UploadFile, File, Depends
 from fastapi.staticfiles import StaticFiles
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -9,8 +10,10 @@ from pathlib import Path
 from pydantic import BaseModel, Field
 from typing import List, Optional
 import uuid
-from datetime import datetime
+from datetime import datetime, timedelta
 import shutil
+from jose import JWTError, jwt
+from passlib.context import CryptContext
 
 ROOT_DIR = Path(__file__).parent
 UPLOADS_DIR = ROOT_DIR / "uploads"
@@ -21,9 +24,47 @@ mongo_url = os.environ['MONGO_URL']
 client = AsyncIOMotorClient(mongo_url)
 db = client[os.environ['DB_NAME']]
 
+# ─── Auth Configuration ────────────────────────────────────
+SECRET_KEY = os.environ.get('SECRET_KEY', 'tyrell-floreria-secret-key-2026')
+ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_DAYS = 30
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+security = HTTPBearer()
+
+# Admin credentials (stored securely)
+ADMIN_EMAIL = "tyrellflowerstudio@gmail.com"
+ADMIN_PASSWORD_HASH = pwd_context.hash("897355")
+
 app = FastAPI()
 app.mount("/api/uploads", StaticFiles(directory=str(UPLOADS_DIR)), name="uploads")
 api_router = APIRouter(prefix="/api")
+
+# ─── Auth Models ──────────────────────────────────────────
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+class TokenResponse(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+
+def create_access_token(data: dict):
+    to_encode = data.copy()
+    expire = datetime.utcnow() + timedelta(days=ACCESS_TOKEN_EXPIRE_DAYS)
+    to_encode.update({"exp": expire})
+    return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
+def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    token = credentials.credentials
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        email = payload.get("sub")
+        if email != ADMIN_EMAIL:
+            raise HTTPException(status_code=401, detail="Token inválido")
+        return email
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Token inválido o expirado")
 
 # ─── Models ───────────────────────────────────────────────
 
