@@ -12,7 +12,7 @@ export const WhatsAppButton = ({ whatsappLink }) => {
       href={getWhatsAppUrl()}
       target="_blank"
       rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 z-50 w-14 h-14 bg-[#25D366] hover:bg-[#20BA5C] rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
+      className="fixed bottom-24 right-6 z-50 w-14 h-14 bg-[#25D366] hover:bg-[#20BA5C] rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-110"
       data-testid="whatsapp-float-btn"
       aria-label="Contactar por WhatsApp"
     >
