@@ -58,7 +58,7 @@ export const AboutSection = ({ siteData }) => {
                 const IconComponent = iconMap[feature.icon] || Flower2;
                 return (
                   <div key={index} className="flex gap-5 group">
-                    <div className="flex-shrink-0 w-12 h-12 border border-tyrell-rose/40 bg-tyrell-rose-light/30 flex items-center justify-center transition-all duration-300 group-hover:bg-tyrell-rose-light/60 group-hover:border-tyrell-rose/50">
+                    <div className="flex-shrink-0 w-12 h-12 rounded-full border border-tyrell-rose/40 bg-tyrell-rose-light/30 flex items-center justify-center transition-all duration-300 group-hover:bg-tyrell-rose-light/60 group-hover:border-tyrell-rose/50">
                       <IconComponent className="w-5 h-5 text-tyrell-burgundy" />
                     </div>
                     <div>
