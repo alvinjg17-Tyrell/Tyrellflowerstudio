@@ -225,7 +225,7 @@ export const ServicesSection = ({ services, siteData }) => {
         </div>
 
         <div className={`text-center mt-16 transition-all duration-1000 delay-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-          <a href={brand.catalogUrl || "#"} target="_blank" rel="noopener noreferrer">
+          <a href={getGenericWhatsAppUrl()} target="_blank" rel="noopener noreferrer" data-testid="services-catalog-btn">
             <Button className="bg-tyrell-gold hover:bg-tyrell-gold-dark text-white px-10 py-6 text-sm tracking-[0.2em] uppercase rounded-none transition-all duration-300 hover:shadow-[0_8px_30px_rgba(201,169,110,0.35)] group">
               Ver Catálogo Completo
               <ArrowRight className="ml-2 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
@@ -233,6 +233,59 @@ export const ServicesSection = ({ services, siteData }) => {
           </a>
         </div>
       </div>
+
+      {/* Image Lightbox */}
+      <Dialog open={lightboxOpen} onOpenChange={setLightboxOpen}>
+        <DialogContent className="max-w-4xl w-[95vw] h-auto max-h-[90vh] p-0 border-0 bg-transparent shadow-none" data-testid="image-lightbox">
+          <div className="relative flex items-center justify-center">
+            {/* Close button */}
+            <button
+              onClick={() => setLightboxOpen(false)}
+              className="absolute top-2 right-2 z-50 w-10 h-10 bg-black/50 hover:bg-black/70 text-white flex items-center justify-center transition-colors"
+              data-testid="lightbox-close-btn"
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* Navigation arrows */}
+            {lightboxImages.length > 1 && (
+              <>
+                <button
+                  onClick={lightboxPrev}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 z-50 w-12 h-12 bg-black/50 hover:bg-black/70 text-white flex items-center justify-center transition-colors"
+                  data-testid="lightbox-prev-btn"
+                >
+                  <ChevronLeft className="w-6 h-6" />
+                </button>
+                <button
+                  onClick={lightboxNext}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 z-50 w-12 h-12 bg-black/50 hover:bg-black/70 text-white flex items-center justify-center transition-colors"
+                  data-testid="lightbox-next-btn"
+                >
+                  <ChevronRight className="w-6 h-6" />
+                </button>
+              </>
+            )}
+
+            {/* Image */}
+            {lightboxImages[lightboxIndex] && (
+              <img
+                src={lightboxImages[lightboxIndex]}
+                alt={`Imagen ${lightboxIndex + 1}`}
+                className="max-w-full max-h-[85vh] object-contain"
+                data-testid="lightbox-image"
+              />
+            )}
+
+            {/* Image counter */}
+            {lightboxImages.length > 1 && (
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 text-white text-sm px-4 py-2" data-testid="lightbox-counter">
+                {lightboxIndex + 1} / {lightboxImages.length}
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </section>
   );
 };
