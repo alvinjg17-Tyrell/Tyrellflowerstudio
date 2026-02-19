@@ -59,10 +59,10 @@ export const HeroSection = ({ siteData }) => {
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className="w-full h-full bg-tyrell-olive" />
+          <div className="w-full h-full bg-tyrell-dark" />
         )}
-        <div className="absolute inset-0 bg-gradient-to-r from-tyrell-olive/85 via-tyrell-olive/60 to-tyrell-olive/30" />
-        <div className="absolute inset-0 bg-gradient-to-t from-tyrell-olive/50 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-tyrell-dark/85 via-tyrell-dark/60 to-tyrell-dark/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-tyrell-dark/50 via-transparent to-transparent" />
       </div>
 
       {/* Gold decorative lines */}
