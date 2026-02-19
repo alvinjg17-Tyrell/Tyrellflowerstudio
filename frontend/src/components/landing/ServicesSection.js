@@ -6,11 +6,12 @@ import { Dialog, DialogContent, DialogClose } from "../ui/dialog";
 
 const ServiceImageCarousel = ({ images, mainImage, title, onImageClick }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const allImages = [mainImage, ...(images || [])].filter(Boolean);
   const scrollRef = useRef(null);
   const autoScrollRef = useRef(null);
-
-  if (allImages.length === 0) return null;
+  
+  // Calculate allImages once
+  const allImages = [mainImage, ...(images || [])].filter(Boolean);
+  const imageCount = allImages.length;
 
   const scrollTo = (index) => {
     setCurrentIndex(index);
@@ -24,21 +25,21 @@ const ServiceImageCarousel = ({ images, mainImage, title, onImageClick }) => {
 
   const next = (e) => {
     if (e) { e.preventDefault(); e.stopPropagation(); }
-    scrollTo((currentIndex + 1) % allImages.length);
+    if (imageCount > 0) scrollTo((currentIndex + 1) % imageCount);
   };
 
   const prev = (e) => {
     if (e) { e.preventDefault(); e.stopPropagation(); }
-    scrollTo((currentIndex - 1 + allImages.length) % allImages.length);
+    if (imageCount > 0) scrollTo((currentIndex - 1 + imageCount) % imageCount);
   };
 
-  // Auto-scroll every 5 seconds
+  // Auto-scroll every 5 seconds - hook MUST be called unconditionally
   useEffect(() => {
-    if (allImages.length <= 1) return;
+    if (imageCount <= 1) return;
     
     autoScrollRef.current = setInterval(() => {
       setCurrentIndex(prev => {
-        const nextIndex = (prev + 1) % allImages.length;
+        const nextIndex = (prev + 1) % imageCount;
         if (scrollRef.current) {
           const child = scrollRef.current.children[nextIndex];
           if (child) {
@@ -52,13 +53,16 @@ const ServiceImageCarousel = ({ images, mainImage, title, onImageClick }) => {
     return () => {
       if (autoScrollRef.current) clearInterval(autoScrollRef.current);
     };
-  }, [allImages.length]);
+  }, [imageCount]);
 
   const handleImageClick = (e, index) => {
     e.preventDefault();
     e.stopPropagation();
     if (onImageClick) onImageClick(allImages, index);
   };
+
+  // Early return AFTER all hooks
+  if (imageCount === 0) return null;
 
   return (
     <div className="relative overflow-hidden group/carousel">
