@@ -19,6 +19,12 @@ export const HeroSection = ({ siteData }) => {
     }
   };
 
+  const getGenericWhatsAppUrl = () => {
+    const number = brand.whatsappLink ? brand.whatsappLink.replace("https://wa.me/", "") : "";
+    const message = encodeURIComponent("Hola Tyrell quisiera información sobre ...");
+    return number ? `https://wa.me/${number}?text=${message}` : `https://wa.me/?text=${message}`;
+  };
+
   return (
     <section
       id="inicio"
