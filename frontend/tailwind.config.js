@@ -24,27 +24,36 @@ module.exports = {
                                 light: '#f5d66e',
                         },
                         'tyrell-dark': {
-                                DEFAULT: '#1a1a1a',
+                                DEFAULT: '#4F6D5E',
                         },
                         'tyrell-cream': {
-                                DEFAULT: '#FFFDF8',
+                                DEFAULT: '#F5F1EB',
                         },
                         'tyrell-warm': {
-                                DEFAULT: '#8A7968',
+                                DEFAULT: '#E8C1B5',
                         },
                         'tyrell-rose': {
-                                DEFAULT: '#f5b5c8',
-                                light: '#fce8ed',
-                                dark: '#d4809a',
+                                DEFAULT: '#D8A7B1',
+                                light: '#F5F1EB',
+                                dark: '#B76E79',
                         },
                         'tyrell-burgundy': {
-                                DEFAULT: '#c4506a',
-                                light: '#d4809a',
+                                DEFAULT: '#B76E79',
+                                light: '#D8A7B1',
                         },
                         'tyrell-sage': {
-                                DEFAULT: '#A8B5A0',
-                                light: '#EDF1EB',
-                                dark: '#6B7D64',
+                                DEFAULT: '#4F6D5E',
+                                light: '#F5F1EB',
+                                dark: '#3d5549',
+                        },
+                        'tyrell-nude': {
+                                DEFAULT: '#E8C1B5',
+                        },
+                        'tyrell-ivory': {
+                                DEFAULT: '#F5F1EB',
+                        },
+                        'tyrell-olive': {
+                                DEFAULT: '#4F6D5E',
                         },
                         background: 'hsl(var(--background))',
                         foreground: 'hsl(var(--foreground))',
