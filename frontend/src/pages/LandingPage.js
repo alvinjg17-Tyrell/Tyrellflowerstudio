@@ -46,7 +46,7 @@ export default function LandingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-tyrell-ivory">
+    <div className="min-h-screen bg-white">
       <Toaster position="top-center" richColors />
       <Header siteData={data.site} />
       <HeroSection siteData={data.site} />
