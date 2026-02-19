@@ -5,6 +5,7 @@ import { Dialog, DialogContent } from "../ui/dialog";
 
 const ServiceImageCarousel = ({ images, mainImage, title, onImageClick }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [loadedImages, setLoadedImages] = useState({});
   const scrollRef = useRef(null);
   const autoScrollRef = useRef(null);
   
@@ -60,6 +61,15 @@ const ServiceImageCarousel = ({ images, mainImage, title, onImageClick }) => {
     if (onImageClick) onImageClick(allImages, index);
   };
 
+  const handleImageLoad = (index) => {
+    setLoadedImages(prev => ({ ...prev, [index]: true }));
+  };
+
+  const handleImageError = (e, index) => {
+    // Hide broken images
+    e.target.style.display = 'none';
+  };
+
   // Early return AFTER all hooks
   if (imageCount === 0) return null;
 
@@ -79,9 +89,11 @@ const ServiceImageCarousel = ({ images, mainImage, title, onImageClick }) => {
           <img
             key={i}
             src={img}
-            alt={`${title} ${i + 1}`}
+            alt=""
             className="w-full h-full object-cover flex-shrink-0 snap-center cursor-pointer hover:opacity-95 transition-opacity"
             onClick={(e) => handleImageClick(e, i)}
+            onLoad={() => handleImageLoad(i)}
+            onError={(e) => handleImageError(e, i)}
             data-testid={`service-image-${i}`}
           />
         ))}
