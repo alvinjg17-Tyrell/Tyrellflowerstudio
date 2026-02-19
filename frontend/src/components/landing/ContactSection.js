@@ -41,9 +41,9 @@ export const ContactSection = ({ siteData }) => {
   };
 
   return (
-    <section id="contacto" ref={sectionRef} className="relative py-24 lg:py-32 bg-gradient-to-br from-tyrell-olive via-tyrell-rose-dark/80 to-tyrell-olive overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-tyrell-rose/20 to-transparent" />
-      <div className="absolute top-20 right-0 w-72 h-72 bg-tyrell-rose/[0.08] rounded-full blur-3xl" />
+    <section id="contacto" ref={sectionRef} className="relative py-24 lg:py-32 bg-[#4F6D5E] overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-tyrell-gold/20 to-transparent" />
+      <div className="absolute top-20 right-0 w-72 h-72 bg-[#D8A7B1]/[0.08] rounded-full blur-3xl" />
       <div className="absolute bottom-20 left-0 w-80 h-80 bg-tyrell-gold/[0.05] rounded-full blur-3xl" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -54,7 +54,7 @@ export const ContactSection = ({ siteData }) => {
             <div className="h-[1px] w-10 bg-tyrell-gold/40" />
           </div>
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl text-white font-light tracking-tight">{contact.title}</h2>
-          <p className="mt-4 text-white/50 text-lg font-light">{contact.subtitle}</p>
+          <p className="mt-4 text-white/60 text-lg font-light">{contact.subtitle}</p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
@@ -63,8 +63,8 @@ export const ContactSection = ({ siteData }) => {
             <div className="space-y-8">
               {/* WhatsApp */}
               <div className="flex gap-5 group">
-                <div className="flex-shrink-0 w-14 h-14 rounded-full border border-tyrell-rose/30 bg-tyrell-rose/10 flex items-center justify-center transition-all duration-300 group-hover:bg-tyrell-rose/20 group-hover:border-tyrell-rose/50">
-                  <MessageCircle className="w-6 h-6 text-tyrell-rose" />
+                <div className="flex-shrink-0 w-14 h-14 rounded-full border border-[#D8A7B1]/40 bg-[#D8A7B1]/20 flex items-center justify-center transition-all duration-300 group-hover:bg-[#D8A7B1]/30 group-hover:border-[#D8A7B1]/60">
+                  <MessageCircle className="w-6 h-6 text-[#D8A7B1]" />
                 </div>
                 <div>
                   <h3 className="font-display text-lg text-white font-medium tracking-wide">{contact.whatsappLabel}</h3>
@@ -83,8 +83,8 @@ export const ContactSection = ({ siteData }) => {
 
               {/* Location */}
               <div className="flex gap-5 group">
-                <div className="flex-shrink-0 w-14 h-14 rounded-full border border-tyrell-nude/30 bg-tyrell-nude/10 flex items-center justify-center transition-all duration-300 group-hover:bg-tyrell-nude/20 group-hover:border-tyrell-nude/50">
-                  <MapPin className="w-6 h-6 text-tyrell-nude" />
+                <div className="flex-shrink-0 w-14 h-14 rounded-full border border-[#E8C1B5]/40 bg-[#E8C1B5]/20 flex items-center justify-center transition-all duration-300 group-hover:bg-[#E8C1B5]/30 group-hover:border-[#E8C1B5]/60">
+                  <MapPin className="w-6 h-6 text-[#E8C1B5]" />
                 </div>
                 <div>
                   <h3 className="font-display text-lg text-white font-medium tracking-wide">Ubicación</h3>
