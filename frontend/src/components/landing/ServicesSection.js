@@ -211,13 +211,13 @@ export const ServicesSection = ({ services, siteData }) => {
                 )}
               </div>
               <div className="p-6 lg:p-8">
-                <h3 className="font-display text-xl lg:text-2xl text-tyrell-olive font-medium tracking-wide">{service.title}</h3>
-                <p className="mt-3 text-tyrell-olive/50 text-sm font-light leading-relaxed">{service.description}</p>
+                <h3 className="font-display text-xl lg:text-2xl text-tyrell-dark font-medium tracking-wide">{service.title}</h3>
+                <p className="mt-3 text-tyrell-dark/50 text-sm font-light leading-relaxed">{service.description}</p>
                 <a
                   href={getWhatsAppUrl(service.title)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-5 inline-flex items-center gap-2 bg-tyrell-rose/20 hover:bg-tyrell-rose/40 text-tyrell-rose-dark px-4 py-2 text-sm tracking-wider transition-all duration-300 group/btn"
+                  className="mt-5 inline-flex items-center gap-2 bg-[#D8A7B1]/30 hover:bg-[#D8A7B1]/50 text-[#B76E79] px-4 py-2 text-sm tracking-wider transition-all duration-300 group/btn"
                 >
                   <MessageCircle className="w-4 h-4" />
                   <span className="font-light uppercase text-xs">Pedir</span>
