@@ -105,9 +105,7 @@ export const Header = ({ siteData }) => {
           {/* Mobile menu button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className={`lg:hidden p-2 transition-colors duration-300 ${
-            isScrolled ? "text-tyrell-dark" : "text-white"}`
-            }>
+            className="lg:hidden p-2 transition-colors duration-300 text-white">
 
             {isMobileMenuOpen ?
             <X className="w-6 h-6" /> :
