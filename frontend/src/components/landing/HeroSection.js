@@ -153,13 +153,6 @@ export const HeroSection = ({ siteData }) => {
           <ChevronDown className="w-5 h-5 animate-bounce" />
         </button>
       </div>
-
-      {/* Side decorative text */}
-      <div className="absolute right-8 top-1/2 -translate-y-1/2 hidden xl:block">
-        <span className="text-white/10 font-display text-sm tracking-[0.5em] uppercase writing-vertical">
-          {brand.name || "TYRELL"} · Flower Studio
-        </span>
-      </div>
     </section>
   );
 };
