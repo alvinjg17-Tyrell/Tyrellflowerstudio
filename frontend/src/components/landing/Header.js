@@ -151,7 +151,13 @@ export const Header = ({ siteData }) => {
             rel="noopener noreferrer"
             className="block">
 
-            <Button className="w-full bg-tyrell-gold hover:bg-tyrell-gold-dark text-white text-sm tracking-wider uppercase rounded-none">
+            <Button 
+              className="w-full text-sm tracking-wider uppercase rounded-none"
+              style={{
+                backgroundColor: header.ctaButtonColor || "#daa609",
+                color: header.ctaTextColor || "#FFFFFF"
+              }}
+            >
               {header.ctaText || "Ver Catálogo"}
             </Button>
           </a>
