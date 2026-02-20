@@ -44,6 +44,12 @@ export const api = {
   updateDynamicSection: (id, data) => axios.put(`${API}/dynamic-sections/${id}`, data, { headers: getAuthHeader() }).then(r => r.data),
   deleteDynamicSection: (id) => axios.delete(`${API}/dynamic-sections/${id}`, { headers: getAuthHeader() }).then(r => r.data),
 
+  // Product Categories CRUD
+  getCategories: () => axios.get(`${API}/categories`).then(r => r.data),
+  createCategory: (data) => axios.post(`${API}/categories`, data, { headers: getAuthHeader() }).then(r => r.data),
+  updateCategory: (id, data) => axios.put(`${API}/categories/${id}`, data, { headers: getAuthHeader() }).then(r => r.data),
+  deleteCategory: (id) => axios.delete(`${API}/categories/${id}`, { headers: getAuthHeader() }).then(r => r.data),
+
   // Upload
   uploadFile: (file) => {
     const formData = new FormData();
