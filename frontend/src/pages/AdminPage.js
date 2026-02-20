@@ -10,6 +10,8 @@ import { AdminCatalogLinks } from "../components/admin/AdminCatalogLinks";
 import { AdminContact } from "../components/admin/AdminContact";
 import { AdminFooter } from "../components/admin/AdminFooter";
 import { AdminHeader as AdminHeaderSection } from "../components/admin/AdminHeaderSection";
+import { AdminColorPalette } from "../components/admin/AdminColorPalette";
+import { AdminDynamicSections } from "../components/admin/AdminDynamicSections";
 import { Toaster, toast } from "sonner";
 import { Loader2, Lock, Mail, Eye, EyeOff, LogOut } from "lucide-react";
 import { Input } from "../components/ui/input";
@@ -17,13 +19,15 @@ import { Button } from "../components/ui/button";
 
 const TABS = [
   { id: "brand", label: "Marca" },
+  { id: "colors", label: "Colores" },
   { id: "header", label: "Encabezado" },
   { id: "hero", label: "Hero" },
   { id: "about", label: "Nosotros" },
-  { id: "services", label: "Servicios" },
+  { id: "services", label: "Productos" },
+  { id: "sections", label: "Secciones" },
   { id: "catalogs", label: "Catálogos" },
   { id: "contact", label: "Contacto" },
-  { id: "footer", label: "Pie de página" },
+  { id: "footer", label: "Pie" },
 ];
 
 // Login Component
