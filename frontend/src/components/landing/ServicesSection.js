@@ -12,10 +12,13 @@ export const ServicesSection = ({ services, siteData, colorPalette }) => {
   const brand = siteData?.brand || {};
   const svcSection = siteData?.services || {};
   
-  // Get colors from palette or use defaults
-  const colors = colorPalette || {};
-  const primaryColor = colors.primary || '#daa609';
-  const textColor = colors.text || '#1a1a1a';
+  // Get colors from svcSection or use defaults
+  const titleColor = svcSection.titleColor || '#1a1a1a';
+  const highlightColor = svcSection.highlightColor || '#daa609';
+  const subtitleColor = svcSection.subtitleColor || '#666666';
+  const labelColor = svcSection.labelColor || '#daa609';
+  const pedirButtonColor = svcSection.pedir_buttonColor || '#daa609';
+  const pedirTextColor = svcSection.pedir_textColor || '#daa609';
 
   const openLightbox = (images, index) => {
     setLightboxImages(images);
