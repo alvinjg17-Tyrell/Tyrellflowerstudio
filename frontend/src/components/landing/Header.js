@@ -85,11 +85,7 @@ export const Header = ({ siteData }) => {
               key={link.label}
               href={link.href}
               onClick={(e) => scrollToSection(e, link.href)}
-              className={`text-sm tracking-wider uppercase font-light transition-all duration-300 hover:opacity-100 relative group ${
-              isScrolled ?
-              "text-tyrell-dark/70 hover:text-tyrell-dark" :
-              "text-white/80 hover:text-white"}`
-              }>
+              className="text-sm tracking-wider uppercase font-light transition-all duration-300 hover:opacity-100 relative group text-white/80 hover:text-white">
 
                 {link.label}
                 <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-tyrell-gold transition-all duration-300 group-hover:w-full" />
