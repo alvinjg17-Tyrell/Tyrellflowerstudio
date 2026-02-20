@@ -38,19 +38,13 @@ export const HeroSection = ({ siteData }) => {
             muted
             loop
             playsInline
+            webkit-playsinline="true"
+            preload="auto"
             className="w-full h-full object-cover"
             poster={hero.image || undefined}
           >
-            <source src={hero.video} type="video/quicktime" />
             <source src={hero.video} type="video/mp4" />
-            {/* Fallback to image if video fails */}
-            {hero.image && (
-              <img
-                src={hero.image}
-                alt="TYRELL Florería"
-                className="w-full h-full object-cover"
-              />
-            )}
+            <source src={hero.video} type="video/quicktime" />
           </video>
         ) : hero.image ? (
           <img
@@ -60,6 +54,24 @@ export const HeroSection = ({ siteData }) => {
           />
         ) : (
           <div className="w-full h-full bg-tyrell-dark" />
+        )}
+        {/* Fallback image for when video fails on mobile */}
+        {hero.useVideo && hero.image && (
+          <img
+            src={hero.image}
+            alt="TYRELL Florería"
+            className="absolute inset-0 w-full h-full object-cover video-fallback"
+            style={{ display: 'none' }}
+            onLoad={(e) => {
+              const video = e.target.previousElementSibling;
+              if (video && video.tagName === 'VIDEO') {
+                video.addEventListener('error', () => {
+                  e.target.style.display = 'block';
+                  video.style.display = 'none';
+                });
+              }
+            }}
+          />
         )}
         <div className="absolute inset-0 bg-gradient-to-r from-tyrell-dark/85 via-tyrell-dark/60 to-tyrell-dark/30" />
         <div className="absolute inset-0 bg-gradient-to-t from-tyrell-dark/50 via-transparent to-transparent" />
