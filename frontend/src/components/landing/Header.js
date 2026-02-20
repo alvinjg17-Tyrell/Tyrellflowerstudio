@@ -56,7 +56,7 @@ export const Header = ({ siteData }) => {
               </span>
             </div>
             <span className="hidden sm:block font-light tracking-wider">
-              {header.topBarRight || "Entrega a domicilio disponible"}
+              {header.topBarRight || ""}
             </span>
           </div>
         </div>
