@@ -198,6 +198,31 @@ class ServiceResponse(BaseModel):
     images: List[str] = []
     tag: str
     price: str
+
+# NEW: Product within a category
+class ProductItem(BaseModel):
+    id: str = ""
+    name: str = ""
+    image: str = ""
+    imagePosition: dict = {}  # {x: 0, y: 0, scale: 1} for cropping
+    price: str = ""
+    order: int = 0
+
+class CategoryCreate(BaseModel):
+    name: str
+    description: str = ""
+    products: List[ProductItem] = []
+    order: int = 0
+    active: bool = True
+
+class CategoryResponse(BaseModel):
+    id: str
+    name: str
+    description: str
+    products: List[ProductItem]
+    order: int
+    active: bool
+    created_at: datetime
     order: int
     created_at: datetime
 
