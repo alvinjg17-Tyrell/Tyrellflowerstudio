@@ -173,8 +173,8 @@ export const ServicesSection = ({ services, siteData, colorPalette }) => {
                       rel="noopener noreferrer"
                       className="inline-block mt-2 px-4 py-1.5 text-xs uppercase tracking-wider font-medium transition-all duration-300 hover:opacity-80"
                       style={{ 
-                        backgroundColor: `${primaryColor}20`,
-                        color: primaryColor
+                        backgroundColor: `${pedirButtonColor}20`,
+                        color: pedirTextColor
                       }}
                       data-testid={`product-order-btn-${index}`}
                     >
