@@ -159,6 +159,7 @@ export default function AdminPage() {
       setServices(data.services);
       setCatalogLinks(data.catalogLinks || []);
       setDynamicSections(data.dynamicSections || []);
+      setCategories(data.categories || []);
       setColorPalette(data.site?.colorPalette || null);
     } catch (err) {
       toast.error("Error cargando datos");
