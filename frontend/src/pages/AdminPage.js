@@ -12,6 +12,7 @@ import { AdminFooter } from "../components/admin/AdminFooter";
 import { AdminHeader as AdminHeaderSection } from "../components/admin/AdminHeaderSection";
 import { AdminColorPalette } from "../components/admin/AdminColorPalette";
 import { AdminDynamicSections } from "../components/admin/AdminDynamicSections";
+import { AdminCategories } from "../components/admin/AdminCategories";
 import { Toaster, toast } from "sonner";
 import { Loader2, Lock, Mail, Eye, EyeOff, LogOut } from "lucide-react";
 import { Input } from "../components/ui/input";
@@ -23,7 +24,7 @@ const TABS = [
   { id: "header", label: "Encabezado" },
   { id: "hero", label: "Hero" },
   { id: "about", label: "Nosotros" },
-  { id: "services", label: "Productos" },
+  { id: "categories", label: "Productos" },
   { id: "sections", label: "Secciones" },
   { id: "catalogs", label: "Catálogos" },
   { id: "contact", label: "Contacto" },
