@@ -129,6 +129,50 @@ class ContactContent(BaseModel):
     schedule: str = ""
     scheduleWeekend: str = ""
 
+# Color Palette Model
+class ColorPalette(BaseModel):
+    primary: str = "#daa609"           # Dorado - botones principales
+    primaryHover: str = "#b8890a"      # Dorado hover
+    secondary: str = "#B76E79"         # Rosa viejo - header, acentos
+    accent: str = "#D4B896"            # Beige dorado - texto destacado
+    text: str = "#1a1a1a"              # Texto principal
+    textLight: str = "#4F6D5E"         # Verde oliva - texto secundario
+    background: str = "#F5F1EB"        # Marfil cálido - fondo
+    backgroundAlt: str = "#FFFFFF"    # Blanco - fondo alternativo
+    rose: str = "#D8A7B1"              # Rosa empolvado
+    nude: str = "#E8C1B5"              # Nude durazno
+
+# Dynamic Section Model
+class DynamicSectionCreate(BaseModel):
+    title: str
+    subtitle: str = ""
+    type: str = "banner"  # banner, gallery, text, promo
+    content: str = ""
+    image: str = ""
+    images: List[str] = []
+    buttonText: str = ""
+    buttonLink: str = ""
+    backgroundColor: str = ""
+    textColor: str = ""
+    order: int = 0
+    active: bool = True
+
+class DynamicSectionResponse(BaseModel):
+    id: str
+    title: str
+    subtitle: str
+    type: str
+    content: str
+    image: str
+    images: List[str]
+    buttonText: str
+    buttonLink: str
+    backgroundColor: str
+    textColor: str
+    order: int
+    active: bool
+    created_at: datetime
+
 class SiteContent(BaseModel):
     brand: BrandContent = BrandContent()
     hero: HeroContent = HeroContent()
