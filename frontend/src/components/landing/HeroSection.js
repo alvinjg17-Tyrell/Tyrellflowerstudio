@@ -72,23 +72,9 @@ export const HeroSection = ({ siteData }) => {
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-32 lg:py-40">
         <div className="max-w-2xl">
-          {/* Decorative element */}
-          <div
-            className={`flex items-center gap-3 mb-8 transition-all duration-1000 delay-200 ${
-              isVisible
-                ? "opacity-100 translate-y-0"
-                : "opacity-0 translate-y-4"
-            }`}
-          >
-            <div className="h-[1px] w-12 bg-tyrell-gold" />
-            <span className="text-tyrell-gold text-xs tracking-[0.3em] uppercase font-light">
-              {hero.label || "Flower Studio"}
-            </span>
-          </div>
-
           {/* Title */}
           <h1
-            className={`transition-all duration-1000 delay-400 ${
+            className={`transition-all duration-1000 delay-200 ${
               isVisible
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-6"
@@ -104,7 +90,7 @@ export const HeroSection = ({ siteData }) => {
 
           {/* Subtitle */}
           <p
-            className={`mt-8 text-white/70 text-base sm:text-lg font-light leading-relaxed max-w-lg transition-all duration-1000 delay-600 ${
+            className={`mt-8 text-white/70 text-base sm:text-lg font-light leading-relaxed max-w-lg transition-all duration-1000 delay-400 ${
               isVisible
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-6"
@@ -115,7 +101,7 @@ export const HeroSection = ({ siteData }) => {
 
           {/* CTAs */}
           <div
-            className={`mt-10 flex flex-col sm:flex-row gap-4 transition-all duration-1000 delay-800 ${
+            className={`mt-10 flex flex-col sm:flex-row gap-4 transition-all duration-1000 delay-600 ${
               isVisible
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-6"
