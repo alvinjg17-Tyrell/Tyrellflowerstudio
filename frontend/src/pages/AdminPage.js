@@ -281,10 +281,10 @@ export default function AdminPage() {
         {activeTab === "about" && siteContent && (
           <AdminAbout content={siteContent} onSave={saveSiteContent} saving={saving} />
         )}
-        {activeTab === "services" && siteContent && (
+        {activeTab === "categories" && (
           <>
             <AdminServicesSection content={siteContent} onSave={saveSiteContent} saving={saving} />
-            <AdminServices services={services} setServices={setServices} />
+            <AdminCategories categories={categories} setCategories={setCategories} />
           </>
         )}
         {activeTab === "sections" && (
