@@ -129,6 +129,7 @@ export default function AdminPage() {
   const [services, setServices] = useState([]);
   const [catalogLinks, setCatalogLinks] = useState([]);
   const [dynamicSections, setDynamicSections] = useState([]);
+  const [categories, setCategories] = useState([]);
   const [colorPalette, setColorPalette] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
