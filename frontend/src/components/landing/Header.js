@@ -74,9 +74,7 @@ export const Header = ({ siteData }) => {
             <img
               src="https://customer-assets.emergentagent.com/job_tyrell-floreria/artifacts/8svedb6n_TYRELL_2025_corporativo_blanco.png"
               alt={brand.name || "TYRELL"}
-              className={`h-12 lg:h-14 w-auto object-contain transition-all duration-500 ${
-                isScrolled ? "brightness-0" : "brightness-100"
-              }`}
+              className="h-12 lg:h-14 w-auto object-contain transition-all duration-500"
             />
           </a>
 
