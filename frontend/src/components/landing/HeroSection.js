@@ -92,10 +92,16 @@ export const HeroSection = ({ siteData }) => {
                 : "opacity-0 translate-y-6"
             }`}
           >
-            <span className="block font-display text-5xl sm:text-6xl lg:text-7xl xl:text-8xl text-white font-light leading-[0.95] tracking-tight">
+            <span 
+              className="block font-display text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-light leading-[0.95] tracking-tight"
+              style={{ color: hero.titleColor || "#FFFFFF" }}
+            >
               {hero.title}
             </span>
-            <span className="block font-display text-5xl sm:text-6xl lg:text-7xl xl:text-8xl text-[#D4B896] font-light leading-[0.95] tracking-tight mt-2">
+            <span 
+              className="block font-display text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-light leading-[0.95] tracking-tight mt-2"
+              style={{ color: hero.highlightColor || "#D4B896" }}
+            >
               {hero.titleHighlight}
             </span>
           </h1>
