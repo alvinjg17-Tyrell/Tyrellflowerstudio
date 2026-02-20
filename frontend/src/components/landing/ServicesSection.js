@@ -1,38 +1,144 @@
 import { useEffect, useRef, useState } from "react";
-import { ChevronRight, X, ChevronLeft } from "lucide-react";
+import { ChevronRight, ChevronLeft, X } from "lucide-react";
 import { Dialog, DialogContent } from "../ui/dialog";
 
-export const ServicesSection = ({ services, siteData, colorPalette }) => {
-  const [isVisible, setIsVisible] = useState(false);
-  const [lightboxOpen, setLightboxOpen] = useState(false);
-  const [lightboxImages, setLightboxImages] = useState([]);
-  const [lightboxIndex, setLightboxIndex] = useState(0);
-  const sectionRef = useRef(null);
+// Product card component
+const ProductCard = ({ product, categoryName, whatsappLink, primaryColor }) => {
+  const getWhatsAppUrl = () => {
+    const number = whatsappLink ? whatsappLink.replace("https://wa.me/", "") : "";
+    const productName = product.name || categoryName || "este producto";
+    const message = encodeURIComponent(`Hola Tyrell, necesito información sobre ${productName}`);
+    return number ? `https://wa.me/${number}?text=${message}` : `https://wa.me/?text=${message}`;
+  };
+
+  return (
+    <div className="w-[140px] sm:w-[160px] lg:w-[180px] flex-shrink-0 snap-start">
+      {/* Product Image */}
+      <div className="relative aspect-[3/4] bg-gray-100 overflow-hidden group cursor-pointer">
+        {product.image ? (
+          <img
+            src={product.image}
+            alt={product.name || "Producto"}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            style={{
+              objectPosition: `${product.imagePosition?.x || 50}% ${product.imagePosition?.y || 50}%`
+            }}
+            loading="lazy"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-gray-300">
+            <span className="text-xs">Sin imagen</span>
+          </div>
+        )}
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+      </div>
+
+      {/* Product Info */}
+      <div className="mt-2 space-y-1">
+        <h4 className="font-display text-sm font-medium leading-tight line-clamp-2 text-gray-900">
+          {product.name || "Producto"}
+        </h4>
+        {product.price && (
+          <p className="text-sm font-medium" style={{ color: primaryColor }}>
+            {product.price}
+          </p>
+        )}
+        <a
+          href={getWhatsAppUrl()}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block mt-1 px-3 py-1 text-[10px] uppercase tracking-wider font-medium transition-all duration-300 hover:opacity-80"
+          style={{ 
+            backgroundColor: `${primaryColor}15`,
+            color: primaryColor
+          }}
+        >
+          Pedir
+        </a>
+      </div>
+    </div>
+  );
+};
+
+// Category carousel
+const CategoryCarousel = ({ category, whatsappLink, primaryColor }) => {
   const scrollContainerRef = useRef(null);
+
+  const scroll = (direction) => {
+    if (scrollContainerRef.current) {
+      const cardWidth = 180;
+      const scrollAmount = direction === 'left' ? -cardWidth * 2 : cardWidth * 2;
+      scrollContainerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
+
+  if (!category.products || category.products.length === 0) return null;
+
+  return (
+    <div className="mb-12">
+      {/* Category Title */}
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="font-display text-xl sm:text-2xl text-gray-900 font-medium">
+          {category.name}
+        </h3>
+        {category.description && (
+          <p className="text-sm text-gray-500 hidden sm:block">{category.description}</p>
+        )}
+      </div>
+
+      {/* Products Carousel */}
+      <div className="relative group">
+        {/* Left Arrow */}
+        <button
+          onClick={() => scroll('left')}
+          className="absolute -left-2 lg:-left-4 top-[30%] -translate-y-1/2 z-20 w-9 h-9 bg-white border border-gray-200 rounded-full flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-gray-50"
+          data-testid="category-scroll-left"
+        >
+          <ChevronLeft className="w-5 h-5 text-gray-600" />
+        </button>
+
+        {/* Scrollable Container */}
+        <div
+          ref={scrollContainerRef}
+          className="flex gap-3 sm:gap-4 overflow-x-auto snap-x snap-mandatory pb-2 -mx-4 px-4 lg:mx-0 lg:px-0 scrollbar-hide"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        >
+          {category.products.map((product, index) => (
+            <ProductCard
+              key={product.id || index}
+              product={product}
+              categoryName={category.name}
+              whatsappLink={whatsappLink}
+              primaryColor={primaryColor}
+            />
+          ))}
+        </div>
+
+        {/* Right Arrow */}
+        <button
+          onClick={() => scroll('right')}
+          className="absolute -right-2 lg:-right-4 top-[30%] -translate-y-1/2 z-20 w-9 h-9 bg-white border border-gray-200 rounded-full flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-gray-50"
+          data-testid="category-scroll-right"
+        >
+          <ChevronRight className="w-5 h-5 text-gray-600" />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+export const ServicesSection = ({ services, siteData, colorPalette, categories }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const sectionRef = useRef(null);
   const brand = siteData?.brand || {};
   const svcSection = siteData?.services || {};
   
-  // Get colors from svcSection or use defaults
+  // Get colors
   const titleColor = svcSection.titleColor || '#1a1a1a';
   const highlightColor = svcSection.highlightColor || '#daa609';
   const subtitleColor = svcSection.subtitleColor || '#666666';
   const labelColor = svcSection.labelColor || '#daa609';
-  const pedirButtonColor = svcSection.pedir_buttonColor || '#daa609';
-  const pedirTextColor = svcSection.pedir_textColor || '#daa609';
-
-  const openLightbox = (images, index) => {
-    setLightboxImages(images);
-    setLightboxIndex(index);
-    setLightboxOpen(true);
-  };
-
-  const lightboxNext = () => {
-    setLightboxIndex((prev) => (prev + 1) % lightboxImages.length);
-  };
-
-  const lightboxPrev = () => {
-    setLightboxIndex((prev) => (prev - 1 + lightboxImages.length) % lightboxImages.length);
-  };
+  const primaryColor = svcSection.pedir_buttonColor || colorPalette?.primary || '#daa609';
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -43,25 +149,8 @@ export const ServicesSection = ({ services, siteData, colorPalette }) => {
     return () => observer.disconnect();
   }, []);
 
-  const getWhatsAppUrl = (serviceName) => {
-    const number = brand.whatsappLink ? brand.whatsappLink.replace("https://wa.me/", "") : "";
-    const message = encodeURIComponent(`Hola Tyrell, necesito información sobre ${serviceName}`);
-    return number ? `https://wa.me/${number}?text=${message}` : `https://wa.me/?text=${message}`;
-  };
-
-  const scrollRight = () => {
-    if (scrollContainerRef.current) {
-      const cardWidth = scrollContainerRef.current.querySelector('[data-product-card]')?.offsetWidth || 200;
-      scrollContainerRef.current.scrollBy({ left: cardWidth + 16, behavior: 'smooth' });
-    }
-  };
-
-  const scrollLeft = () => {
-    if (scrollContainerRef.current) {
-      const cardWidth = scrollContainerRef.current.querySelector('[data-product-card]')?.offsetWidth || 200;
-      scrollContainerRef.current.scrollBy({ left: -(cardWidth + 16), behavior: 'smooth' });
-    }
-  };
+  // Use categories if available, otherwise fall back to services
+  const hasCategories = categories && categories.length > 0;
 
   return (
     <section id="servicios" ref={sectionRef} className="relative py-16 lg:py-24 bg-white overflow-hidden">
@@ -69,7 +158,7 @@ export const ServicesSection = ({ services, siteData, colorPalette }) => {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className={`text-center mb-10 lg:mb-14 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+        <div className={`text-center mb-12 lg:mb-16 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <p 
             className="text-xs uppercase tracking-[0.3em] mb-3"
             style={{ color: labelColor }}
@@ -91,160 +180,25 @@ export const ServicesSection = ({ services, siteData, colorPalette }) => {
           </p>
         </div>
 
-        {/* Products Carousel Container */}
-        <div className="relative">
-          {/* Left Arrow (hidden on mobile, visible on desktop) */}
-          <button
-            onClick={scrollLeft}
-            className="hidden lg:flex absolute -left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 bg-white border border-gray-200 rounded-full items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:bg-gray-50"
-            data-testid="carousel-scroll-left"
-          >
-            <ChevronLeft className="w-5 h-5 text-gray-600" />
-          </button>
-
-          {/* Scrollable Products Container */}
-          <div
-            ref={scrollContainerRef}
-            className="flex gap-4 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-4 -mx-4 px-4 lg:mx-0 lg:px-0"
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            {(services || []).map((service, index) => {
-              const allImages = [service.image, ...(service.images || [])].filter(Boolean);
-              
-              return (
-                <div
-                  key={service.id}
-                  data-product-card
-                  className={`flex-shrink-0 w-[160px] sm:w-[180px] lg:w-[200px] snap-start transition-all duration-700 ${
-                    isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"
-                  }`}
-                  style={{ transitionDelay: `${100 + index * 80}ms` }}
-                  data-testid={`product-card-${index}`}
-                >
-                  {/* Product Image */}
-                  <div 
-                    className="relative aspect-[3/4] bg-gray-100 overflow-hidden cursor-pointer group"
-                    onClick={() => allImages.length > 0 && openLightbox(allImages, 0)}
-                  >
-                    {service.image ? (
-                      <img
-                        src={service.image}
-                        alt={service.title}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-300">
-                        <span className="text-xs">Sin imagen</span>
-                      </div>
-                    )}
-                    {/* Hover overlay */}
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
-                  </div>
-
-                  {/* Product Info */}
-                  <div className="mt-3 space-y-1.5">
-                    <h3 
-                      className="font-display text-sm lg:text-base font-medium leading-tight line-clamp-2"
-                      style={{ color: titleColor }}
-                    >
-                      {service.title}
-                    </h3>
-                    
-                    {service.description && (
-                      <p className="text-xs text-gray-500 line-clamp-2 font-light">
-                        {service.description}
-                      </p>
-                    )}
-
-                    {service.price && (
-                      <p 
-                        className="text-sm font-medium"
-                        style={{ color: highlightColor }}
-                      >
-                        {service.price}
-                      </p>
-                    )}
-
-                    {/* Pedir Button */}
-                    <a
-                      href={getWhatsAppUrl(service.title)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-block mt-2 px-4 py-1.5 text-xs uppercase tracking-wider font-medium transition-all duration-300 hover:opacity-80"
-                      style={{ 
-                        backgroundColor: `${pedirButtonColor}20`,
-                        color: pedirTextColor
-                      }}
-                      data-testid={`product-order-btn-${index}`}
-                    >
-                      Pedir
-                    </a>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-
-          {/* Right Arrow Button (circular with >) */}
-          <button
-            onClick={scrollRight}
-            className="absolute -right-2 lg:-right-4 top-[35%] -translate-y-1/2 z-20 w-10 h-10 bg-white border border-gray-300 rounded-full flex items-center justify-center shadow-md hover:shadow-lg transition-all duration-300 hover:bg-gray-50"
-            data-testid="carousel-scroll-right"
-          >
-            <ChevronRight className="w-5 h-5 text-gray-600" />
-          </button>
-        </div>
-      </div>
-
-      {/* Image Lightbox */}
-      <Dialog open={lightboxOpen} onOpenChange={setLightboxOpen}>
-        <DialogContent className="max-w-4xl w-[95vw] h-auto max-h-[90vh] p-0 border-0 bg-transparent shadow-none" data-testid="image-lightbox">
-          <div className="relative flex items-center justify-center">
-            <button
-              onClick={() => setLightboxOpen(false)}
-              className="absolute top-2 right-2 z-50 w-10 h-10 bg-black/50 hover:bg-black/70 text-white flex items-center justify-center transition-colors rounded-full"
-              data-testid="lightbox-close-btn"
-            >
-              <X className="w-5 h-5" />
-            </button>
-
-            {lightboxImages.length > 1 && (
-              <>
-                <button
-                  onClick={lightboxPrev}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 z-50 w-12 h-12 bg-black/50 hover:bg-black/70 text-white flex items-center justify-center transition-colors rounded-full"
-                  data-testid="lightbox-prev-btn"
-                >
-                  <ChevronLeft className="w-6 h-6" />
-                </button>
-                <button
-                  onClick={lightboxNext}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 z-50 w-12 h-12 bg-black/50 hover:bg-black/70 text-white flex items-center justify-center transition-colors rounded-full"
-                  data-testid="lightbox-next-btn"
-                >
-                  <ChevronRight className="w-6 h-6" />
-                </button>
-              </>
-            )}
-
-            {lightboxImages[lightboxIndex] && (
-              <img
-                src={lightboxImages[lightboxIndex]}
-                alt={`Imagen ${lightboxIndex + 1}`}
-                className="max-w-full max-h-[85vh] object-contain rounded-lg"
-                data-testid="lightbox-image"
+        {/* Categories with Products */}
+        {hasCategories ? (
+          <div className={`transition-all duration-1000 delay-300 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+            {categories.map((category) => (
+              <CategoryCarousel
+                key={category.id}
+                category={category}
+                whatsappLink={brand.whatsappLink}
+                primaryColor={primaryColor}
               />
-            )}
-
-            {lightboxImages.length > 1 && (
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-black/50 text-white text-sm px-4 py-2 rounded-full" data-testid="lightbox-counter">
-                {lightboxIndex + 1} / {lightboxImages.length}
-              </div>
-            )}
+            ))}
           </div>
-        </DialogContent>
-      </Dialog>
+        ) : (
+          /* Fallback to old services if no categories */
+          <div className="text-center py-12 text-gray-400">
+            <p>No hay productos disponibles</p>
+          </div>
+        )}
+      </div>
     </section>
   );
 };
