@@ -14,10 +14,19 @@ from datetime import datetime, timedelta
 import shutil
 from jose import JWTError, jwt
 from passlib.context import CryptContext
+from PIL import Image
+import io
 
 ROOT_DIR = Path(__file__).parent
 UPLOADS_DIR = ROOT_DIR / "uploads"
 UPLOADS_DIR.mkdir(exist_ok=True)
+THUMBNAILS_DIR = UPLOADS_DIR / "thumbnails"
+THUMBNAILS_DIR.mkdir(exist_ok=True)
+
+# Image optimization settings
+MAX_IMAGE_SIZE = (1200, 1200)  # Max dimensions for optimized images
+THUMBNAIL_SIZE = (400, 400)    # Thumbnail dimensions
+JPEG_QUALITY = 85              # Quality for JPEG compression
 load_dotenv(ROOT_DIR / '.env')
 
 mongo_url = os.environ['MONGO_URL']
