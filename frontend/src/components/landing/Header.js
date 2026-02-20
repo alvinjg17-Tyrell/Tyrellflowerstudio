@@ -102,7 +102,13 @@ export const Header = ({ siteData }) => {
               target="_blank"
               rel="noopener noreferrer">
 
-              <Button className="bg-tyrell-gold hover:bg-tyrell-gold-dark text-white text-sm tracking-wider uppercase px-6 py-2 rounded-none border-0 transition-all duration-300 hover:shadow-[0_4px_20px_rgba(218,166,9,0.4)]">
+              <Button 
+                className="text-sm tracking-wider uppercase px-6 py-2 rounded-none border-0 transition-all duration-300 hover:shadow-lg"
+                style={{
+                  backgroundColor: header.ctaButtonColor || "#daa609",
+                  color: header.ctaTextColor || "#FFFFFF"
+                }}
+              >
                 {header.ctaText || "Ver Catálogo"}
               </Button>
             </a>
