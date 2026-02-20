@@ -262,6 +262,13 @@ export default function AdminPage() {
         {activeTab === "brand" && siteContent && (
           <AdminBrand content={siteContent} onSave={saveSiteContent} saving={saving} />
         )}
+        {activeTab === "colors" && (
+          <AdminColorPalette 
+            colorPalette={colorPalette} 
+            onSave={(palette) => setColorPalette(palette)} 
+            saving={saving} 
+          />
+        )}
         {activeTab === "header" && siteContent && (
           <AdminHeaderSection content={siteContent} onSave={saveSiteContent} saving={saving} />
         )}
@@ -276,6 +283,9 @@ export default function AdminPage() {
             <AdminServicesSection content={siteContent} onSave={saveSiteContent} saving={saving} />
             <AdminServices services={services} setServices={setServices} />
           </>
+        )}
+        {activeTab === "sections" && (
+          <AdminDynamicSections sections={dynamicSections} setSections={setDynamicSections} />
         )}
         {activeTab === "catalogs" && (
           <AdminCatalogLinks catalogLinks={catalogLinks} setCatalogLinks={setCatalogLinks} />
