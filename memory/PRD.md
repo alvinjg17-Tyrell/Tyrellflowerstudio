@@ -10,7 +10,7 @@ Create a professional and elegant website for "TYRELL" flower shop with:
 - Responsive design for mobile devices
 
 ## User Personas
-- **Shop Owner**: Needs to manage products, prices, and content without technical knowledge
+- **Shop Owner**: Needs to manage products, prices, content, and colors without technical knowledge
 - **Customers**: Looking for floral arrangements with easy ordering via WhatsApp
 
 ## Core Requirements
@@ -19,27 +19,31 @@ Create a professional and elegant website for "TYRELL" flower shop with:
 3. WhatsApp integration for order requests
 4. File upload for images and videos
 5. Responsive mobile design
+6. Global color palette customization
+7. Dynamic marketing sections
 
 ## Implemented Features (as of Feb 20, 2026)
 
 ### Landing Page
 - [x] Header with logo and navigation
-- [x] Hero section with video/image background
+- [x] Hero section with video/image background (no Flower Studio label)
 - [x] About section with stats and circular icons
-- [x] Services section with product cards and image grid
+- [x] Services section - **Horizontal carousel** with circular nav buttons
+- [x] Dynamic sections for marketing campaigns
 - [x] Catalog links section
 - [x] Contact section with WhatsApp link
 - [x] Footer
-- [x] Floating WhatsApp button with real WhatsApp icon
+- [x] Floating WhatsApp button (real icon, higher position)
 
 ### Admin Panel (/admin)
 - [x] **Authentication** - Login required (tyrellflowerstudio@gmail.com)
+- [x] **COLORES tab** - Global color palette editor
+- [x] **SECCIONES tab** - Dynamic sections manager
 - [x] Brand settings (name, tagline, WhatsApp number)
 - [x] Header section editor (top bar, navigation)
 - [x] Hero section editor (title, subtitle, video/image)
 - [x] About section editor
-- [x] Services CRUD (add, edit, delete products)
-- [x] Services section titles editor
+- [x] **PRODUCTOS tab** - Products CRUD with carousel preview
 - [x] Catalog links management
 - [x] Contact information editor
 - [x] Footer editor
@@ -47,32 +51,34 @@ Create a professional and elegant website for "TYRELL" flower shop with:
 ### Technical Features
 - [x] Image upload with automatic optimization (Pillow)
 - [x] Thumbnail generation for faster page loads
-- [x] Video upload support
-- [x] Multiple images per service (grid display)
+- [x] Video upload support with mobile fallback
+- [x] Multiple images per service
 - [x] MongoDB database integration
 - [x] JWT authentication for admin
+- [x] Color palette API endpoints
+- [x] Dynamic sections API endpoints
 
 ### UX Features (Updated Feb 20, 2026)
-- [x] **Image Grid Layout**: Service images display in 2x2 grid with "+N" overlay
-- [x] **Image Lightbox**: Click service images to view in full-size modal with navigation
-- [x] **No Auto-scroll**: Removed 5-second auto-scroll from service images
-- [x] **Real WhatsApp Icon**: Floating button uses official WhatsApp SVG icon
-- [x] **Beige Gold Highlight**: Hero text uses beige gold (#D4B896) instead of pure gold
-- [x] **Removed Decorative Text**: "---FLOWER STUDIO" removed from Hero right side
+- [x] **Horizontal Product Carousel**: E-commerce style layout
+- [x] **Circular Navigation Buttons**: < and > for carousel navigation
+- [x] **Swipeable Mobile**: Touch-friendly scroll on mobile
+- [x] **Image Lightbox**: Click images to view full-size
+- [x] **Real WhatsApp Icon**: Official WhatsApp SVG icon
+- [x] **Beige Gold Highlight**: Hero text uses beige gold (#D4B896)
 - [x] **Consistent Header**: Pink/burgundy background on scroll with white logo
 
-### Styling (Feb 20, 2026)
-- [x] **Perfectly Vintages Font**: Serif vintage typography applied globally
-- [x] **New Color Palette**:
-  - Verde oliva: #4F6D5E (primary text)
-  - Rosa empolvado: #D8A7B1
-  - Nude durazno: #E8C1B5
-  - Marfil cálido: #F5F1EB (background)
-  - Rosa viejo/Burgundy: #B76E79
-  - Dorado beige: #D4B896 (hero highlight)
-  - Dorado: #daa609 (accents, buttons)
-- [x] **Service tags removed** (POPULAR, EXCLUSIVO no longer displayed)
-- [x] **Circular Icons** in About section
+### Styling
+- [x] **Perfectly Vintages Font**: Serif vintage typography
+- [x] **Customizable Color Palette** via admin:
+  - Primary (Buttons): #daa609
+  - Primary Hover: #b8890a
+  - Secondary (Header): #B76E79
+  - Accent: #D4B896
+  - Text: #1a1a1a
+  - Text Light: #4F6D5E
+  - Background: #F5F1EB
+  - Rose: #D8A7B1
+  - Nude: #E8C1B5
 
 ## Tech Stack
 - **Frontend**: React, TailwindCSS, shadcn/ui
@@ -81,26 +87,21 @@ Create a professional and elegant website for "TYRELL" flower shop with:
 - **Fonts**: Perfectly Vintages (CDNFonts), Playfair Display (fallback)
 - **File Storage**: Local uploads directory with optimization
 
-## Color Palette
-| Color | Hex | Use |
-|-------|-----|-----|
-| Verde Oliva | #4F6D5E | Primary text, dark sections |
-| Rosa Empolvado | #D8A7B1 | Highlights, icons |
-| Nude Durazno | #E8C1B5 | Accents |
-| Marfil Cálido | #F5F1EB | Backgrounds |
-| Rosa Viejo/Burgundy | #B76E79 | Top bar, header on scroll |
-| Dorado Beige | #D4B896 | Hero highlighted text |
-| Dorado | #DAA609 | CTAs, accents |
-
 ## API Endpoints
 - `POST /api/auth/login` - Admin login
 - `GET /api/auth/verify` - Verify token
-- `GET /api/content` - Fetch all site content
-- `PUT /api/content` - Update site content (auth required)
+- `GET /api/content` - Fetch all site content (includes colorPalette, dynamicSections)
+- `PUT /api/content` - Update site content
 - `GET /api/services` - List all services
-- `POST /api/services` - Create service (auth required)
-- `PUT /api/services/{id}` - Update service (auth required)
-- `DELETE /api/services/{id}` - Delete service (auth required)
+- `POST /api/services` - Create service
+- `PUT /api/services/{id}` - Update service
+- `DELETE /api/services/{id}` - Delete service
+- `GET /api/color-palette` - Get color palette
+- `PUT /api/color-palette` - Update color palette
+- `GET /api/dynamic-sections` - List dynamic sections
+- `POST /api/dynamic-sections` - Create section
+- `PUT /api/dynamic-sections/{id}` - Update section
+- `DELETE /api/dynamic-sections/{id}` - Delete section
 - `POST /api/upload` - Upload file (returns optimized URL + thumbnail)
 
 ## Admin Credentials
@@ -108,9 +109,8 @@ Create a professional and elegant website for "TYRELL" flower shop with:
 - Password: 897355
 
 ## Backlog / Future Enhancements (P1)
-- [ ] Global color palette editor in admin panel
-- [ ] Dynamic page sections (add marketing campaigns)
-- [ ] Make WhatsApp button editable from admin
+- [ ] Apply color palette changes to all frontend components dynamically
+- [ ] Product images preview in real-size in admin
 - [ ] Password reset functionality
 - [ ] Multiple admin users
 
