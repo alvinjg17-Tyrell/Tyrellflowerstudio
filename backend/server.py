@@ -403,8 +403,12 @@ async def get_all_content():
     site = await db.site_content.find_one()
     if site:
         site.pop("_id", None)
+        # Ensure colorPalette exists
+        if "colorPalette" not in site:
+            site["colorPalette"] = ColorPalette().dict()
     else:
         site = DEFAULT_SITE
+        site["colorPalette"] = ColorPalette().dict()
 
     services = []
     async for svc in db.services.find().sort("order", 1):
@@ -416,7 +420,17 @@ async def get_all_content():
         cl.pop("_id", None)
         catalog_links.append(cl)
 
-    return {"site": site, "services": services, "catalogLinks": catalog_links}
+    dynamic_sections = []
+    async for sec in db.dynamic_sections.find({"active": True}).sort("order", 1):
+        sec.pop("_id", None)
+        dynamic_sections.append(sec)
+
+    return {
+        "site": site, 
+        "services": services, 
+        "catalogLinks": catalog_links,
+        "dynamicSections": dynamic_sections
+    }
 
 @api_router.put("/content")
 async def update_site_content(content: SiteContent):
