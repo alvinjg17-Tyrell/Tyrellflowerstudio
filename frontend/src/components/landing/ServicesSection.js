@@ -33,26 +33,9 @@ const ServiceImageCarousel = ({ images, mainImage, title, onImageClick }) => {
     if (imageCount > 0) scrollTo((currentIndex - 1 + imageCount) % imageCount);
   };
 
-  // Auto-scroll every 5 seconds - hook MUST be called unconditionally
+  // Auto-scroll removed - user requested static carousel
   useEffect(() => {
-    if (imageCount <= 1) return;
-    
-    autoScrollRef.current = setInterval(() => {
-      setCurrentIndex(prev => {
-        const nextIndex = (prev + 1) % imageCount;
-        if (scrollRef.current) {
-          const child = scrollRef.current.children[nextIndex];
-          if (child) {
-            child.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-          }
-        }
-        return nextIndex;
-      });
-    }, 5000);
-
-    return () => {
-      if (autoScrollRef.current) clearInterval(autoScrollRef.current);
-    };
+    // Auto-scroll disabled
   }, [imageCount]);
 
   const handleImageClick = (e, index) => {
