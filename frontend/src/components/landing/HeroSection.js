@@ -108,11 +108,12 @@ export const HeroSection = ({ siteData }) => {
 
           {/* Subtitle */}
           <p
-            className={`mt-8 text-white/70 text-base sm:text-lg font-light leading-relaxed max-w-lg transition-all duration-1000 delay-400 ${
+            className={`mt-8 text-base sm:text-lg font-light leading-relaxed max-w-lg transition-all duration-1000 delay-400 ${
               isVisible
                 ? "opacity-100 translate-y-0"
                 : "opacity-0 translate-y-6"
             }`}
+            style={{ color: hero.subtitleColor || "rgba(255,255,255,0.7)" }}
           >
             {hero.subtitle}
           </p>
@@ -131,7 +132,13 @@ export const HeroSection = ({ siteData }) => {
               rel="noopener noreferrer"
               data-testid="hero-catalog-btn"
             >
-              <Button className="bg-tyrell-gold hover:bg-tyrell-gold-dark text-white px-8 py-6 text-sm tracking-[0.2em] uppercase rounded-none transition-all duration-300 hover:shadow-[0_8px_30px_rgba(201,169,110,0.35)] group">
+              <Button 
+                className="px-8 py-6 text-sm tracking-[0.2em] uppercase rounded-none transition-all duration-300 hover:shadow-lg group"
+                style={{
+                  backgroundColor: hero.ctaButtonColor || "#daa609",
+                  color: hero.ctaButtonTextColor || "#FFFFFF"
+                }}
+              >
                 {hero.ctaText || "Ver Catálogo"}
                 <ArrowRight className="ml-2 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
               </Button>
@@ -139,7 +146,11 @@ export const HeroSection = ({ siteData }) => {
             <Button
               onClick={scrollToServices}
               variant="outline"
-              className="border-white/30 text-white hover:bg-white/10 hover:border-white/50 px-8 py-6 text-sm tracking-[0.2em] uppercase rounded-none transition-all duration-300 bg-transparent"
+              className="px-8 py-6 text-sm tracking-[0.2em] uppercase rounded-none transition-all duration-300 bg-transparent border-2"
+              style={{
+                borderColor: hero.ctaSecondaryTextColor || "#FFFFFF",
+                color: hero.ctaSecondaryTextColor || "#FFFFFF"
+              }}
             >
               {hero.ctaSecondaryText || "Nuestros Servicios"}
             </Button>
