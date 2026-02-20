@@ -146,7 +146,7 @@ export const ServicesSection = ({ services, siteData, colorPalette }) => {
                   <div className="mt-3 space-y-1.5">
                     <h3 
                       className="font-display text-sm lg:text-base font-medium leading-tight line-clamp-2"
-                      style={{ color: textColor }}
+                      style={{ color: titleColor }}
                     >
                       {service.title}
                     </h3>
@@ -160,7 +160,7 @@ export const ServicesSection = ({ services, siteData, colorPalette }) => {
                     {service.price && (
                       <p 
                         className="text-sm font-medium"
-                        style={{ color: primaryColor }}
+                        style={{ color: highlightColor }}
                       >
                         {service.price}
                       </p>
