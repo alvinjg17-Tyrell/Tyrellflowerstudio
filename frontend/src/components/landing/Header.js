@@ -37,7 +37,7 @@ export const Header = ({ siteData }) => {
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
       isScrolled ?
-      "bg-white/95 backdrop-blur-xl shadow-[0_2px_30px_rgba(218,166,9,0.1)]" :
+      "bg-tyrell-burgundy/95 backdrop-blur-xl shadow-[0_2px_30px_rgba(183,110,121,0.2)]" :
       "bg-transparent"}`
       }>
 
