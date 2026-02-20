@@ -97,7 +97,7 @@ export const HeroSection = ({ siteData }) => {
             <span className="block font-display text-5xl sm:text-6xl lg:text-7xl xl:text-8xl text-white font-light leading-[0.95] tracking-tight">
               {hero.title}
             </span>
-            <span className="block font-display text-5xl sm:text-6xl lg:text-7xl xl:text-8xl text-tyrell-gold font-light leading-[0.95] tracking-tight mt-2">
+            <span className="block font-display text-5xl sm:text-6xl lg:text-7xl xl:text-8xl text-[#D4B896] font-light leading-[0.95] tracking-tight mt-2">
               {hero.titleHighlight}
             </span>
           </h1>
