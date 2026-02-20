@@ -450,11 +450,18 @@ async def get_all_content():
         sec.pop("_id", None)
         dynamic_sections.append(sec)
 
+    # Get product categories
+    categories = []
+    async for cat in db.product_categories.find({"active": True}).sort("order", 1):
+        cat.pop("_id", None)
+        categories.append(cat)
+
     return {
         "site": site, 
         "services": services, 
         "catalogLinks": catalog_links,
-        "dynamicSections": dynamic_sections
+        "dynamicSections": dynamic_sections,
+        "categories": categories
     }
 
 @api_router.put("/content")
