@@ -66,7 +66,12 @@ export default function LandingPage() {
       <Header siteData={data.site} colorPalette={colorPalette} />
       <HeroSection siteData={data.site} colorPalette={colorPalette} />
       <AboutSection siteData={data.site} colorPalette={colorPalette} />
-      <ServicesSection services={data.services} siteData={data.site} colorPalette={colorPalette} />
+      <ServicesSection 
+        services={data.services} 
+        siteData={data.site} 
+        colorPalette={colorPalette} 
+        categories={data.categories || []}
+      />
       
       {/* Dynamic Sections */}
       {data.dynamicSections && data.dynamicSections.length > 0 && (
