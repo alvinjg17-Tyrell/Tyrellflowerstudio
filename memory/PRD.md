@@ -1,91 +1,84 @@
 # TYRELL Florería - Product Requirements Document
 
 ## Original Problem Statement
-Create a professional and elegant website for "TYRELL" flower shop with:
-- Modern design with soft, floral aesthetic
-- Homepage with hero, services, catalog links, contact sections
-- Full CMS admin panel for managing all content
-- WhatsApp integration for orders
-- Image/video upload capabilities
-- Responsive design for mobile devices
-- **Full color customization** from admin panel
+Create a professional and elegant website for "TYRELL" flower shop with full CMS admin panel.
 
 ## Implemented Features (as of Feb 20, 2026)
 
-### Landing Page
-- [x] Header with logo and navigation
-- [x] Hero section with video/image background
-- [x] About section with stats and circular icons
-- [x] Services section - Horizontal carousel with circular nav buttons
-- [x] Dynamic sections for marketing campaigns
-- [x] Catalog links section
-- [x] Contact section with WhatsApp link
-- [x] Footer
-- [x] Floating WhatsApp button (real icon)
+### NEW: Category-Based Products System
+The products section has been restructured with:
+- **Categories**: Ramos, Ramos con Rosas, Flower Box, etc.
+- **Products per Category**: Each category contains multiple products
+- **Horizontal Carousel per Category**: Each category displays its products in a swipeable carousel
+- **Individual Product Names**: Each product has its own name, image, and price
+- **WhatsApp Integration**: "Pedir" button sends message with specific product name
 
-### Admin Panel (/admin) - Color Customization
-- [x] **ENCABEZADO tab**: 
-  - Top bar background & text colors
-  - CTA button (VER CATÁLOGO) background & text colors
-  - Live preview
-- [x] **HERO tab**:
-  - Title line 1 color
-  - Highlighted title (line 2) color
-  - Subtitle color
-  - Primary button background & text colors
-  - Secondary button border color
-  - Live preview
-- [x] **PRODUCTOS tab**:
-  - Section label color
-  - Title color
-  - Highlighted word color
-  - Subtitle color
-  - "Pedir" button background & text colors
-  - Live preview
-- [x] **COLORES tab** - Global color palette editor
-- [x] **SECCIONES tab** - Dynamic marketing sections
+### Admin Panel - Products Tab
+- Create/edit/delete product categories
+- Add multiple products to each category
+- Upload product images with **position controls** (horizontal/vertical sliders)
+- Set product name and price
+- Live preview showing how products will appear on the page
+- Collapsible category sections for easy management
 
-### Technical Features
-- [x] Image upload with automatic optimization (Pillow)
-- [x] Thumbnail generation for faster page loads
-- [x] Video upload support with mobile fallback
-- [x] Inline color pickers with preset palette
-- [x] MongoDB database integration
-- [x] JWT authentication for admin
+### Product Card Features
+- Image with customizable position (object-position)
+- Product name below image
+- Optional price
+- "Pedir" button linking to WhatsApp with product name
 
-## Color Palette (Editable from Admin)
-| Element | Default Color | Location |
-|---------|---------------|----------|
-| Top Bar BG | #B76E79 | Encabezado |
-| Top Bar Text | #FFFFFF | Encabezado |
-| CTA Button | #daa609 | Encabezado, Hero |
-| Hero Title | #FFFFFF | Hero |
-| Hero Highlight | #D4B896 | Hero |
-| Section Title | #1a1a1a | Productos |
-| Section Highlight | #daa609 | Productos |
-| Pedir Button | #daa609 | Productos |
+### Color Customization
+All sections have inline color pickers:
+- **ENCABEZADO**: Top bar colors, CTA button colors
+- **HERO**: Title, highlight, subtitle, button colors
+- **PRODUCTOS**: Section title, highlight, "Pedir" button colors
+
+### Other Features
+- Removed "Entrega a domicilio disponible" from header
+- Video mobile compatibility improved
+- Dynamic marketing sections
+- Global color palette editor
 
 ## API Endpoints
-- `GET/PUT /api/color-palette` - Global color palette
-- `GET/POST/PUT/DELETE /api/dynamic-sections` - Dynamic sections
-- All content endpoints support color fields
+- `GET/POST/PUT/DELETE /api/categories` - Product categories CRUD
+- Products are embedded in categories
+
+## Database Schema
+
+### product_categories collection
+```json
+{
+  "id": "uuid",
+  "name": "Ramos",
+  "description": "Composiciones artísticas",
+  "products": [
+    {
+      "id": "uuid",
+      "name": "Ramo Primavera",
+      "image": "url",
+      "imagePosition": {"x": 50, "y": 50},
+      "price": "S/. 120",
+      "order": 0
+    }
+  ],
+  "order": 0,
+  "active": true,
+  "created_at": "datetime"
+}
+```
 
 ## Admin Credentials
 - Email: tyrellflowerstudio@gmail.com
 - Password: 897355
 
 ## Regarding "Made with Emergent" Badge
-Contact Emergent support (Discord or email) for removal options. Include:
-- Job ID
-- Specific request
-- Reasons for removal
+Contact Emergent support (Discord or email) for removal options.
 
 ## Backlog (P1)
+- [ ] Drag-and-drop product reordering
+- [ ] Bulk image upload
 - [ ] Add color pickers to About, Contact, Footer sections
-- [ ] Product preview in real-size in admin
-- [ ] Password reset functionality
 
 ## Future Tasks (P2)
 - [ ] Order tracking system
 - [ ] Analytics integration
-- [ ] Multi-language support
