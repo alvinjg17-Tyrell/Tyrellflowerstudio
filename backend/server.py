@@ -505,6 +505,50 @@ async def delete_service(service_id: str):
         raise HTTPException(status_code=404, detail="Servicio no encontrado")
     return {"message": "Servicio eliminado"}
 
+# ─── Product Categories CRUD ──────────────────────────────
+
+@api_router.get("/categories")
+async def get_categories():
+    categories = []
+    async for cat in db.product_categories.find().sort("order", 1):
+        cat.pop("_id", None)
+        categories.append(cat)
+    return categories
+
+@api_router.post("/categories", response_model=CategoryResponse)
+async def create_category(category: CategoryCreate):
+    cat_dict = category.dict()
+    cat_dict["id"] = str(uuid.uuid4())
+    cat_dict["created_at"] = datetime.utcnow()
+    # Assign IDs to products if they don't have them
+    for product in cat_dict.get("products", []):
+        if not product.get("id"):
+            product["id"] = str(uuid.uuid4())
+    await db.product_categories.insert_one(cat_dict)
+    return CategoryResponse(**cat_dict)
+
+@api_router.put("/categories/{category_id}", response_model=CategoryResponse)
+async def update_category(category_id: str, category: CategoryCreate):
+    result = await db.product_categories.find_one({"id": category_id})
+    if not result:
+        raise HTTPException(status_code=404, detail="Categoría no encontrada")
+    cat_dict = category.dict()
+    # Assign IDs to new products
+    for product in cat_dict.get("products", []):
+        if not product.get("id"):
+            product["id"] = str(uuid.uuid4())
+    await db.product_categories.update_one({"id": category_id}, {"$set": cat_dict})
+    updated = await db.product_categories.find_one({"id": category_id})
+    updated.pop("_id", None)
+    return CategoryResponse(**updated)
+
+@api_router.delete("/categories/{category_id}")
+async def delete_category(category_id: str):
+    result = await db.product_categories.delete_one({"id": category_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Categoría no encontrada")
+    return {"message": "Categoría eliminada"}
+
 # ─── Catalog Links CRUD ──────────────────────────────────
 
 @api_router.get("/catalog-links", response_model=List[CatalogLinkResponse])
