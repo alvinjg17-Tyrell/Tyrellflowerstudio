@@ -1,119 +1,99 @@
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight, ChevronLeft, ChevronRight, MessageCircle, X } from "lucide-react";
+import { ArrowRight, MessageCircle, X, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "../ui/button";
 import { Dialog, DialogContent } from "../ui/dialog";
 
-const ServiceImageCarousel = ({ images, mainImage, title, onImageClick }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [loadedImages, setLoadedImages] = useState({});
-  const scrollRef = useRef(null);
-  const autoScrollRef = useRef(null);
-  
-  // Calculate allImages once
+// Grid display for multiple images (no carousel, no auto-scroll)
+const ServiceImageGrid = ({ images, mainImage, onImageClick }) => {
   const allImages = [mainImage, ...(images || [])].filter(Boolean);
-  const imageCount = allImages.length;
+  const displayImages = allImages.slice(0, 4); // Show max 4 images in grid
+  const remainingCount = allImages.length - 4;
 
-  const scrollTo = (index) => {
-    setCurrentIndex(index);
-    if (scrollRef.current) {
-      const child = scrollRef.current.children[index];
-      if (child) {
-        child.scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
-      }
-    }
-  };
+  if (displayImages.length === 0) return null;
 
-  const next = (e) => {
-    if (e) { e.preventDefault(); e.stopPropagation(); }
-    if (imageCount > 0) scrollTo((currentIndex + 1) % imageCount);
-  };
+  // Single image layout
+  if (displayImages.length === 1) {
+    return (
+      <div className="relative w-full h-full">
+        <img
+          src={displayImages[0]}
+          alt=""
+          className="w-full h-full object-cover cursor-pointer hover:opacity-95 transition-opacity"
+          onClick={() => onImageClick && onImageClick(allImages, 0)}
+          data-testid="service-image-0"
+        />
+      </div>
+    );
+  }
 
-  const prev = (e) => {
-    if (e) { e.preventDefault(); e.stopPropagation(); }
-    if (imageCount > 0) scrollTo((currentIndex - 1 + imageCount) % imageCount);
-  };
-
-  // Auto-scroll removed - user requested static carousel
-  useEffect(() => {
-    // Auto-scroll disabled
-  }, [imageCount]);
-
-  const handleImageClick = (e, index) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (onImageClick) onImageClick(allImages, index);
-  };
-
-  const handleImageLoad = (index) => {
-    setLoadedImages(prev => ({ ...prev, [index]: true }));
-  };
-
-  const handleImageError = (e, index) => {
-    // Hide broken images
-    e.target.style.display = 'none';
-  };
-
-  // Early return AFTER all hooks
-  if (imageCount === 0) return null;
-
-  return (
-    <div className="relative overflow-hidden group/carousel">
-      <div
-        ref={scrollRef}
-        className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide"
-        style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-        onScroll={(e) => {
-          const el = e.target;
-          const index = Math.round(el.scrollLeft / el.clientWidth);
-          setCurrentIndex(index);
-        }}
-      >
-        {allImages.map((img, i) => (
+  // 2 images layout
+  if (displayImages.length === 2) {
+    return (
+      <div className="grid grid-cols-2 gap-0.5 w-full h-full">
+        {displayImages.map((img, i) => (
           <img
             key={i}
             src={img}
             alt=""
-            className="w-full h-full object-cover flex-shrink-0 snap-center cursor-pointer hover:opacity-95 transition-opacity"
-            onClick={(e) => handleImageClick(e, i)}
-            onLoad={() => handleImageLoad(i)}
-            onError={(e) => handleImageError(e, i)}
+            className="w-full h-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
+            onClick={() => onImageClick && onImageClick(allImages, i)}
             data-testid={`service-image-${i}`}
           />
         ))}
       </div>
+    );
+  }
 
-      {imageCount > 1 && (
-        <>
-          <button
-            onClick={prev}
-            className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover/carousel:opacity-100 transition-opacity z-10"
-            data-testid="carousel-prev-btn"
-          >
-            <ChevronLeft className="w-4 h-4 text-[#1a1a1a]" />
-          </button>
-          <button
-            onClick={next}
-            className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 backdrop-blur-sm flex items-center justify-center opacity-0 group-hover/carousel:opacity-100 transition-opacity z-10"
-            data-testid="carousel-next-btn"
-          >
-            <ChevronRight className="w-4 h-4 text-[#1a1a1a]" />
-          </button>
+  // 3 images layout (1 large left, 2 stacked right)
+  if (displayImages.length === 3) {
+    return (
+      <div className="grid grid-cols-2 gap-0.5 w-full h-full">
+        <img
+          src={displayImages[0]}
+          alt=""
+          className="w-full h-full object-cover cursor-pointer hover:opacity-90 transition-opacity row-span-2"
+          onClick={() => onImageClick && onImageClick(allImages, 0)}
+          data-testid="service-image-0"
+        />
+        <div className="grid grid-rows-2 gap-0.5 h-full">
+          {displayImages.slice(1).map((img, i) => (
+            <img
+              key={i + 1}
+              src={img}
+              alt=""
+              className="w-full h-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
+              onClick={() => onImageClick && onImageClick(allImages, i + 1)}
+              data-testid={`service-image-${i + 1}`}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
-          {/* Dots */}
-          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
-            {allImages.map((_, i) => (
-              <button
-                key={i}
-                onClick={(e) => { e.preventDefault(); e.stopPropagation(); scrollTo(i); }}
-                className={`w-2 h-2 rounded-full transition-all ${
-                  i === currentIndex ? "bg-white w-4" : "bg-white/50"
-                }`}
-                data-testid={`carousel-dot-${i}`}
-              />
-            ))}
-          </div>
-        </>
-      )}
+  // 4+ images layout (2x2 grid with overlay for more)
+  return (
+    <div className="grid grid-cols-2 grid-rows-2 gap-0.5 w-full h-full">
+      {displayImages.map((img, i) => (
+        <div key={i} className="relative">
+          <img
+            src={img}
+            alt=""
+            className="w-full h-full object-cover cursor-pointer hover:opacity-90 transition-opacity"
+            onClick={() => onImageClick && onImageClick(allImages, i)}
+            data-testid={`service-image-${i}`}
+          />
+          {/* Show +N overlay on last image if there are more */}
+          {i === 3 && remainingCount > 0 && (
+            <div 
+              className="absolute inset-0 bg-black/50 flex items-center justify-center cursor-pointer hover:bg-black/60 transition-colors"
+              onClick={() => onImageClick && onImageClick(allImages, i)}
+            >
+              <span className="text-white text-2xl font-light">+{remainingCount}</span>
+            </div>
+          )}
+        </div>
+      ))}
     </div>
   );
 };
@@ -190,12 +170,12 @@ export const ServicesSection = ({ services, siteData }) => {
                 index === 0 ? "md:col-span-2 lg:col-span-2" : ""
               } ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
               style={{ transitionDelay: `${200 + index * 150}ms` }}
+              data-testid={`service-card-${index}`}
             >
               <div className={`relative overflow-hidden ${index === 0 ? "h-64 lg:h-80" : "h-56 lg:h-64"}`}>
-                <ServiceImageCarousel
+                <ServiceImageGrid
                   images={service.images || []}
                   mainImage={service.image}
-                  title={service.title}
                   onImageClick={openLightbox}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-tyrell-dark/60 via-tyrell-dark/10 to-transparent pointer-events-none" />
@@ -213,6 +193,7 @@ export const ServicesSection = ({ services, siteData }) => {
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-5 inline-flex items-center gap-2 bg-[#D8A7B1]/30 hover:bg-[#D8A7B1]/50 text-[#B76E79] px-4 py-2 text-sm tracking-wider transition-all duration-300 group/btn"
+                  data-testid={`service-order-btn-${index}`}
                 >
                   <MessageCircle className="w-4 h-4" />
                   <span className="font-light uppercase text-xs">Pedir</span>
