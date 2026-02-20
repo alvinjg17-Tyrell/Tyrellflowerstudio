@@ -46,6 +46,7 @@ ADMIN_EMAIL = "tyrellflowerstudio@gmail.com"
 ADMIN_PASSWORD_HASH = pwd_context.hash("897355")
 
 app = FastAPI()
+app.mount("/api/uploads/thumbnails", StaticFiles(directory=str(THUMBNAILS_DIR)), name="thumbnails")
 app.mount("/api/uploads", StaticFiles(directory=str(UPLOADS_DIR)), name="uploads")
 api_router = APIRouter(prefix="/api")
 
