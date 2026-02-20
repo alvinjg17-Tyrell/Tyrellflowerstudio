@@ -33,5 +33,24 @@ export const api = {
   createCatalogLink: (data) => axios.post(`${API}/catalog-links`, data, { headers: getAuthHeader() }).then(r => r.data),
   updateCatalogLink: (id, data) => axios.put(`${API}/catalog-links/${id}`, data, { headers: getAuthHeader() }).then(r => r.data),
   deleteCatalogLink: (id) => axios.delete(`${API}/catalog-links/${id}`, { headers: getAuthHeader() }).then(r => r.data),
+
+  // Color Palette
+  getColorPalette: () => axios.get(`${API}/color-palette`).then(r => r.data),
+  updateColorPalette: (data) => axios.put(`${API}/color-palette`, data, { headers: getAuthHeader() }).then(r => r.data),
+
+  // Dynamic Sections CRUD
+  getDynamicSections: () => axios.get(`${API}/dynamic-sections`).then(r => r.data),
+  createDynamicSection: (data) => axios.post(`${API}/dynamic-sections`, data, { headers: getAuthHeader() }).then(r => r.data),
+  updateDynamicSection: (id, data) => axios.put(`${API}/dynamic-sections/${id}`, data, { headers: getAuthHeader() }).then(r => r.data),
+  deleteDynamicSection: (id) => axios.delete(`${API}/dynamic-sections/${id}`, { headers: getAuthHeader() }).then(r => r.data),
+
+  // Upload
+  uploadFile: (file) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    return axios.post(`${API}/upload`, formData, { 
+      headers: { ...getAuthHeader(), "Content-Type": "multipart/form-data" } 
+    }).then(r => r.data);
+  },
 };
 
