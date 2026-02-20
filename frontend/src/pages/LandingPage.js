@@ -8,6 +8,7 @@ import { CatalogLinksSection } from "../components/landing/CatalogLinksSection";
 import { ContactSection } from "../components/landing/ContactSection";
 import { Footer } from "../components/landing/Footer";
 import { WhatsAppButton } from "../components/landing/WhatsAppButton";
+import { DynamicSection } from "../components/landing/DynamicSection";
 import { Toaster } from "sonner";
 import { Loader2 } from "lucide-react";
 
@@ -20,6 +21,18 @@ export default function LandingPage() {
       try {
         const result = await api.getContent();
         setData(result);
+        
+        // Apply color palette to CSS variables if available
+        if (result.site?.colorPalette) {
+          const palette = result.site.colorPalette;
+          document.documentElement.style.setProperty('--color-primary', palette.primary || '#daa609');
+          document.documentElement.style.setProperty('--color-primary-hover', palette.primaryHover || '#b8890a');
+          document.documentElement.style.setProperty('--color-secondary', palette.secondary || '#B76E79');
+          document.documentElement.style.setProperty('--color-accent', palette.accent || '#D4B896');
+          document.documentElement.style.setProperty('--color-text', palette.text || '#1a1a1a');
+          document.documentElement.style.setProperty('--color-text-light', palette.textLight || '#4F6D5E');
+          document.documentElement.style.setProperty('--color-background', palette.background || '#F5F1EB');
+        }
       } catch (err) {
         console.error("Error fetching content:", err);
       } finally {
@@ -45,18 +58,28 @@ export default function LandingPage() {
     );
   }
 
+  const colorPalette = data.site?.colorPalette;
+
   return (
     <div className="min-h-screen bg-white">
       <Toaster position="top-center" richColors />
-      <Header siteData={data.site} />
-      <HeroSection siteData={data.site} />
-      <AboutSection siteData={data.site} />
-      <ServicesSection services={data.services} siteData={data.site} />
-      {data.catalogLinks && data.catalogLinks.length > 0 && (
-        <CatalogLinksSection catalogLinks={data.catalogLinks} />
+      <Header siteData={data.site} colorPalette={colorPalette} />
+      <HeroSection siteData={data.site} colorPalette={colorPalette} />
+      <AboutSection siteData={data.site} colorPalette={colorPalette} />
+      <ServicesSection services={data.services} siteData={data.site} colorPalette={colorPalette} />
+      
+      {/* Dynamic Sections */}
+      {data.dynamicSections && data.dynamicSections.length > 0 && (
+        data.dynamicSections.map((section) => (
+          <DynamicSection key={section.id} section={section} />
+        ))
       )}
-      <ContactSection siteData={data.site} />
-      <Footer siteData={data.site} />
+      
+      {data.catalogLinks && data.catalogLinks.length > 0 && (
+        <CatalogLinksSection catalogLinks={data.catalogLinks} colorPalette={colorPalette} />
+      )}
+      <ContactSection siteData={data.site} colorPalette={colorPalette} />
+      <Footer siteData={data.site} colorPalette={colorPalette} />
       <WhatsAppButton whatsappLink={data.site?.brand?.whatsappLink} />
     </div>
   );
