@@ -47,8 +47,14 @@ export const Header = ({ siteData }) => {
         isScrolled ? "max-h-0 opacity-0" : "max-h-10 opacity-100"}`
         }>
 
-        <div className="bg-tyrell-burgundy/95 backdrop-blur-sm">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between py-1.5 text-xs text-white/90">
+        <div 
+          className="backdrop-blur-sm"
+          style={{ backgroundColor: header.topBarBgColor || "#B76E79" }}
+        >
+          <div 
+            className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between py-1.5 text-xs"
+            style={{ color: header.topBarTextColor || "#FFFFFF" }}
+          >
             <div className="flex items-center gap-4">
               <span className="flex items-center gap-1">
                 <MapPin className="w-3 h-3 text-tyrell-gold" />
