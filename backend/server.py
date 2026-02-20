@@ -179,6 +179,7 @@ class SiteContent(BaseModel):
     about: AboutContent = AboutContent()
     services: ServicesContent = ServicesContent()
     contact: ContactContent = ContactContent()
+    colorPalette: Optional[ColorPalette] = ColorPalette()
 
 class ServiceCreate(BaseModel):
     title: str
