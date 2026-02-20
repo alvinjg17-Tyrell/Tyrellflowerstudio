@@ -70,14 +70,23 @@ export const ServicesSection = ({ services, siteData, colorPalette }) => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className={`text-center mb-10 lg:mb-14 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+          <p 
+            className="text-xs uppercase tracking-[0.3em] mb-3"
+            style={{ color: labelColor }}
+          >
+            {svcSection.label || "Nuestros Servicios"}
+          </p>
           <h2 
             className="font-display text-3xl sm:text-4xl lg:text-5xl font-light tracking-tight"
-            style={{ color: textColor }}
+            style={{ color: titleColor }}
           >
             {svcSection.title || "Creaciones para cada"}
-            <span style={{ color: primaryColor }}> {svcSection.titleHighlight || "momento"}</span>
+            <span style={{ color: highlightColor }}> {svcSection.titleHighlight || "momento"}</span>
           </h2>
-          <p className="mt-4 text-tyrell-dark/50 text-base lg:text-lg font-light max-w-xl mx-auto">
+          <p 
+            className="mt-4 text-base lg:text-lg font-light max-w-xl mx-auto"
+            style={{ color: subtitleColor }}
+          >
             {svcSection.subtitle || "Descubre nuestra colección de arreglos florales y servicios diseñados para sorprender."}
           </p>
         </div>
