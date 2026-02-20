@@ -1,5 +1,3 @@
-import { MessageCircle } from "lucide-react";
-
 export const WhatsAppButton = ({ whatsappLink }) => {
   const getWhatsAppUrl = () => {
     const number = whatsappLink ? whatsappLink.replace("https://wa.me/", "") : "";
