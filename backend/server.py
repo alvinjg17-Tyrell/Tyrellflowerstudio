@@ -290,6 +290,25 @@ async def login(request: LoginRequest):
 async def verify_auth(email: str = Depends(verify_token)):
     return {"valid": True, "email": email}
 
+# ─── Image Optimization Helper ────────────────────────────
+def optimize_image(input_path: Path, output_path: Path, max_size: tuple, quality: int = 85):
+    """Resize and compress image while maintaining aspect ratio"""
+    try:
+        with Image.open(input_path) as img:
+            # Convert to RGB if necessary (for PNG with transparency)
+            if img.mode in ('RGBA', 'P'):
+                img = img.convert('RGB')
+            
+            # Resize maintaining aspect ratio
+            img.thumbnail(max_size, Image.Resampling.LANCZOS)
+            
+            # Save as JPEG with compression
+            img.save(output_path, 'JPEG', quality=quality, optimize=True)
+            return True
+    except Exception as e:
+        logger.error(f"Error optimizing image: {e}")
+        return False
+
 # ─── File Upload ──────────────────────────────────────────
 
 @api_router.post("/upload")
@@ -298,15 +317,40 @@ async def upload_file(file: UploadFile = File(...)):
     if ext not in [".jpg", ".jpeg", ".png", ".webp", ".gif", ".mp4", ".mov"]:
         raise HTTPException(status_code=400, detail="Formato no soportado")
     
-    filename = f"{uuid.uuid4().hex}{ext}"
-    filepath = UPLOADS_DIR / filename
+    file_id = uuid.uuid4().hex
+    original_filename = f"{file_id}_original{ext}"
+    original_path = UPLOADS_DIR / original_filename
     
-    with open(filepath, "wb") as buffer:
+    # Save original file
+    with open(original_path, "wb") as buffer:
         content = await file.read()
         buffer.write(content)
     
-    # Return the URL path that can be used to access the file
-    return {"url": f"/api/uploads/{filename}", "filename": filename}
+    # For images, create optimized version and thumbnail
+    if ext in [".jpg", ".jpeg", ".png", ".webp"]:
+        # Create optimized version
+        optimized_filename = f"{file_id}.jpg"
+        optimized_path = UPLOADS_DIR / optimized_filename
+        
+        # Create thumbnail
+        thumbnail_filename = f"{file_id}_thumb.jpg"
+        thumbnail_path = THUMBNAILS_DIR / thumbnail_filename
+        
+        # Optimize in background
+        optimize_image(original_path, optimized_path, MAX_IMAGE_SIZE, JPEG_QUALITY)
+        optimize_image(original_path, thumbnail_path, THUMBNAIL_SIZE, 75)
+        
+        # Remove original to save space (keep optimized)
+        if optimized_path.exists():
+            original_path.unlink(missing_ok=True)
+            return {
+                "url": f"/api/uploads/{optimized_filename}",
+                "thumbnail": f"/api/uploads/thumbnails/{thumbnail_filename}",
+                "filename": optimized_filename
+            }
+    
+    # For videos and GIFs, keep original
+    return {"url": f"/api/uploads/{original_filename}", "filename": original_filename}
 
 @api_router.get("/content")
 async def get_all_content():
