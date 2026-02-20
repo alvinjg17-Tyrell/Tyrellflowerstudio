@@ -494,6 +494,55 @@ async def delete_catalog_link(link_id: str):
         raise HTTPException(status_code=404, detail="Enlace no encontrado")
     return {"message": "Enlace eliminado"}
 
+# ─── Color Palette CRUD ───────────────────────────────────
+
+@api_router.get("/color-palette")
+async def get_color_palette():
+    site = await db.site_content.find_one()
+    if site and "colorPalette" in site:
+        return site["colorPalette"]
+    return ColorPalette().dict()
+
+@api_router.put("/color-palette")
+async def update_color_palette(palette: ColorPalette):
+    await db.site_content.update_one({}, {"$set": {"colorPalette": palette.dict()}}, upsert=True)
+    return {"message": "Paleta de colores actualizada", "data": palette.dict()}
+
+# ─── Dynamic Sections CRUD ────────────────────────────────
+
+@api_router.get("/dynamic-sections")
+async def get_dynamic_sections():
+    sections = []
+    async for sec in db.dynamic_sections.find().sort("order", 1):
+        sec.pop("_id", None)
+        sections.append(sec)
+    return sections
+
+@api_router.post("/dynamic-sections", response_model=DynamicSectionResponse)
+async def create_dynamic_section(section: DynamicSectionCreate):
+    sec_dict = section.dict()
+    sec_dict["id"] = str(uuid.uuid4())
+    sec_dict["created_at"] = datetime.utcnow()
+    await db.dynamic_sections.insert_one(sec_dict)
+    return DynamicSectionResponse(**sec_dict)
+
+@api_router.put("/dynamic-sections/{section_id}", response_model=DynamicSectionResponse)
+async def update_dynamic_section(section_id: str, section: DynamicSectionCreate):
+    result = await db.dynamic_sections.find_one({"id": section_id})
+    if not result:
+        raise HTTPException(status_code=404, detail="Sección no encontrada")
+    await db.dynamic_sections.update_one({"id": section_id}, {"$set": section.dict()})
+    updated = await db.dynamic_sections.find_one({"id": section_id})
+    updated.pop("_id", None)
+    return DynamicSectionResponse(**updated)
+
+@api_router.delete("/dynamic-sections/{section_id}")
+async def delete_dynamic_section(section_id: str):
+    result = await db.dynamic_sections.delete_one({"id": section_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Sección no encontrada")
+    return {"message": "Sección eliminada"}
+
 # ─── App setup ────────────────────────────────────────────
 
 app.include_router(api_router)
