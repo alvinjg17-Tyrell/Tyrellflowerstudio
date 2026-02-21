@@ -17,12 +17,12 @@ const fixImageUrl = (url) => {
 const ProductLightbox = ({ product, isOpen, onClose, whatsappLink }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   
-  // Combine all media
+  // Combine all media and fix URLs
   const allMedia = [
     product?.image, 
     ...(product?.images || []),
     product?.video
-  ].filter(Boolean);
+  ].filter(Boolean).map(fixImageUrl);
 
   const goNext = () => setCurrentIndex(prev => (prev + 1) % allMedia.length);
   const goPrev = () => setCurrentIndex(prev => (prev - 1 + allMedia.length) % allMedia.length);
@@ -35,6 +35,9 @@ const ProductLightbox = ({ product, isOpen, onClose, whatsappLink }) => {
   };
 
   if (!product || allMedia.length === 0) return null;
+
+  const currentMedia = allMedia[currentIndex];
+  const isVideo = currentMedia?.includes('.mp4') || currentMedia?.includes('.mov') || currentMedia?.includes('.MOV');
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
@@ -69,9 +72,9 @@ const ProductLightbox = ({ product, isOpen, onClose, whatsappLink }) => {
             )}
 
             {/* Current media */}
-            {allMedia[currentIndex]?.includes('.mp4') || allMedia[currentIndex]?.includes('.mov') ? (
+            {isVideo ? (
               <video
-                src={allMedia[currentIndex]}
+                src={currentMedia}
                 className="max-w-full max-h-[70vh] object-contain"
                 controls
                 autoPlay
