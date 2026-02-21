@@ -112,9 +112,7 @@ All sections have inline color pickers:
 **REMOVED** - Hidden via CSS in index.css (Feb 21, 2026)
 
 ## Backlog (P1)
-- [ ] Reorder main sections (NOSOTROS, PRODUCTOS) via drag & drop - requires backend changes
 - [ ] Bulk image upload
-- [ ] Add color pickers to About, Contact, Footer sections
 
 ## Future Tasks (P2)
 - [ ] Order tracking system
