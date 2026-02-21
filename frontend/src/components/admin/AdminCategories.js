@@ -352,7 +352,7 @@ const SortableProductCard = ({ product, onUpdate, onDelete }) => {
 };
 
 // Category section with its products
-const CategorySection = ({ category, onUpdate, onDelete, saving }) => {
+const CategorySection = ({ category, onUpdate, onDelete, saving, dragHandleProps }) => {
   const [isExpanded, setIsExpanded] = useState(true);
   const [localCategory, setLocalCategory] = useState(category);
   const scrollRef = useRef(null);
