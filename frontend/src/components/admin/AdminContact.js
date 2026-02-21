@@ -9,24 +9,24 @@ export const AdminContact = ({ content, onSave, saving }) => {
   const [form, setForm] = useState(content.contact || {});
   const [colorForm, setColorForm] = useState(content.contactColors || {
     bgColor: "#4F6D5E",
-    labelColor: "#daa609",
+    labelColor: "#f4c952",
     titleColor: "#FFFFFF",
     subtitleColor: "#FFFFFF99",
-    buttonBgColor: "#daa609",
+    buttonBgColor: "#f4c952",
     buttonTextColor: "#FFFFFF",
-    inputBorderColor: "#daa609"
+    inputBorderColor: "#f4c952"
   });
 
   useEffect(() => { 
     setForm(content.contact || {}); 
     setColorForm(content.contactColors || {
       bgColor: "#4F6D5E",
-      labelColor: "#daa609",
+      labelColor: "#f4c952",
       titleColor: "#FFFFFF",
       subtitleColor: "#FFFFFF99",
-      buttonBgColor: "#daa609",
+      buttonBgColor: "#f4c952",
       buttonTextColor: "#FFFFFF",
-      inputBorderColor: "#daa609"
+      inputBorderColor: "#f4c952"
     });
   }, [content]);
 
