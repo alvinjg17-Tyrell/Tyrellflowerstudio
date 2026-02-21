@@ -25,8 +25,8 @@ export default function LandingPage() {
         // Apply color palette to CSS variables if available
         if (result.site?.colorPalette) {
           const palette = result.site.colorPalette;
-          document.documentElement.style.setProperty('--color-primary', palette.primary || '#daa609');
-          document.documentElement.style.setProperty('--color-primary-hover', palette.primaryHover || '#b8890a');
+          document.documentElement.style.setProperty('--color-primary', palette.primary || '#f4c952');
+          document.documentElement.style.setProperty('--color-primary-hover', palette.primaryHover || '#e0b63e');
           document.documentElement.style.setProperty('--color-secondary', palette.secondary || '#B76E79');
           document.documentElement.style.setProperty('--color-accent', palette.accent || '#D4B896');
           document.documentElement.style.setProperty('--color-text', palette.text || '#1a1a1a');
@@ -59,31 +59,60 @@ export default function LandingPage() {
   }
 
   const colorPalette = data.site?.colorPalette;
+  
+  // Get section order from site data or use default
+  const sectionOrder = data.site?.sectionOrder?.sections || [
+    { id: "about", name: "Nosotros", visible: true },
+    { id: "services", name: "Productos", visible: true },
+    { id: "catalogs", name: "Catálogos", visible: true },
+    { id: "contact", name: "Contacto", visible: true },
+  ];
+
+  // Render a section by its ID
+  const renderSection = (sectionId) => {
+    switch (sectionId) {
+      case "about":
+        return <AboutSection key="about" siteData={data.site} colorPalette={colorPalette} />;
+      case "services":
+        return (
+          <ServicesSection 
+            key="services"
+            services={data.services} 
+            siteData={data.site} 
+            colorPalette={colorPalette} 
+            categories={data.categories || []}
+          />
+        );
+      case "catalogs":
+        return data.catalogLinks && data.catalogLinks.length > 0 ? (
+          <CatalogLinksSection key="catalogs" catalogLinks={data.catalogLinks} siteData={data.site} colorPalette={colorPalette} />
+        ) : null;
+      case "contact":
+        return <ContactSection key="contact" siteData={data.site} colorPalette={colorPalette} />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <div className="min-h-screen bg-white">
       <Toaster position="top-center" richColors />
       <Header siteData={data.site} colorPalette={colorPalette} />
       <HeroSection siteData={data.site} colorPalette={colorPalette} />
-      <AboutSection siteData={data.site} colorPalette={colorPalette} />
-      <ServicesSection 
-        services={data.services} 
-        siteData={data.site} 
-        colorPalette={colorPalette} 
-        categories={data.categories || []}
-      />
       
-      {/* Dynamic Sections */}
+      {/* Render sections in order */}
+      {sectionOrder
+        .filter(section => section.visible)
+        .map(section => renderSection(section.id))
+      }
+      
+      {/* Dynamic Sections - always after ordered sections */}
       {data.dynamicSections && data.dynamicSections.length > 0 && (
         data.dynamicSections.map((section) => (
           <DynamicSection key={section.id} section={section} />
         ))
       )}
       
-      {data.catalogLinks && data.catalogLinks.length > 0 && (
-        <CatalogLinksSection catalogLinks={data.catalogLinks} siteData={data.site} colorPalette={colorPalette} />
-      )}
-      <ContactSection siteData={data.site} colorPalette={colorPalette} />
       <Footer siteData={data.site} colorPalette={colorPalette} />
       <WhatsAppButton whatsappLink={data.site?.brand?.whatsappLink} />
     </div>
