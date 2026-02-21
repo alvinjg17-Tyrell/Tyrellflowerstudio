@@ -10,7 +10,7 @@ export const AdminHeaderSection = ({ content, onSave, saving }) => {
     topBarRight: "",
     navItems: ["INICIO", "NOSOTROS", "SERVICIOS", "CONTACTO"],
     ctaText: "VER CATÁLOGO",
-    ctaButtonColor: "#daa609",
+    ctaButtonColor: "#D8A7B1",
     ctaTextColor: "#FFFFFF",
     topBarBgColor: "#B76E79",
     topBarTextColor: "#FFFFFF"
@@ -22,7 +22,7 @@ export const AdminHeaderSection = ({ content, onSave, saving }) => {
       topBarRight: "",
       navItems: ["INICIO", "NOSOTROS", "SERVICIOS", "CONTACTO"],
       ctaText: "VER CATÁLOGO",
-      ctaButtonColor: "#daa609",
+      ctaButtonColor: "#D8A7B1",
       ctaTextColor: "#FFFFFF",
       topBarBgColor: "#B76E79",
       topBarTextColor: "#FFFFFF"
