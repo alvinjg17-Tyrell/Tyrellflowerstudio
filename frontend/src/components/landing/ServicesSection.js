@@ -82,7 +82,7 @@ const ProductLightbox = ({ product, isOpen, onClose, whatsappLink }) => {
               />
             ) : (
               <img
-                src={allMedia[currentIndex]}
+                src={currentMedia}
                 alt={product.name}
                 className="max-w-full max-h-[70vh] object-contain"
               />
@@ -120,23 +120,26 @@ const ProductLightbox = ({ product, isOpen, onClose, whatsappLink }) => {
             {/* Thumbnail strip */}
             {allMedia.length > 1 && (
               <div className="flex gap-2 mt-4 overflow-x-auto">
-                {allMedia.map((media, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setCurrentIndex(i)}
-                    className={`w-12 h-12 flex-shrink-0 rounded overflow-hidden border-2 transition-colors ${
-                      currentIndex === i ? "border-tyrell-gold" : "border-transparent opacity-50 hover:opacity-80"
-                    }`}
-                  >
-                    {media?.includes('.mp4') || media?.includes('.mov') ? (
-                      <div className="w-full h-full bg-gray-700 flex items-center justify-center">
-                        <span className="text-white text-[8px]">VIDEO</span>
-                      </div>
-                    ) : (
-                      <img src={media} alt="" className="w-full h-full object-cover" />
-                    )}
-                  </button>
-                ))}
+                {allMedia.map((media, i) => {
+                  const isVid = media?.includes('.mp4') || media?.includes('.mov') || media?.includes('.MOV');
+                  return (
+                    <button
+                      key={i}
+                      onClick={() => setCurrentIndex(i)}
+                      className={`w-12 h-12 flex-shrink-0 rounded overflow-hidden border-2 transition-colors ${
+                        currentIndex === i ? "border-tyrell-gold" : "border-transparent opacity-50 hover:opacity-80"
+                      }`}
+                    >
+                      {isVid ? (
+                        <div className="w-full h-full bg-gray-700 flex items-center justify-center">
+                          <span className="text-white text-[8px]">VIDEO</span>
+                        </div>
+                      ) : (
+                        <img src={media} alt="" className="w-full h-full object-cover" />
+                      )}
+                    </button>
+                  );
+                })}
               </div>
             )}
           </div>
