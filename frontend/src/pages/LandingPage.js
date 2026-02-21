@@ -81,7 +81,7 @@ export default function LandingPage() {
       )}
       
       {data.catalogLinks && data.catalogLinks.length > 0 && (
-        <CatalogLinksSection catalogLinks={data.catalogLinks} colorPalette={colorPalette} />
+        <CatalogLinksSection catalogLinks={data.catalogLinks} siteData={data.site} colorPalette={colorPalette} />
       )}
       <ContactSection siteData={data.site} colorPalette={colorPalette} />
       <Footer siteData={data.site} colorPalette={colorPalette} />
