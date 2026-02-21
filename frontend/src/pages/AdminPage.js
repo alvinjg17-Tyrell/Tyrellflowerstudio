@@ -274,6 +274,9 @@ export default function AdminPage() {
             saving={saving} 
           />
         )}
+        {activeTab === "order" && siteContent && (
+          <AdminSectionOrder content={siteContent} onSave={saveSiteContent} saving={saving} />
+        )}
         {activeTab === "header" && siteContent && (
           <AdminHeaderSection content={siteContent} onSave={saveSiteContent} saving={saving} />
         )}
