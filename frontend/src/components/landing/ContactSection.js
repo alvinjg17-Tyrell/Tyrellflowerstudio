@@ -15,12 +15,12 @@ export const ContactSection = ({ siteData }) => {
   // Get colors from site data
   const contactColors = siteData?.contactColors || {};
   const bgColor = contactColors.bgColor || "#4F6D5E";
-  const labelColor = contactColors.labelColor || "#daa609";
+  const labelColor = contactColors.labelColor || "#f4c952";
   const titleColor = contactColors.titleColor || "#FFFFFF";
   const subtitleColor = contactColors.subtitleColor || "#FFFFFF99";
-  const buttonBgColor = contactColors.buttonBgColor || "#daa609";
+  const buttonBgColor = contactColors.buttonBgColor || "#f4c952";
   const buttonTextColor = contactColors.buttonTextColor || "#FFFFFF";
-  const inputBorderColor = contactColors.inputBorderColor || "#daa609";
+  const inputBorderColor = contactColors.inputBorderColor || "#f4c952";
   
   // Check if location should be shown
   const showLocation = contact.showLocation !== false && contact.address;
