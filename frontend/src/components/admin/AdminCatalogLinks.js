@@ -15,12 +15,12 @@ export const AdminCatalogLinks = ({ catalogLinks, setCatalogLinks, content, onSa
   
   // Color form state
   const [colorForm, setColorForm] = useState(content?.catalogColors || {
-    labelColor: "#daa609",
+    labelColor: "#f4c952",
     titleColor: "#1a1a1a",
-    highlightColor: "#daa609",
-    buttonBgColor: "#daa609",
+    highlightColor: "#f4c952",
+    buttonBgColor: "#f4c952",
     buttonTextColor: "#FFFFFF",
-    lineColor: "#daa609"
+    lineColor: "#f4c952"
   });
 
   const startEdit = (link) => {
