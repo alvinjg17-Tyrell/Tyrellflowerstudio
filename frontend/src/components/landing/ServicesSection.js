@@ -2,6 +2,17 @@ import { useEffect, useRef, useState } from "react";
 import { ChevronRight, ChevronLeft, X } from "lucide-react";
 import { Dialog, DialogContent } from "../ui/dialog";
 
+// Helper function to fix image URLs (convert old domain URLs to relative paths)
+const fixImageUrl = (url) => {
+  if (!url) return url;
+  // If it's a full URL with old domain, extract just the path
+  if (url.includes('.preview.emergentagent.com/api/uploads/')) {
+    const match = url.match(/\/api\/uploads\/.+/);
+    return match ? match[0] : url;
+  }
+  return url;
+};
+
 // Product lightbox for viewing multiple images/videos
 const ProductLightbox = ({ product, isOpen, onClose, whatsappLink }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
