@@ -435,18 +435,27 @@ const CategorySection = ({ category, onUpdate, onDelete, saving, dragHandleProps
 
   return (
     <div className="bg-white border border-tyrell-gold/20 rounded-lg overflow-hidden">
-      <div 
-        className="flex items-center justify-between p-4 bg-tyrell-ivory cursor-pointer"
-        onClick={() => setIsExpanded(!isExpanded)}
-      >
-        <div className="flex items-center gap-3">
+      <div className="flex items-center justify-between p-4 bg-tyrell-ivory">
+        {/* Drag handle */}
+        <div 
+          {...dragHandleProps}
+          className="cursor-grab active:cursor-grabbing p-2 hover:bg-white/50 rounded mr-2 touch-none"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <GripVertical className="w-5 h-5 text-gray-400" />
+        </div>
+        
+        <div 
+          className="flex items-center gap-3 flex-1 cursor-pointer"
+          onClick={() => setIsExpanded(!isExpanded)}
+        >
           {isExpanded ? <ChevronUp className="w-4 h-4 text-tyrell-gold" /> : <ChevronDown className="w-4 h-4 text-tyrell-gold" />}
           <div>
             <h3 className="font-display text-lg text-tyrell-dark">{localCategory.name || "Nueva Categoría"}</h3>
             <span className="text-xs text-gray-500">{localCategory.products.length} productos</span>
           </div>
         </div>
-        <div className="flex items-center gap-2" onClick={e => e.stopPropagation()}>
+        <div className="flex items-center gap-2">
           <Button
             onClick={handleSave}
             disabled={saving}
