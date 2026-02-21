@@ -2,8 +2,141 @@ import { useEffect, useRef, useState } from "react";
 import { ChevronRight, ChevronLeft, X } from "lucide-react";
 import { Dialog, DialogContent } from "../ui/dialog";
 
+// Product lightbox for viewing multiple images/videos
+const ProductLightbox = ({ product, isOpen, onClose, whatsappLink }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  
+  // Combine all media
+  const allMedia = [
+    product?.image, 
+    ...(product?.images || []),
+    product?.video
+  ].filter(Boolean);
+
+  const goNext = () => setCurrentIndex(prev => (prev + 1) % allMedia.length);
+  const goPrev = () => setCurrentIndex(prev => (prev - 1 + allMedia.length) % allMedia.length);
+
+  const getWhatsAppUrl = () => {
+    const number = whatsappLink ? whatsappLink.replace("https://wa.me/", "") : "";
+    const productName = product?.name || "este producto";
+    const message = encodeURIComponent(`Hola Tyrell, necesito información sobre ${productName}`);
+    return number ? `https://wa.me/${number}?text=${message}` : `https://wa.me/?text=${message}`;
+  };
+
+  if (!product || allMedia.length === 0) return null;
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent className="max-w-4xl w-[95vw] h-auto max-h-[90vh] p-0 border-0 bg-black/95 shadow-none">
+        <div className="relative flex flex-col h-full">
+          {/* Close button */}
+          <button
+            onClick={() => onClose(false)}
+            className="absolute top-3 right-3 z-50 w-10 h-10 bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-colors"
+          >
+            <X className="w-5 h-5" />
+          </button>
+
+          {/* Main media area */}
+          <div className="relative flex-1 flex items-center justify-center min-h-[300px] sm:min-h-[400px]">
+            {/* Navigation arrows */}
+            {allMedia.length > 1 && (
+              <>
+                <button
+                  onClick={goPrev}
+                  className="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 z-50 w-10 h-10 sm:w-12 sm:h-12 bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-colors"
+                >
+                  <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
+                </button>
+                <button
+                  onClick={goNext}
+                  className="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 z-50 w-10 h-10 sm:w-12 sm:h-12 bg-white/10 hover:bg-white/20 text-white rounded-full flex items-center justify-center transition-colors"
+                >
+                  <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6" />
+                </button>
+              </>
+            )}
+
+            {/* Current media */}
+            {allMedia[currentIndex]?.includes('.mp4') || allMedia[currentIndex]?.includes('.mov') ? (
+              <video
+                src={allMedia[currentIndex]}
+                className="max-w-full max-h-[70vh] object-contain"
+                controls
+                autoPlay
+                playsInline
+              />
+            ) : (
+              <img
+                src={allMedia[currentIndex]}
+                alt={product.name}
+                className="max-w-full max-h-[70vh] object-contain"
+              />
+            )}
+          </div>
+
+          {/* Bottom info bar */}
+          <div className="bg-black/80 p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <div>
+                <h3 className="text-white font-display text-lg sm:text-xl">{product.name}</h3>
+                {product.price && (
+                  <p className="text-white/70 text-sm">{product.price}</p>
+                )}
+              </div>
+              <div className="flex items-center gap-3">
+                {/* Counter */}
+                {allMedia.length > 1 && (
+                  <span className="text-white/50 text-sm">
+                    {currentIndex + 1} / {allMedia.length}
+                  </span>
+                )}
+                {/* Pedir button */}
+                <a
+                  href={getWhatsAppUrl()}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-6 py-2 bg-tyrell-gold hover:bg-tyrell-gold-dark text-white text-sm uppercase tracking-wider transition-colors"
+                >
+                  Pedir
+                </a>
+              </div>
+            </div>
+
+            {/* Thumbnail strip */}
+            {allMedia.length > 1 && (
+              <div className="flex gap-2 mt-4 overflow-x-auto">
+                {allMedia.map((media, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setCurrentIndex(i)}
+                    className={`w-12 h-12 flex-shrink-0 rounded overflow-hidden border-2 transition-colors ${
+                      currentIndex === i ? "border-tyrell-gold" : "border-transparent opacity-50 hover:opacity-80"
+                    }`}
+                  >
+                    {media?.includes('.mp4') || media?.includes('.mov') ? (
+                      <div className="w-full h-full bg-gray-700 flex items-center justify-center">
+                        <span className="text-white text-[8px]">VIDEO</span>
+                      </div>
+                    ) : (
+                      <img src={media} alt="" className="w-full h-full object-cover" />
+                    )}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+};
+
 // Product card component
-const ProductCard = ({ product, categoryName, whatsappLink, primaryColor }) => {
+const ProductCard = ({ product, categoryName, whatsappLink, primaryColor, onClick }) => {
+  const allMedia = [product.image, ...(product.images || []), product.video].filter(Boolean);
+  const hasMultipleMedia = allMedia.length > 1;
+
   const getWhatsAppUrl = () => {
     const number = whatsappLink ? whatsappLink.replace("https://wa.me/", "") : "";
     const productName = product.name || categoryName || "este producto";
@@ -14,7 +147,10 @@ const ProductCard = ({ product, categoryName, whatsappLink, primaryColor }) => {
   return (
     <div className="w-[140px] sm:w-[160px] lg:w-[180px] flex-shrink-0 snap-start">
       {/* Product Image */}
-      <div className="relative aspect-[3/4] bg-gray-100 overflow-hidden group cursor-pointer">
+      <div 
+        className="relative aspect-[3/4] bg-gray-100 overflow-hidden group cursor-pointer"
+        onClick={onClick}
+      >
         {product.image ? (
           <img
             src={product.image}
@@ -30,7 +166,22 @@ const ProductCard = ({ product, categoryName, whatsappLink, primaryColor }) => {
             <span className="text-xs">Sin imagen</span>
           </div>
         )}
-        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-300" />
+        
+        {/* Hover overlay with navigation hint */}
+        <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300 flex items-center justify-center">
+          {hasMultipleMedia && (
+            <div className="w-10 h-10 bg-white/90 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-lg">
+              <ChevronRight className="w-5 h-5 text-gray-700" />
+            </div>
+          )}
+        </div>
+
+        {/* Media count indicator */}
+        {hasMultipleMedia && (
+          <div className="absolute bottom-2 right-2 bg-black/60 text-white text-[10px] px-2 py-1 rounded-full">
+            +{allMedia.length - 1}
+          </div>
+        )}
       </div>
 
       {/* Product Info */}
@@ -47,6 +198,7 @@ const ProductCard = ({ product, categoryName, whatsappLink, primaryColor }) => {
           href={getWhatsAppUrl()}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={(e) => e.stopPropagation()}
           className="inline-block mt-1 px-3 py-1 text-[10px] uppercase tracking-wider font-medium transition-all duration-300 hover:opacity-80"
           style={{ 
             backgroundColor: `${primaryColor}15`,
@@ -63,6 +215,7 @@ const ProductCard = ({ product, categoryName, whatsappLink, primaryColor }) => {
 // Category carousel
 const CategoryCarousel = ({ category, whatsappLink, primaryColor }) => {
   const scrollContainerRef = useRef(null);
+  const [selectedProduct, setSelectedProduct] = useState(null);
 
   const scroll = (direction) => {
     if (scrollContainerRef.current) {
@@ -92,7 +245,6 @@ const CategoryCarousel = ({ category, whatsappLink, primaryColor }) => {
         <button
           onClick={() => scroll('left')}
           className="absolute -left-2 lg:-left-4 top-[30%] -translate-y-1/2 z-20 w-9 h-9 bg-white border border-gray-200 rounded-full flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-gray-50"
-          data-testid="category-scroll-left"
         >
           <ChevronLeft className="w-5 h-5 text-gray-600" />
         </button>
@@ -110,6 +262,7 @@ const CategoryCarousel = ({ category, whatsappLink, primaryColor }) => {
               categoryName={category.name}
               whatsappLink={whatsappLink}
               primaryColor={primaryColor}
+              onClick={() => setSelectedProduct(product)}
             />
           ))}
         </div>
@@ -118,11 +271,18 @@ const CategoryCarousel = ({ category, whatsappLink, primaryColor }) => {
         <button
           onClick={() => scroll('right')}
           className="absolute -right-2 lg:-right-4 top-[30%] -translate-y-1/2 z-20 w-9 h-9 bg-white border border-gray-200 rounded-full flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:bg-gray-50"
-          data-testid="category-scroll-right"
         >
           <ChevronRight className="w-5 h-5 text-gray-600" />
         </button>
       </div>
+
+      {/* Product Lightbox */}
+      <ProductLightbox
+        product={selectedProduct}
+        isOpen={!!selectedProduct}
+        onClose={() => setSelectedProduct(null)}
+        whatsappLink={whatsappLink}
+      />
     </div>
   );
 };
@@ -135,10 +295,10 @@ export const ServicesSection = ({ services, siteData, colorPalette, categories }
   
   // Get colors
   const titleColor = svcSection.titleColor || '#1a1a1a';
-  const highlightColor = svcSection.highlightColor || '#daa609';
+  const highlightColor = svcSection.highlightColor || '#D8A7B1';
   const subtitleColor = svcSection.subtitleColor || '#666666';
-  const labelColor = svcSection.labelColor || '#daa609';
-  const primaryColor = svcSection.pedir_buttonColor || colorPalette?.primary || '#daa609';
+  const labelColor = svcSection.labelColor || '#D8A7B1';
+  const primaryColor = svcSection.pedir_buttonColor || colorPalette?.primary || '#D8A7B1';
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -149,7 +309,7 @@ export const ServicesSection = ({ services, siteData, colorPalette, categories }
     return () => observer.disconnect();
   }, []);
 
-  // Use categories if available, otherwise fall back to services
+  // Use categories if available
   const hasCategories = categories && categories.length > 0;
 
   return (
@@ -193,7 +353,6 @@ export const ServicesSection = ({ services, siteData, colorPalette, categories }
             ))}
           </div>
         ) : (
-          /* Fallback to old services if no categories */
           <div className="text-center py-12 text-gray-400">
             <p>No hay productos disponibles</p>
           </div>
