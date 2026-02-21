@@ -2,11 +2,38 @@ import { useState, useRef } from "react";
 import { api } from "../../lib/api";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { Plus, Trash2, Save, Loader2, ChevronDown, ChevronUp, Image as ImageIcon, X, Video, ChevronRight, ChevronLeft } from "lucide-react";
+import { Plus, Trash2, Save, Loader2, ChevronDown, ChevronUp, Image as ImageIcon, X, Video, ChevronRight, ChevronLeft, GripVertical } from "lucide-react";
 import { toast } from "sonner";
 import axios from "axios";
+import {
+  DndContext,
+  closestCenter,
+  KeyboardSensor,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  sortableKeyboardCoordinates,
+  horizontalListSortingStrategy,
+  useSortable,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+
+// Helper function to fix image URLs
+const fixImageUrl = (url) => {
+  if (!url) return url;
+  if (url.includes('.preview.emergentagent.com/api/uploads/')) {
+    const match = url.match(/\/api\/uploads\/.+/);
+    return match ? `${BACKEND_URL}${match[0]}` : url;
+  }
+  return url;
+};
 
 // Multi-image gallery for a product
 const ProductGalleryEditor = ({ product, onUpdate }) => {
@@ -15,7 +42,6 @@ const ProductGalleryEditor = ({ product, onUpdate }) => {
   const fileRef = useRef(null);
   const videoRef = useRef(null);
 
-  // Combine main image with additional images
   const allMedia = [
     product.image, 
     ...(product.images || []),
@@ -38,14 +64,12 @@ const ProductGalleryEditor = ({ product, onUpdate }) => {
       if (isVideo) {
         onUpdate({ ...product, video: url });
       } else if (!product.image) {
-        // First image becomes main image
         onUpdate({ 
           ...product, 
           image: url,
           imagePosition: { x: 50, y: 50 }
         });
       } else {
-        // Additional images
         onUpdate({ 
           ...product, 
           images: [...(product.images || []), url]
@@ -63,7 +87,6 @@ const ProductGalleryEditor = ({ product, onUpdate }) => {
 
   const removeMedia = (index) => {
     if (index === 0 && product.image) {
-      // Remove main image, promote first additional image if exists
       const newImages = product.images || [];
       if (newImages.length > 0) {
         onUpdate({
@@ -75,7 +98,6 @@ const ProductGalleryEditor = ({ product, onUpdate }) => {
         onUpdate({ ...product, image: "", imagePosition: {} });
       }
     } else {
-      // Remove from additional images
       const adjustedIndex = index - 1;
       if (product.images && product.images[adjustedIndex]) {
         onUpdate({
@@ -89,16 +111,18 @@ const ProductGalleryEditor = ({ product, onUpdate }) => {
     setActiveIndex(0);
   };
 
+  const displayMedia = allMedia.map(fixImageUrl);
+  const currentMedia = displayMedia[activeIndex];
+  const isVideo = currentMedia?.includes('.mp4') || currentMedia?.includes('.mov') || currentMedia?.includes('.MOV');
+
   return (
     <div className="space-y-2">
-      {/* Main Preview */}
       <div className="relative aspect-[3/4] bg-gray-100 rounded overflow-hidden group">
-        {allMedia.length > 0 ? (
+        {displayMedia.length > 0 ? (
           <>
-            {/* Current media */}
-            {allMedia[activeIndex]?.includes('.mp4') || allMedia[activeIndex]?.includes('.mov') ? (
+            {isVideo ? (
               <video
-                src={allMedia[activeIndex]}
+                src={currentMedia}
                 className="w-full h-full object-cover"
                 style={{
                   objectPosition: `${product.imagePosition?.x || 50}% ${product.imagePosition?.y || 50}%`
@@ -110,7 +134,7 @@ const ProductGalleryEditor = ({ product, onUpdate }) => {
               />
             ) : (
               <img
-                src={allMedia[activeIndex]}
+                src={currentMedia}
                 alt={product.name || "Producto"}
                 className="w-full h-full object-cover"
                 style={{
@@ -119,17 +143,16 @@ const ProductGalleryEditor = ({ product, onUpdate }) => {
               />
             )}
 
-            {/* Navigation arrows */}
-            {allMedia.length > 1 && (
+            {displayMedia.length > 1 && (
               <>
                 <button
-                  onClick={() => setActiveIndex(prev => (prev - 1 + allMedia.length) % allMedia.length)}
+                  onClick={() => setActiveIndex(prev => (prev - 1 + displayMedia.length) % displayMedia.length)}
                   className="absolute left-1 top-1/2 -translate-y-1/2 w-6 h-6 bg-white/80 rounded-full flex items-center justify-center shadow hover:bg-white"
                 >
                   <ChevronLeft className="w-4 h-4" />
                 </button>
                 <button
-                  onClick={() => setActiveIndex(prev => (prev + 1) % allMedia.length)}
+                  onClick={() => setActiveIndex(prev => (prev + 1) % displayMedia.length)}
                   className="absolute right-1 top-1/2 -translate-y-1/2 w-6 h-6 bg-white/80 rounded-full flex items-center justify-center shadow hover:bg-white"
                 >
                   <ChevronRight className="w-4 h-4" />
@@ -137,14 +160,12 @@ const ProductGalleryEditor = ({ product, onUpdate }) => {
               </>
             )}
 
-            {/* Counter */}
-            {allMedia.length > 1 && (
+            {displayMedia.length > 1 && (
               <div className="absolute bottom-1 left-1/2 -translate-x-1/2 bg-black/50 text-white text-[10px] px-2 py-0.5 rounded-full">
-                {activeIndex + 1} / {allMedia.length}
+                {activeIndex + 1} / {displayMedia.length}
               </div>
             )}
 
-            {/* Remove button */}
             <button
               onClick={() => removeMedia(activeIndex)}
               className="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
@@ -170,30 +191,31 @@ const ProductGalleryEditor = ({ product, onUpdate }) => {
         )}
       </div>
 
-      {/* Thumbnails */}
-      {allMedia.length > 0 && (
+      {displayMedia.length > 0 && (
         <div className="flex gap-1 overflow-x-auto">
-          {allMedia.map((media, i) => (
-            <button
-              key={i}
-              onClick={() => setActiveIndex(i)}
-              className={`w-10 h-10 flex-shrink-0 rounded overflow-hidden border-2 ${
-                activeIndex === i ? "border-tyrell-gold" : "border-transparent"
-              }`}
-            >
-              {media?.includes('.mp4') || media?.includes('.mov') ? (
-                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                  <Video className="w-4 h-4 text-gray-500" />
-                </div>
-              ) : (
-                <img src={media} alt="" className="w-full h-full object-cover" />
-              )}
-            </button>
-          ))}
+          {displayMedia.map((media, i) => {
+            const isVid = media?.includes('.mp4') || media?.includes('.mov') || media?.includes('.MOV');
+            return (
+              <button
+                key={i}
+                onClick={() => setActiveIndex(i)}
+                className={`w-10 h-10 flex-shrink-0 rounded overflow-hidden border-2 ${
+                  activeIndex === i ? "border-tyrell-gold" : "border-transparent"
+                }`}
+              >
+                {isVid ? (
+                  <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                    <Video className="w-4 h-4 text-gray-500" />
+                  </div>
+                ) : (
+                  <img src={media} alt="" className="w-full h-full object-cover" />
+                )}
+              </button>
+            );
+          })}
         </div>
       )}
 
-      {/* Add more buttons */}
       <div className="flex gap-2">
         <button
           onClick={() => fileRef.current?.click()}
@@ -211,7 +233,6 @@ const ProductGalleryEditor = ({ product, onUpdate }) => {
         </button>
       </div>
 
-      {/* Image position controls */}
       {product.image && (
         <div className="space-y-1 pt-2 border-t border-gray-100">
           <p className="text-[10px] text-gray-400 uppercase tracking-wider">Posición imagen principal</p>
@@ -266,12 +287,41 @@ const ProductGalleryEditor = ({ product, onUpdate }) => {
   );
 };
 
-// Single product card in admin
-const ProductCard = ({ product, onUpdate, onDelete }) => {
+// Sortable product card
+const SortableProductCard = ({ product, onUpdate, onDelete }) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: product.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
   const allMedia = [product.image, ...(product.images || []), product.video].filter(Boolean);
-  
+
   return (
-    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden w-[180px] flex-shrink-0">
+    <div
+      ref={setNodeRef}
+      style={style}
+      className="bg-white border border-gray-200 rounded-lg overflow-hidden w-[180px] flex-shrink-0"
+    >
+      {/* Drag handle */}
+      <div
+        {...attributes}
+        {...listeners}
+        className="flex items-center justify-center gap-1 py-1 bg-gray-50 cursor-grab active:cursor-grabbing border-b border-gray-100 touch-none"
+      >
+        <GripVertical className="w-4 h-4 text-gray-400" />
+        <span className="text-[10px] text-gray-400 uppercase">Arrastra</span>
+      </div>
+      
       <ProductGalleryEditor product={product} onUpdate={onUpdate} />
       <div className="p-2 space-y-1.5">
         <Input
@@ -304,6 +354,47 @@ const ProductCard = ({ product, onUpdate, onDelete }) => {
 const CategorySection = ({ category, onUpdate, onDelete, saving }) => {
   const [isExpanded, setIsExpanded] = useState(true);
   const [localCategory, setLocalCategory] = useState(category);
+  const scrollRef = useRef(null);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 250,
+        tolerance: 5,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  const handleDragEnd = (event) => {
+    const { active, over } = event;
+    
+    if (active.id !== over.id) {
+      setLocalCategory((prev) => {
+        const oldIndex = prev.products.findIndex((p) => p.id === active.id);
+        const newIndex = prev.products.findIndex((p) => p.id === over.id);
+        
+        return {
+          ...prev,
+          products: arrayMove(prev.products, oldIndex, newIndex),
+        };
+      });
+    }
+  };
+
+  const scrollCarousel = (direction) => {
+    if (scrollRef.current) {
+      const scrollAmount = direction === 'left' ? -200 : 200;
+      scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    }
+  };
 
   const addProduct = () => {
     const newProduct = {
@@ -343,7 +434,6 @@ const CategorySection = ({ category, onUpdate, onDelete, saving }) => {
 
   return (
     <div className="bg-white border border-tyrell-gold/20 rounded-lg overflow-hidden">
-      {/* Category Header */}
       <div 
         className="flex items-center justify-between p-4 bg-tyrell-ivory cursor-pointer"
         onClick={() => setIsExpanded(!isExpanded)}
@@ -374,10 +464,8 @@ const CategorySection = ({ category, onUpdate, onDelete, saving }) => {
         </div>
       </div>
 
-      {/* Category Content */}
       {isExpanded && (
         <div className="p-4 space-y-4">
-          {/* Category Name */}
           <div className="grid md:grid-cols-2 gap-4">
             <div>
               <label className="block text-xs uppercase text-gray-500 mb-1">Nombre de la categoría</label>
@@ -399,7 +487,6 @@ const CategorySection = ({ category, onUpdate, onDelete, saving }) => {
             </div>
           </div>
 
-          {/* Products Carousel */}
           <div>
             <div className="flex items-center justify-between mb-3">
               <label className="text-xs uppercase text-gray-500">Productos en esta categoría</label>
@@ -415,18 +502,52 @@ const CategorySection = ({ category, onUpdate, onDelete, saving }) => {
 
             {localCategory.products.length > 0 ? (
               <div className="relative">
-                {/* Scrollable container */}
-                <div className="flex gap-3 overflow-x-auto pb-2 scrollbar-hide" style={{ scrollbarWidth: 'none' }}>
-                  {localCategory.products.map((product, index) => (
-                    <ProductCard
-                      key={product.id || index}
-                      product={product}
-                      onUpdate={(updated) => updateProduct(index, updated)}
-                      onDelete={() => deleteProduct(index)}
-                    />
-                  ))}
-                </div>
-                <p className="text-[10px] text-gray-400 mt-2">← Desliza para ver más productos →</p>
+                {/* Navigation buttons */}
+                {localCategory.products.length > 3 && (
+                  <>
+                    <button
+                      onClick={() => scrollCarousel('left')}
+                      className="absolute -left-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-white border border-gray-200 rounded-full flex items-center justify-center shadow-md hover:bg-gray-50"
+                    >
+                      <ChevronLeft className="w-5 h-5 text-gray-600" />
+                    </button>
+                    <button
+                      onClick={() => scrollCarousel('right')}
+                      className="absolute -right-3 top-1/2 -translate-y-1/2 z-10 w-8 h-8 bg-white border border-gray-200 rounded-full flex items-center justify-center shadow-md hover:bg-gray-50"
+                    >
+                      <ChevronRight className="w-5 h-5 text-gray-600" />
+                    </button>
+                  </>
+                )}
+
+                <DndContext
+                  sensors={sensors}
+                  collisionDetection={closestCenter}
+                  onDragEnd={handleDragEnd}
+                >
+                  <SortableContext
+                    items={localCategory.products.map(p => p.id)}
+                    strategy={horizontalListSortingStrategy}
+                  >
+                    <div 
+                      ref={scrollRef}
+                      className="flex gap-3 overflow-x-auto pb-2 px-1 scrollbar-hide" 
+                      style={{ scrollbarWidth: 'none' }}
+                    >
+                      {localCategory.products.map((product, index) => (
+                        <SortableProductCard
+                          key={product.id || index}
+                          product={product}
+                          onUpdate={(updated) => updateProduct(index, updated)}
+                          onDelete={() => deleteProduct(index)}
+                        />
+                      ))}
+                    </div>
+                  </SortableContext>
+                </DndContext>
+                <p className="text-[10px] text-gray-400 mt-2 text-center">
+                  Mantén presionado y arrastra para reordenar • Usa las flechas para navegar
+                </p>
               </div>
             ) : (
               <div className="text-center py-8 border-2 border-dashed border-gray-200 rounded-lg">
@@ -437,7 +558,6 @@ const CategorySection = ({ category, onUpdate, onDelete, saving }) => {
             )}
           </div>
 
-          {/* Preview */}
           <div className="pt-4 border-t border-gray-100">
             <p className="text-xs text-gray-400 uppercase mb-2">Vista previa (como se verá en la página)</p>
             <div className="bg-gray-50 p-4 rounded-lg">
@@ -445,12 +565,13 @@ const CategorySection = ({ category, onUpdate, onDelete, saving }) => {
               <div className="flex gap-3 overflow-x-auto pb-2">
                 {localCategory.products.slice(0, 5).map((product, i) => {
                   const mediaCount = [product.image, ...(product.images || []), product.video].filter(Boolean).length;
+                  const displayImage = fixImageUrl(product.image);
                   return (
                     <div key={i} className="w-[120px] flex-shrink-0">
                       <div className="aspect-[3/4] bg-gray-200 rounded overflow-hidden mb-2 relative">
-                        {product.image && (
+                        {displayImage && (
                           <img 
-                            src={product.image} 
+                            src={displayImage} 
                             alt={product.name} 
                             className="w-full h-full object-cover"
                             style={{
