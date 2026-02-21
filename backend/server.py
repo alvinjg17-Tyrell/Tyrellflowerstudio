@@ -145,6 +145,26 @@ class ContactContent(BaseModel):
     scheduleTitle: str = ""
     schedule: str = ""
     scheduleWeekend: str = ""
+    showLocation: bool = True  # Toggle for location visibility
+
+# Catalog Colors Model
+class CatalogColors(BaseModel):
+    labelColor: str = "#daa609"
+    titleColor: str = "#1a1a1a"
+    highlightColor: str = "#daa609"
+    buttonBgColor: str = "#daa609"
+    buttonTextColor: str = "#FFFFFF"
+    lineColor: str = "#daa609"
+
+# Contact Colors Model
+class ContactColors(BaseModel):
+    bgColor: str = "#4F6D5E"
+    labelColor: str = "#daa609"
+    titleColor: str = "#FFFFFF"
+    subtitleColor: str = "#FFFFFF99"
+    buttonBgColor: str = "#daa609"
+    buttonTextColor: str = "#FFFFFF"
+    inputBorderColor: str = "#daa609"
 
 # Color Palette Model
 class ColorPalette(BaseModel):
