@@ -29,6 +29,19 @@ Create a professional and elegant website for "TYRELL" flower shop with full CMS
 - Added `<` and `>` navigation buttons in admin panel
 - Allows scrolling through products when there are more than 3
 
+### NEW: Section Order Management (IMPLEMENTED Feb 21, 2026)
+- New "ORDEN" tab in admin panel
+- Drag & drop to reorder main sections (Nosotros, Productos, Catálogos, Contacto)
+- Toggle visibility for each section with eye icon
+- Live preview of section order
+- Works on mobile (touch hold) and desktop
+
+### NEW: Category Drag & Drop (IMPLEMENTED Feb 21, 2026)
+- Categories can be reordered via drag & drop
+- Grip handle on each category header
+- Order is automatically saved to the backend
+- Works on both mobile and desktop
+
 ### Category-Based Products System
 The products section has been restructured with:
 - **Categories**: Ramos, Ramos con Rosas, Flower Box, etc.
