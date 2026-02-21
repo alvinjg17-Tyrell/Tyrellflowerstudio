@@ -218,6 +218,8 @@ class SiteContent(BaseModel):
     services: ServicesContent = ServicesContent()
     contact: ContactContent = ContactContent()
     colorPalette: Optional[ColorPalette] = ColorPalette()
+    catalogColors: Optional[CatalogColors] = CatalogColors()
+    contactColors: Optional[ContactColors] = ContactColors()
 
 class ServiceCreate(BaseModel):
     title: str
