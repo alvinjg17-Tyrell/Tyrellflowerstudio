@@ -5,7 +5,21 @@ Create a professional and elegant website for "TYRELL" flower shop with full CMS
 
 ## Implemented Features (as of Feb 21, 2026)
 
-### NEW: Category-Based Products System
+### Bug Fixes (Session)
+- **Fixed product images not loading:** Images stored with old domain URLs now load correctly via URL normalization
+- **Removed yellow "back to top" button:** The button behind WhatsApp has been removed from Footer.js
+- **Badge "Made with Emergent" hidden:** CSS added to hide the injected badge
+
+### NEW: Drag & Drop Product Reordering
+- Products within categories can now be reordered via drag & drop
+- Works on mobile (touch hold) and desktop (click and drag)
+- Visual "ARRASTRA" handle indicator on each product card
+
+### NEW: Carousel Navigation Buttons
+- Added `<` and `>` navigation buttons in admin panel
+- Allows scrolling through products when there are more than 3
+
+### Category-Based Products System
 The products section has been restructured with:
 - **Categories**: Ramos, Ramos con Rosas, Flower Box, etc.
 - **Products per Category**: Each category contains multiple products
