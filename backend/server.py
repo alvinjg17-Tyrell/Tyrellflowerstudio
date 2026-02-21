@@ -149,22 +149,22 @@ class ContactContent(BaseModel):
 
 # Catalog Colors Model
 class CatalogColors(BaseModel):
-    labelColor: str = "#daa609"
+    labelColor: str = "#f4c952"
     titleColor: str = "#1a1a1a"
-    highlightColor: str = "#daa609"
-    buttonBgColor: str = "#daa609"
+    highlightColor: str = "#f4c952"
+    buttonBgColor: str = "#f4c952"
     buttonTextColor: str = "#FFFFFF"
-    lineColor: str = "#daa609"
+    lineColor: str = "#f4c952"
 
 # Contact Colors Model
 class ContactColors(BaseModel):
     bgColor: str = "#4F6D5E"
-    labelColor: str = "#daa609"
+    labelColor: str = "#f4c952"
     titleColor: str = "#FFFFFF"
     subtitleColor: str = "#FFFFFF99"
-    buttonBgColor: str = "#daa609"
+    buttonBgColor: str = "#f4c952"
     buttonTextColor: str = "#FFFFFF"
-    inputBorderColor: str = "#daa609"
+    inputBorderColor: str = "#f4c952"
 
 # Color Palette Model
 class ColorPalette(BaseModel):
