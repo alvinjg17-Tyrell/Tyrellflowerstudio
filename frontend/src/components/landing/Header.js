@@ -105,7 +105,7 @@ export const Header = ({ siteData }) => {
               <Button 
                 className="text-sm tracking-wider uppercase px-6 py-2 rounded-none border-0 transition-all duration-300 hover:shadow-lg"
                 style={{
-                  backgroundColor: header.ctaButtonColor || "#daa609",
+                  backgroundColor: header.ctaButtonColor || "#D8A7B1",
                   color: header.ctaTextColor || "#FFFFFF"
                 }}
               >
