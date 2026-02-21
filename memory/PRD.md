@@ -9,6 +9,16 @@ Create a professional and elegant website for "TYRELL" flower shop with full CMS
 - **Fixed product images not loading:** Images stored with old domain URLs now load correctly via URL normalization
 - **Removed yellow "back to top" button:** The button behind WhatsApp has been removed from Footer.js
 - **Badge "Made with Emergent" hidden:** CSS added to hide the injected badge
+- **Changed gold color to #f4c952:** Updated all dorado/gold colors to the new brighter yellow tone
+
+### NEW: Color Pickers for Catalog & Contact Sections
+- Catalog section: label, title, highlight, button background, button text, lines
+- Contact section: background, label, title, subtitle, button background, button text, input borders
+- Live preview of color changes in admin panel
+
+### NEW: Optional Location Field
+- Toggle in admin to show/hide the location section in Contact
+- When disabled, location info is completely hidden from the page
 
 ### NEW: Drag & Drop Product Reordering
 - Products within categories can now be reordered via drag & drop
