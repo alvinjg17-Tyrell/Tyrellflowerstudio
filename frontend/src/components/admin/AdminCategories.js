@@ -600,6 +600,36 @@ const CategorySection = ({ category, onUpdate, onDelete, saving }) => {
   );
 };
 
+// Sortable wrapper for categories
+const SortableCategoryWrapper = ({ category, onUpdate, onDelete, saving }) => {
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({ id: category.id });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
+  return (
+    <div ref={setNodeRef} style={style}>
+      <CategorySection
+        category={category}
+        onUpdate={onUpdate}
+        onDelete={onDelete}
+        saving={saving}
+        dragHandleProps={{ ...attributes, ...listeners }}
+      />
+    </div>
+  );
+};
+
 export const AdminCategories = ({ categories, setCategories }) => {
   const [saving, setSaving] = useState(false);
 
