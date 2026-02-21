@@ -168,8 +168,8 @@ class ContactColors(BaseModel):
 
 # Color Palette Model
 class ColorPalette(BaseModel):
-    primary: str = "#daa609"           # Dorado - botones principales
-    primaryHover: str = "#b8890a"      # Dorado hover
+    primary: str = "#f4c952"           # Dorado - botones principales
+    primaryHover: str = "#e0b63e"      # Dorado hover
     secondary: str = "#B76E79"         # Rosa viejo - header, acentos
     accent: str = "#D4B896"            # Beige dorado - texto destacado
     text: str = "#1a1a1a"              # Texto principal
