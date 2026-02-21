@@ -192,6 +192,7 @@ class DynamicSectionResponse(BaseModel):
 
 class SiteContent(BaseModel):
     brand: BrandContent = BrandContent()
+    header: Optional[HeaderContent] = HeaderContent()
     hero: HeroContent = HeroContent()
     about: AboutContent = AboutContent()
     services: ServicesContent = ServicesContent()
