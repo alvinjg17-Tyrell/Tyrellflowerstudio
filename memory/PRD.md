@@ -71,8 +71,8 @@ All sections have inline color pickers:
 - Email: tyrellflowerstudio@gmail.com
 - Password: 897355
 
-## Regarding "Made with Emergent" Badge
-Contact Emergent support (Discord or email) for removal options.
+## "Made with Emergent" Badge
+**REMOVED** - Hidden via CSS in index.css (Feb 21, 2026)
 
 ## Backlog (P1)
 - [ ] Drag-and-drop product reordering
