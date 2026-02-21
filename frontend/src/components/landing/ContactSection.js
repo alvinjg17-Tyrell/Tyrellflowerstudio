@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { MapPin, MessageCircle, Clock, ArrowRight, Send } from "lucide-react";
+import { MessageCircle, Clock, ArrowRight, Send, MapPin } from "lucide-react";
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
@@ -11,6 +11,19 @@ export const ContactSection = ({ siteData }) => {
   const sectionRef = useRef(null);
   const brand = siteData?.brand || {};
   const contact = siteData?.contact || {};
+  
+  // Get colors from site data
+  const contactColors = siteData?.contactColors || {};
+  const bgColor = contactColors.bgColor || "#4F6D5E";
+  const labelColor = contactColors.labelColor || "#daa609";
+  const titleColor = contactColors.titleColor || "#FFFFFF";
+  const subtitleColor = contactColors.subtitleColor || "#FFFFFF99";
+  const buttonBgColor = contactColors.buttonBgColor || "#daa609";
+  const buttonTextColor = contactColors.buttonTextColor || "#FFFFFF";
+  const inputBorderColor = contactColors.inputBorderColor || "#daa609";
+  
+  // Check if location should be shown
+  const showLocation = contact.showLocation !== false && contact.address;
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -30,7 +43,6 @@ export const ContactSection = ({ siteData }) => {
     const whatsappMsg = encodeURIComponent(
       `Hola TYRELL, soy ${formData.name}. ${formData.message}`
     );
-    // Use the whatsapp link from brand, append the message
     const baseNumber = brand.whatsappLink ? brand.whatsappLink.replace("https://wa.me/", "") : "";
     const whatsappUrl = baseNumber
       ? `https://wa.me/${baseNumber}?text=${whatsappMsg}`
@@ -41,20 +53,43 @@ export const ContactSection = ({ siteData }) => {
   };
 
   return (
-    <section id="contacto" ref={sectionRef} className="relative py-24 lg:py-32 bg-[#4F6D5E] overflow-hidden">
-      <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-tyrell-gold/20 to-transparent" />
+    <section 
+      id="contacto" 
+      ref={sectionRef} 
+      className="relative py-24 lg:py-32 overflow-hidden"
+      style={{ backgroundColor: bgColor }}
+    >
+      <div 
+        className="absolute top-0 left-0 w-full h-[1px]" 
+        style={{ background: `linear-gradient(to right, transparent, ${labelColor}33, transparent)` }}
+      />
       <div className="absolute top-20 right-0 w-72 h-72 bg-[#D8A7B1]/[0.08] rounded-full blur-3xl" />
-      <div className="absolute bottom-20 left-0 w-80 h-80 bg-tyrell-gold/[0.05] rounded-full blur-3xl" />
+      <div className="absolute bottom-20 left-0 w-80 h-80 rounded-full blur-3xl" style={{ backgroundColor: `${labelColor}0D` }} />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className={`text-center mb-16 lg:mb-20 transition-all duration-1000 ${isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
           <div className="flex items-center justify-center gap-4 mb-6">
-            <div className="h-[1px] w-10 bg-tyrell-gold/40" />
-            <span className="text-tyrell-gold text-xs tracking-[0.3em] uppercase font-light">Contacto</span>
-            <div className="h-[1px] w-10 bg-tyrell-gold/40" />
+            <div className="h-[1px] w-10" style={{ backgroundColor: `${labelColor}66` }} />
+            <span 
+              className="text-xs tracking-[0.3em] uppercase font-light"
+              style={{ color: labelColor }}
+            >
+              Contacto
+            </span>
+            <div className="h-[1px] w-10" style={{ backgroundColor: `${labelColor}66` }} />
           </div>
-          <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl text-white font-light tracking-tight">{contact.title}</h2>
-          <p className="mt-4 text-white/60 text-lg font-light">{contact.subtitle}</p>
+          <h2 
+            className="font-display text-3xl sm:text-4xl lg:text-5xl font-light tracking-tight"
+            style={{ color: titleColor }}
+          >
+            {contact.title}
+          </h2>
+          <p 
+            className="mt-4 text-lg font-light"
+            style={{ color: subtitleColor }}
+          >
+            {contact.subtitle}
+          </p>
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
@@ -67,13 +102,14 @@ export const ContactSection = ({ siteData }) => {
                   <MessageCircle className="w-6 h-6 text-[#D8A7B1]" />
                 </div>
                 <div>
-                  <h3 className="font-display text-lg text-white font-medium tracking-wide">{contact.whatsappLabel}</h3>
-                  <p className="mt-1 text-white/50 text-sm font-light">{brand.whatsappNumber || "Respuesta rápida y personalizada"}</p>
+                  <h3 className="font-display text-lg font-medium tracking-wide" style={{ color: titleColor }}>{contact.whatsappLabel}</h3>
+                  <p className="mt-1 text-sm font-light" style={{ color: subtitleColor }}>{brand.whatsappNumber || "Respuesta rápida y personalizada"}</p>
                   <a
                     href={brand.whatsappLink || "#"}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-2 mt-2 text-tyrell-gold text-sm tracking-wider hover:text-tyrell-gold-light transition-colors duration-300"
+                    className="inline-flex items-center gap-2 mt-2 text-sm tracking-wider hover:opacity-80 transition-colors duration-300"
+                    style={{ color: labelColor }}
                   >
                     <span>Enviar mensaje</span>
                     <ArrowRight className="w-3.5 h-3.5" />
@@ -81,37 +117,46 @@ export const ContactSection = ({ siteData }) => {
                 </div>
               </div>
 
-              {/* Location */}
-              <div className="flex gap-5 group">
-                <div className="flex-shrink-0 w-14 h-14 rounded-full border border-[#E8C1B5]/40 bg-[#E8C1B5]/20 flex items-center justify-center transition-all duration-300 group-hover:bg-[#E8C1B5]/30 group-hover:border-[#E8C1B5]/60">
-                  <MapPin className="w-6 h-6 text-[#E8C1B5]" />
+              {/* Location - Only show if enabled */}
+              {showLocation && (
+                <div className="flex gap-5 group">
+                  <div className="flex-shrink-0 w-14 h-14 rounded-full border border-[#E8C1B5]/40 bg-[#E8C1B5]/20 flex items-center justify-center transition-all duration-300 group-hover:bg-[#E8C1B5]/30 group-hover:border-[#E8C1B5]/60">
+                    <MapPin className="w-6 h-6 text-[#E8C1B5]" />
+                  </div>
+                  <div>
+                    <h3 className="font-display text-lg font-medium tracking-wide" style={{ color: titleColor }}>Ubicación</h3>
+                    <p className="mt-1 text-sm font-light" style={{ color: subtitleColor }}>{contact.address}</p>
+                    {brand.locationUrl && (
+                      <a
+                        href={brand.locationUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 mt-2 text-sm tracking-wider hover:opacity-80 transition-colors duration-300"
+                        style={{ color: labelColor }}
+                      >
+                        <span>Ver en Google Maps</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
+                      </a>
+                    )}
+                  </div>
                 </div>
-                <div>
-                  <h3 className="font-display text-lg text-white font-medium tracking-wide">Ubicación</h3>
-                  <p className="mt-1 text-white/50 text-sm font-light">{contact.address}</p>
-                  {brand.locationUrl && (
-                    <a
-                      href={brand.locationUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 mt-2 text-tyrell-gold text-sm tracking-wider hover:text-tyrell-gold-light transition-colors duration-300"
-                    >
-                      <span>Ver en Google Maps</span>
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </a>
-                  )}
-                </div>
-              </div>
+              )}
 
               {/* Schedule */}
               <div className="flex gap-5 group">
-                <div className="flex-shrink-0 w-14 h-14 rounded-full border border-tyrell-gold/30 bg-tyrell-gold/10 flex items-center justify-center transition-all duration-300 group-hover:bg-tyrell-gold/20 group-hover:border-tyrell-gold/50">
-                  <Clock className="w-6 h-6 text-tyrell-gold" />
+                <div 
+                  className="flex-shrink-0 w-14 h-14 rounded-full flex items-center justify-center transition-all duration-300"
+                  style={{ 
+                    border: `1px solid ${labelColor}4D`,
+                    backgroundColor: `${labelColor}1A`
+                  }}
+                >
+                  <Clock className="w-6 h-6" style={{ color: labelColor }} />
                 </div>
                 <div>
-                  <h3 className="font-display text-lg text-white font-medium tracking-wide">{contact.scheduleTitle}</h3>
-                  <p className="mt-1 text-white/50 text-sm font-light">{contact.schedule}</p>
-                  <p className="text-white/50 text-sm font-light">{contact.scheduleWeekend}</p>
+                  <h3 className="font-display text-lg font-medium tracking-wide" style={{ color: titleColor }}>{contact.scheduleTitle}</h3>
+                  <p className="mt-1 text-sm font-light" style={{ color: subtitleColor }}>{contact.schedule}</p>
+                  <p className="text-sm font-light" style={{ color: subtitleColor }}>{contact.scheduleWeekend}</p>
                 </div>
               </div>
             </div>
@@ -121,27 +166,41 @@ export const ContactSection = ({ siteData }) => {
           <div className={`transition-all duration-1000 delay-500 ${isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-12"}`}>
             <form onSubmit={handleSubmit} className="space-y-6">
               <div>
-                <label className="block text-white/60 text-xs tracking-wider uppercase mb-2 font-light">Tu nombre</label>
+                <label className="block text-xs tracking-wider uppercase mb-2 font-light" style={{ color: subtitleColor }}>Tu nombre</label>
                 <Input
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="Ingresa tu nombre"
-                  className="bg-white/10 border-tyrell-gold/30 text-white placeholder:text-white/35 rounded-none h-12 focus:border-tyrell-gold/60 focus:ring-tyrell-gold/20 transition-all duration-300"
+                  className="rounded-none h-12 transition-all duration-300"
+                  style={{
+                    backgroundColor: 'rgba(255,255,255,0.1)',
+                    borderColor: `${inputBorderColor}4D`,
+                    color: titleColor
+                  }}
                 />
               </div>
               <div>
-                <label className="block text-white/60 text-xs tracking-wider uppercase mb-2 font-light">Tu mensaje</label>
+                <label className="block text-xs tracking-wider uppercase mb-2 font-light" style={{ color: subtitleColor }}>Tu mensaje</label>
                 <Textarea
                   value={formData.message}
                   onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   placeholder="Cuéntanos qué necesitas..."
                   rows={5}
-                  className="bg-white/10 border-tyrell-gold/30 text-white placeholder:text-white/35 rounded-none focus:border-tyrell-gold/60 focus:ring-tyrell-gold/20 transition-all duration-300 resize-none"
+                  className="rounded-none transition-all duration-300 resize-none"
+                  style={{
+                    backgroundColor: 'rgba(255,255,255,0.1)',
+                    borderColor: `${inputBorderColor}4D`,
+                    color: titleColor
+                  }}
                 />
               </div>
               <Button
                 type="submit"
-                className="w-full bg-tyrell-gold hover:bg-tyrell-gold-dark text-white py-6 text-sm tracking-[0.2em] uppercase rounded-none transition-all duration-300 hover:shadow-[0_8px_30px_rgba(218,166,9,0.3)] group"
+                className="w-full py-6 text-sm tracking-[0.2em] uppercase rounded-none transition-all duration-300 hover:opacity-90 hover:shadow-lg group"
+                style={{
+                  backgroundColor: buttonBgColor,
+                  color: buttonTextColor
+                }}
               >
                 <Send className="mr-2 w-4 h-4" />
                 Enviar por WhatsApp
