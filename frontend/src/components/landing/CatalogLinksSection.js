@@ -8,12 +8,12 @@ export const CatalogLinksSection = ({ catalogLinks, siteData }) => {
   
   // Get colors from site data or use defaults
   const catalogColors = siteData?.catalogColors || {};
-  const labelColor = catalogColors.labelColor || "#daa609";
+  const labelColor = catalogColors.labelColor || "#f4c952";
   const titleColor = catalogColors.titleColor || "#1a1a1a";
-  const highlightColor = catalogColors.highlightColor || "#daa609";
-  const buttonBgColor = catalogColors.buttonBgColor || "#daa609";
+  const highlightColor = catalogColors.highlightColor || "#f4c952";
+  const buttonBgColor = catalogColors.buttonBgColor || "#f4c952";
   const buttonTextColor = catalogColors.buttonTextColor || "#FFFFFF";
-  const lineColor = catalogColors.lineColor || "#daa609";
+  const lineColor = catalogColors.lineColor || "#f4c952";
 
   useEffect(() => {
     const observer = new IntersectionObserver(
