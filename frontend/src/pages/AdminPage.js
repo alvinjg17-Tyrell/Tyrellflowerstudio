@@ -290,8 +290,14 @@ export default function AdminPage() {
         {activeTab === "sections" && (
           <AdminDynamicSections sections={dynamicSections} setSections={setDynamicSections} />
         )}
-        {activeTab === "catalogs" && (
-          <AdminCatalogLinks catalogLinks={catalogLinks} setCatalogLinks={setCatalogLinks} />
+        {activeTab === "catalogs" && siteContent && (
+          <AdminCatalogLinks 
+            catalogLinks={catalogLinks} 
+            setCatalogLinks={setCatalogLinks} 
+            content={siteContent}
+            onSave={saveSiteContent}
+            saving={saving}
+          />
         )}
         {activeTab === "contact" && siteContent && (
           <AdminContact content={siteContent} onSave={saveSiteContent} saving={saving} />
