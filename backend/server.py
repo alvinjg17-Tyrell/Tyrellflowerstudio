@@ -222,6 +222,8 @@ class ProductItem(BaseModel):
     id: str = ""
     name: str = ""
     image: str = ""
+    images: List[str] = []  # Additional images for lightbox
+    video: str = ""  # Optional video
     imagePosition: dict = {}  # {x: 0, y: 0, scale: 1} for cropping
     price: str = ""
     order: int = 0
