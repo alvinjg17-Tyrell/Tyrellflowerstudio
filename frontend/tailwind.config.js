@@ -19,9 +19,9 @@ module.exports = {
                 },
                 colors: {
                         'tyrell-gold': {
-                                DEFAULT: '#daa609',
-                                dark: '#b8890a',
-                                light: '#f5d66e',
+                                DEFAULT: '#f4c952',
+                                dark: '#e0b63e',
+                                light: '#f9dc7a',
                         },
                         'tyrell-dark': {
                                 DEFAULT: '#1a1a1a',
