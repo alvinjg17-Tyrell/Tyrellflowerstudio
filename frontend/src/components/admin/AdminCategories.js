@@ -700,7 +700,7 @@ export const AdminCategories = ({ categories, setCategories }) => {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="font-display text-2xl text-tyrell-dark font-light">Categorías de Productos</h2>
-          <p className="text-sm text-gray-500 mt-1">Organiza tus productos por categorías (Ramos, Flower Box, etc.)</p>
+          <p className="text-sm text-gray-500 mt-1">Organiza tus productos por categorías. Arrastra para reordenar.</p>
         </div>
         <Button
           onClick={addCategory}
@@ -712,17 +712,28 @@ export const AdminCategories = ({ categories, setCategories }) => {
       </div>
 
       {categories.length > 0 ? (
-        <div className="space-y-4">
-          {categories.map((category) => (
-            <CategorySection
-              key={category.id}
-              category={category}
-              onUpdate={updateCategory}
-              onDelete={deleteCategory}
-              saving={saving}
-            />
-          ))}
-        </div>
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCenter}
+          onDragEnd={handleCategoryDragEnd}
+        >
+          <SortableContext
+            items={categories.map(c => c.id)}
+            strategy={verticalListSortingStrategy}
+          >
+            <div className="space-y-4">
+              {categories.map((category) => (
+                <SortableCategoryWrapper
+                  key={category.id}
+                  category={category}
+                  onUpdate={updateCategory}
+                  onDelete={deleteCategory}
+                  saving={saving}
+                />
+              ))}
+            </div>
+          </SortableContext>
+        </DndContext>
       ) : (
         <div className="text-center py-12 bg-white border-2 border-dashed border-gray-200 rounded-lg">
           <ImageIcon className="w-12 h-12 mx-auto text-gray-300 mb-3" />
