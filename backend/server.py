@@ -103,6 +103,23 @@ class HeroContent(BaseModel):
     image: str = ""
     video: str = ""
     useVideo: bool = False
+    # Color fields
+    titleColor: str = "#FFFFFF"
+    highlightColor: str = "#D4B896"
+    subtitleColor: str = "#FFFFFF"
+    ctaButtonColor: str = "#D8A7B1"
+    ctaButtonTextColor: str = "#FFFFFF"
+    ctaSecondaryTextColor: str = "#FFFFFF"
+
+class HeaderContent(BaseModel):
+    topBarLeft: str = ""
+    topBarRight: str = ""
+    ctaText: str = "Ver Catálogo"
+    navItems: List[str] = []
+    topBarBgColor: str = "#B76E79"
+    topBarTextColor: str = "#FFFFFF"
+    ctaButtonColor: str = "#D8A7B1"
+    ctaTextColor: str = "#FFFFFF"
 
 class AboutContent(BaseModel):
     label: str = "Conócenos"
