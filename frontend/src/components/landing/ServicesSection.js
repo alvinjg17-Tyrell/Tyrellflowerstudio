@@ -145,8 +145,9 @@ const ProductLightbox = ({ product, isOpen, onClose, whatsappLink }) => {
 
 // Product card component
 const ProductCard = ({ product, categoryName, whatsappLink, primaryColor, onClick }) => {
-  const allMedia = [product.image, ...(product.images || []), product.video].filter(Boolean);
+  const allMedia = [product.image, ...(product.images || []), product.video].filter(Boolean).map(fixImageUrl);
   const hasMultipleMedia = allMedia.length > 1;
+  const fixedImage = fixImageUrl(product.image);
 
   const getWhatsAppUrl = () => {
     const number = whatsappLink ? whatsappLink.replace("https://wa.me/", "") : "";
@@ -162,9 +163,9 @@ const ProductCard = ({ product, categoryName, whatsappLink, primaryColor, onClic
         className="relative aspect-[3/4] bg-gray-100 overflow-hidden group cursor-pointer"
         onClick={onClick}
       >
-        {product.image ? (
+        {fixedImage ? (
           <img
-            src={product.image}
+            src={fixedImage}
             alt={product.name || "Producto"}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
             style={{
