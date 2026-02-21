@@ -210,6 +210,20 @@ class DynamicSectionResponse(BaseModel):
     active: bool
     created_at: datetime
 
+# Section Order Model
+class SectionOrderItem(BaseModel):
+    id: str
+    name: str
+    visible: bool = True
+
+class SectionOrder(BaseModel):
+    sections: List[SectionOrderItem] = [
+        SectionOrderItem(id="about", name="Nosotros", visible=True),
+        SectionOrderItem(id="services", name="Productos", visible=True),
+        SectionOrderItem(id="catalogs", name="Catálogos", visible=True),
+        SectionOrderItem(id="contact", name="Contacto", visible=True),
+    ]
+
 class SiteContent(BaseModel):
     brand: BrandContent = BrandContent()
     header: Optional[HeaderContent] = HeaderContent()
@@ -220,6 +234,7 @@ class SiteContent(BaseModel):
     colorPalette: Optional[ColorPalette] = ColorPalette()
     catalogColors: Optional[CatalogColors] = CatalogColors()
     contactColors: Optional[ContactColors] = ContactColors()
+    sectionOrder: Optional[SectionOrder] = SectionOrder()
 
 class ServiceCreate(BaseModel):
     title: str
