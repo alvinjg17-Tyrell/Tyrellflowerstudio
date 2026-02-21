@@ -2,18 +2,27 @@ import { useState, useRef } from "react";
 import { api } from "../../lib/api";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { Plus, Trash2, Save, Loader2, ChevronDown, ChevronUp, Image as ImageIcon, Move, X } from "lucide-react";
+import { Plus, Trash2, Save, Loader2, ChevronDown, ChevronUp, Image as ImageIcon, X, Video, ChevronRight, ChevronLeft } from "lucide-react";
 import { toast } from "sonner";
 import axios from "axios";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
-// Image upload with positioning
-const ProductImageUploader = ({ product, onUpdate, categoryName }) => {
+// Multi-image gallery for a product
+const ProductGalleryEditor = ({ product, onUpdate }) => {
   const [uploading, setUploading] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
   const fileRef = useRef(null);
+  const videoRef = useRef(null);
 
-  const handleUpload = async (e) => {
+  // Combine main image with additional images
+  const allMedia = [
+    product.image, 
+    ...(product.images || []),
+    product.video
+  ].filter(Boolean);
+
+  const handleUpload = async (e, isVideo = false) => {
     const file = e.target.files?.[0];
     if (!file) return;
     
@@ -24,49 +33,124 @@ const ProductImageUploader = ({ product, onUpdate, categoryName }) => {
       const res = await axios.post(`${BACKEND_URL}/api/upload`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      onUpdate({ 
-        ...product, 
-        image: `${BACKEND_URL}${res.data.url}`,
-        imagePosition: { x: 50, y: 50, scale: 100 }
-      });
-      toast.success("Imagen subida");
+      const url = `${BACKEND_URL}${res.data.url}`;
+      
+      if (isVideo) {
+        onUpdate({ ...product, video: url });
+      } else if (!product.image) {
+        // First image becomes main image
+        onUpdate({ 
+          ...product, 
+          image: url,
+          imagePosition: { x: 50, y: 50 }
+        });
+      } else {
+        // Additional images
+        onUpdate({ 
+          ...product, 
+          images: [...(product.images || []), url]
+        });
+      }
+      toast.success(isVideo ? "Video subido" : "Imagen subida");
     } catch (err) {
-      toast.error("Error subiendo imagen");
+      toast.error("Error subiendo archivo");
     } finally {
       setUploading(false);
       if (fileRef.current) fileRef.current.value = "";
+      if (videoRef.current) videoRef.current.value = "";
     }
+  };
+
+  const removeMedia = (index) => {
+    if (index === 0 && product.image) {
+      // Remove main image, promote first additional image if exists
+      const newImages = product.images || [];
+      if (newImages.length > 0) {
+        onUpdate({
+          ...product,
+          image: newImages[0],
+          images: newImages.slice(1)
+        });
+      } else {
+        onUpdate({ ...product, image: "", imagePosition: {} });
+      }
+    } else {
+      // Remove from additional images
+      const adjustedIndex = index - 1;
+      if (product.images && product.images[adjustedIndex]) {
+        onUpdate({
+          ...product,
+          images: product.images.filter((_, i) => i !== adjustedIndex)
+        });
+      } else if (product.video) {
+        onUpdate({ ...product, video: "" });
+      }
+    }
+    setActiveIndex(0);
   };
 
   return (
     <div className="space-y-2">
+      {/* Main Preview */}
       <div className="relative aspect-[3/4] bg-gray-100 rounded overflow-hidden group">
-        {product.image ? (
+        {allMedia.length > 0 ? (
           <>
-            <img
-              src={product.image}
-              alt={product.name || "Producto"}
-              className="w-full h-full object-cover"
-              style={{
-                objectPosition: `${product.imagePosition?.x || 50}% ${product.imagePosition?.y || 50}%`
-              }}
-            />
-            <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-              <button
-                onClick={() => fileRef.current?.click()}
-                className="p-2 bg-white rounded-full hover:bg-gray-100"
-                title="Cambiar imagen"
-              >
-                <ImageIcon className="w-4 h-4" />
-              </button>
-              <button
-                onClick={() => onUpdate({ ...product, image: "", imagePosition: {} })}
-                className="p-2 bg-white rounded-full hover:bg-gray-100 text-red-500"
-                title="Eliminar imagen"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
+            {/* Current media */}
+            {allMedia[activeIndex]?.includes('.mp4') || allMedia[activeIndex]?.includes('.mov') ? (
+              <video
+                src={allMedia[activeIndex]}
+                className="w-full h-full object-cover"
+                style={{
+                  objectPosition: `${product.imagePosition?.x || 50}% ${product.imagePosition?.y || 50}%`
+                }}
+                muted
+                loop
+                autoPlay
+                playsInline
+              />
+            ) : (
+              <img
+                src={allMedia[activeIndex]}
+                alt={product.name || "Producto"}
+                className="w-full h-full object-cover"
+                style={{
+                  objectPosition: `${product.imagePosition?.x || 50}% ${product.imagePosition?.y || 50}%`
+                }}
+              />
+            )}
+
+            {/* Navigation arrows */}
+            {allMedia.length > 1 && (
+              <>
+                <button
+                  onClick={() => setActiveIndex(prev => (prev - 1 + allMedia.length) % allMedia.length)}
+                  className="absolute left-1 top-1/2 -translate-y-1/2 w-6 h-6 bg-white/80 rounded-full flex items-center justify-center shadow hover:bg-white"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+                <button
+                  onClick={() => setActiveIndex(prev => (prev + 1) % allMedia.length)}
+                  className="absolute right-1 top-1/2 -translate-y-1/2 w-6 h-6 bg-white/80 rounded-full flex items-center justify-center shadow hover:bg-white"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </>
+            )}
+
+            {/* Counter */}
+            {allMedia.length > 1 && (
+              <div className="absolute bottom-1 left-1/2 -translate-x-1/2 bg-black/50 text-white text-[10px] px-2 py-0.5 rounded-full">
+                {activeIndex + 1} / {allMedia.length}
+              </div>
+            )}
+
+            {/* Remove button */}
+            <button
+              onClick={() => removeMedia(activeIndex)}
+              className="absolute top-1 right-1 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+              <X className="w-3 h-3" />
+            </button>
           </>
         ) : (
           <button
@@ -85,11 +169,52 @@ const ProductImageUploader = ({ product, onUpdate, categoryName }) => {
           </button>
         )}
       </div>
-      
+
+      {/* Thumbnails */}
+      {allMedia.length > 0 && (
+        <div className="flex gap-1 overflow-x-auto">
+          {allMedia.map((media, i) => (
+            <button
+              key={i}
+              onClick={() => setActiveIndex(i)}
+              className={`w-10 h-10 flex-shrink-0 rounded overflow-hidden border-2 ${
+                activeIndex === i ? "border-tyrell-gold" : "border-transparent"
+              }`}
+            >
+              {media?.includes('.mp4') || media?.includes('.mov') ? (
+                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                  <Video className="w-4 h-4 text-gray-500" />
+                </div>
+              ) : (
+                <img src={media} alt="" className="w-full h-full object-cover" />
+              )}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Add more buttons */}
+      <div className="flex gap-2">
+        <button
+          onClick={() => fileRef.current?.click()}
+          disabled={uploading}
+          className="flex-1 py-1.5 text-[10px] uppercase tracking-wider border border-dashed border-gray-300 rounded hover:border-tyrell-gold hover:text-tyrell-gold transition-colors flex items-center justify-center gap-1"
+        >
+          <Plus className="w-3 h-3" /> Imagen
+        </button>
+        <button
+          onClick={() => videoRef.current?.click()}
+          disabled={uploading}
+          className="flex-1 py-1.5 text-[10px] uppercase tracking-wider border border-dashed border-gray-300 rounded hover:border-tyrell-gold hover:text-tyrell-gold transition-colors flex items-center justify-center gap-1"
+        >
+          <Video className="w-3 h-3" /> Video
+        </button>
+      </div>
+
       {/* Image position controls */}
       {product.image && (
-        <div className="space-y-1">
-          <p className="text-[10px] text-gray-400 uppercase tracking-wider">Posición imagen</p>
+        <div className="space-y-1 pt-2 border-t border-gray-100">
+          <p className="text-[10px] text-gray-400 uppercase tracking-wider">Posición imagen principal</p>
           <div className="grid grid-cols-2 gap-2">
             <div>
               <label className="text-[9px] text-gray-400">Horizontal</label>
@@ -127,7 +252,14 @@ const ProductImageUploader = ({ product, onUpdate, categoryName }) => {
         ref={fileRef}
         type="file"
         accept="image/*"
-        onChange={handleUpload}
+        onChange={(e) => handleUpload(e, false)}
+        className="hidden"
+      />
+      <input
+        ref={videoRef}
+        type="file"
+        accept="video/mp4,video/quicktime,video/mov"
+        onChange={(e) => handleUpload(e, true)}
         className="hidden"
       />
     </div>
@@ -135,14 +267,12 @@ const ProductImageUploader = ({ product, onUpdate, categoryName }) => {
 };
 
 // Single product card in admin
-const ProductCard = ({ product, onUpdate, onDelete, categoryName }) => {
+const ProductCard = ({ product, onUpdate, onDelete }) => {
+  const allMedia = [product.image, ...(product.images || []), product.video].filter(Boolean);
+  
   return (
-    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden w-[160px] flex-shrink-0">
-      <ProductImageUploader 
-        product={product} 
-        onUpdate={onUpdate} 
-        categoryName={categoryName}
-      />
+    <div className="bg-white border border-gray-200 rounded-lg overflow-hidden w-[180px] flex-shrink-0">
+      <ProductGalleryEditor product={product} onUpdate={onUpdate} />
       <div className="p-2 space-y-1.5">
         <Input
           value={product.name || ""}
@@ -156,11 +286,14 @@ const ProductCard = ({ product, onUpdate, onDelete, categoryName }) => {
           placeholder="Precio (opcional)"
           className="h-7 text-xs rounded border-gray-200"
         />
+        {allMedia.length > 1 && (
+          <p className="text-[10px] text-tyrell-gold">{allMedia.length} archivos</p>
+        )}
         <button
           onClick={onDelete}
           className="w-full text-[10px] text-red-400 hover:text-red-600 py-1 transition-colors"
         >
-          Eliminar
+          Eliminar producto
         </button>
       </div>
     </div>
@@ -177,7 +310,9 @@ const CategorySection = ({ category, onUpdate, onDelete, saving }) => {
       id: `temp-${Date.now()}`,
       name: "",
       image: "",
-      imagePosition: { x: 50, y: 50, scale: 100 },
+      images: [],
+      video: "",
+      imagePosition: { x: 50, y: 50 },
       price: "",
       order: localCategory.products.length
     };
@@ -288,7 +423,6 @@ const CategorySection = ({ category, onUpdate, onDelete, saving }) => {
                       product={product}
                       onUpdate={(updated) => updateProduct(index, updated)}
                       onDelete={() => deleteProduct(index)}
-                      categoryName={localCategory.name}
                     />
                   ))}
                 </div>
@@ -309,24 +443,32 @@ const CategorySection = ({ category, onUpdate, onDelete, saving }) => {
             <div className="bg-gray-50 p-4 rounded-lg">
               <h4 className="font-display text-xl text-tyrell-dark mb-3">{localCategory.name || "Nombre de categoría"}</h4>
               <div className="flex gap-3 overflow-x-auto pb-2">
-                {localCategory.products.slice(0, 5).map((product, i) => (
-                  <div key={i} className="w-[120px] flex-shrink-0">
-                    <div className="aspect-[3/4] bg-gray-200 rounded overflow-hidden mb-2">
-                      {product.image && (
-                        <img 
-                          src={product.image} 
-                          alt={product.name} 
-                          className="w-full h-full object-cover"
-                          style={{
-                            objectPosition: `${product.imagePosition?.x || 50}% ${product.imagePosition?.y || 50}%`
-                          }}
-                        />
-                      )}
+                {localCategory.products.slice(0, 5).map((product, i) => {
+                  const mediaCount = [product.image, ...(product.images || []), product.video].filter(Boolean).length;
+                  return (
+                    <div key={i} className="w-[120px] flex-shrink-0">
+                      <div className="aspect-[3/4] bg-gray-200 rounded overflow-hidden mb-2 relative">
+                        {product.image && (
+                          <img 
+                            src={product.image} 
+                            alt={product.name} 
+                            className="w-full h-full object-cover"
+                            style={{
+                              objectPosition: `${product.imagePosition?.x || 50}% ${product.imagePosition?.y || 50}%`
+                            }}
+                          />
+                        )}
+                        {mediaCount > 1 && (
+                          <div className="absolute bottom-1 right-1 bg-black/50 text-white text-[9px] px-1.5 py-0.5 rounded">
+                            +{mediaCount - 1}
+                          </div>
+                        )}
+                      </div>
+                      <p className="text-xs font-medium truncate">{product.name || "Nombre"}</p>
+                      <button className="text-[10px] text-tyrell-gold uppercase mt-1">Pedir</button>
                     </div>
-                    <p className="text-xs font-medium truncate">{product.name || "Nombre"}</p>
-                    <button className="text-[10px] text-tyrell-gold uppercase mt-1">Pedir</button>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
           </div>
