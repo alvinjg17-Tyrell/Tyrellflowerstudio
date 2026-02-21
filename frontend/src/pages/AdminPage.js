@@ -13,6 +13,7 @@ import { AdminHeader as AdminHeaderSection } from "../components/admin/AdminHead
 import { AdminColorPalette } from "../components/admin/AdminColorPalette";
 import { AdminDynamicSections } from "../components/admin/AdminDynamicSections";
 import { AdminCategories } from "../components/admin/AdminCategories";
+import { AdminSectionOrder } from "../components/admin/AdminSectionOrder";
 import { Toaster, toast } from "sonner";
 import { Loader2, Lock, Mail, Eye, EyeOff, LogOut } from "lucide-react";
 import { Input } from "../components/ui/input";
@@ -21,6 +22,7 @@ import { Button } from "../components/ui/button";
 const TABS = [
   { id: "brand", label: "Marca" },
   { id: "colors", label: "Colores" },
+  { id: "order", label: "Orden" },
   { id: "header", label: "Encabezado" },
   { id: "hero", label: "Hero" },
   { id: "about", label: "Nosotros" },
