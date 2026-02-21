@@ -602,6 +602,49 @@ const CategorySection = ({ category, onUpdate, onDelete, saving }) => {
 export const AdminCategories = ({ categories, setCategories }) => {
   const [saving, setSaving] = useState(false);
 
+  const sensors = useSensors(
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        distance: 8,
+      },
+    }),
+    useSensor(TouchSensor, {
+      activationConstraint: {
+        delay: 200,
+        tolerance: 5,
+      },
+    }),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  const handleCategoryDragEnd = async (event) => {
+    const { active, over } = event;
+    
+    if (active.id !== over.id) {
+      const oldIndex = categories.findIndex((c) => c.id === active.id);
+      const newIndex = categories.findIndex((c) => c.id === over.id);
+      
+      const newCategories = arrayMove(categories, oldIndex, newIndex).map((cat, index) => ({
+        ...cat,
+        order: index
+      }));
+      
+      setCategories(newCategories);
+      
+      // Save the new order to backend
+      try {
+        for (const cat of newCategories) {
+          await api.updateCategory(cat.id, { ...cat, order: cat.order });
+        }
+        toast.success("Orden de categorías guardado");
+      } catch (err) {
+        toast.error("Error guardando orden");
+      }
+    }
+  };
+
   const addCategory = async () => {
     try {
       setSaving(true);
